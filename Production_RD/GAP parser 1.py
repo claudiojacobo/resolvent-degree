@@ -12,11 +12,14 @@ class Group:
     primes = None
     power_map = None
     char_table = None
+    conj_classes = None
 
     def __init__(self, input_strings):
         self.input_strings = input_strings
         self.string_parser()
+
         self.centralizer_to_float()
+        self.conj_classes = self.power_map_strings[0]
         self.initialize_group_order()
         self.initialize_conjugacy_size()
         self.initialize_primes()
