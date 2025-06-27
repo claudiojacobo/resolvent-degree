@@ -6,7 +6,7 @@ class Group:
     power_map_strings = None
     char_table_strings = None
 
-    centralizers = None
+    centralizers = None # needs to be done.
     group_order = None
     conjugacy_sizes = None
     primes = None
