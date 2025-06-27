@@ -27,6 +27,10 @@ class Group:
         self.initialize_char_table()
 
     def string_parser(self):
+        """
+        Parses raw GAP output.
+        :return:
+        """
         content = []  # a list of lists, one for each block in the input
 
         for line in input_strings[1:]:  # skip the first line
@@ -38,6 +42,9 @@ class Group:
         self.centralizer_strings, self.power_map_strings, self.char_table_strings = content
 
     def centralizer_to_float(self):
+        """
+        converts centralizer string data to floats.
+        """
         self.centralizers = list(self.centralizer_strings)
         for line in self.centralizers:
             for i, char in enumerate(line):
@@ -47,13 +54,16 @@ class Group:
                     line[i] = float(char)  # replace 'float' with whatever mathematical object we end up using
 
     def initialize_group_order(self):
+        """
+        Initializes the group's order variable.
+        """
         self.group_order = 1
         for line in self.centralizers:
             self.group_order *= (line[0] ** line[1])
 
     def initialize_conjugacy_size(self):
         """
-        :return:
+        initializes the group's list of conjugacy class sizes.
         """
         self.conjugacy_sizes = {}
         for i in range(len(self.centralizers[0])):
@@ -66,7 +76,7 @@ class Group:
 
     def initialize_primes(self):
         """
-        Gets list of all primes smaller than the size of the largest conjugacy class.
+        Initializes self.primes--a list of all primes smaller than the size of the largest conjugacy class.
         :return:
         """
         self.primes = []
@@ -76,8 +86,7 @@ class Group:
 
     def initialize_power_map(self):
         """
-
-        :return: dictionary of dictionaries associating conjugacy classes with their prime powers.
+        initializes the group's power map
         """
         self.power_map = {}  # the dict of dicts
         for i, conj_class in enumerate(self.power_map_strings[0]):
@@ -85,14 +94,13 @@ class Group:
             for j, prime in enumerate(self.primes):
                 conj_power_dict[prime] = self.power_map_strings[j + 1][i + 1]  # +1 so we avoid the "labels" section of the table
             self.power_map[conj_class] = conj_power_dict
-        return self.power_map
 
     def evaluate_char(self, char, conj, n):
         """
-
-        :param char: character dict
-        :param conj:
-        :param n:
+        Evaluates a specific character at a conjugacy class raised to the nth power.
+        :param char: Relevant character dictionary
+        :param conj: conjugacy class of interest
+        :param n: Power we raise conj to
         :return:
         """
         m = n % get_conj_order(conj)
@@ -114,6 +122,9 @@ class Group:
         return char[curr_class]  # update once we have character class
 
     def initialize_char_table(self):
+        """
+        initializes the group's character table
+        """
         self.char_table = []
         conj = self.power_map_strings[0]
         # print(char_table_strings[row])
@@ -124,6 +135,15 @@ class Group:
                     char_dict[conj[j - 1]] = self.char_table_strings[i][j]
                 # print(char_table_strings[row][column])
             self.char_table.append(char_dict)
+
+    def get_molien(self, char, num_of_terms):
+        """
+        Approximates the first terms of the Molien series for a character.
+        :param char: The character (dict) for which we are calculating the Molien series.
+        :param num_of_terms: integer number of terms the approximation is
+        :return: List of integer coefficients of the first terms of the Molien series of char.
+        """
+        return None
 
 
 
