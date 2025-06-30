@@ -1,4 +1,7 @@
 import math
+from sage.all import libgap
+# print(libgap.SymmetricGroup(3).CharacterTable())
+# run this file via "sage -python group_chracters.py" in sage terminal
 
 
 class GroupCharacters:
@@ -56,7 +59,7 @@ class GroupCharacters:
         :param chi: Relevant character dictionary
         :param conj: conjugacy class of interest
         :param n: Power we raise conj to
-        :return:
+        :return: 
         """
         m = n % self.class_order[conj]
         prime_factorization = []
@@ -76,17 +79,22 @@ class GroupCharacters:
         return chi[curr_class]
 
     def sym_power(self, chi, k):
+        """
+        Computes the character of the kth symmetric power of an action. 
+
+        :return: a dictionary whose keys are conjugacy classes and whose values are (sage?) numbers
+        """
         sym_power = {}
         for g in self.classes:
             sum = 0
             for partition in partition_tuple(k):
                 product = 1
                 for i in range(1, k+1):
-                    product *= (((self.eval_char(chi, g, i)) ** partition[i-1]) *
-                                (1 / ((math.factorial(partition[i-1])) * (i ** partition[i-1]))))
+                    product *= (((self.eval_char(chi, g, i)) ** partition[i]) *
+                                (1 / ((math.factorial(partition[i])) * (i ** partition[i]))))
                 sum += product
             sym_power[g] = sum
-
+        return(sym_power)
     def print_char(self):
         print(self.characters)
 
@@ -130,3 +138,15 @@ def partition_tuple(n):
         tuples.append(counts)
     return tuples
 
+"""
+# G = GroupCharacters( "PSU(3, 7)")
+G = GroupCharacters("Sz(8)")
+print(G.classes)
+print(G.power_maps["2a"])
+print(G.characters[1])
+print(G.eval_char(G.characters[1], "2a", 11))
+print(G.sym_power(G.characters[1], 3))
+
+#Sym_3 = G.sym_power(G.characters[0], 3)
+# Sym_3["2a"]
+"""
