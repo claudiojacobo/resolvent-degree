@@ -95,9 +95,48 @@ class GroupCharacters:
                 sum += product
             sym_power[g] = sum
         return(sym_power)
-    def print_char(self):
-        print(self.characters)
+    
 
+    def print_char(self):
+        for character in self.characters:
+            print(character)
+            print("")
+    
+    def the_game(self, chi):
+        """
+        Calculates a bound on G using chi and thereoms about nice G-varieties 
+        returns triple (bound, ran_out_of_molien, limited_by_subgroup) where the first entry is an integer
+        and the second and there are booleans indicating (2) wether or not we had enough molien series terms 
+        to finish our calculations and (3) wether we were limited by the size of our maximal subgroup or by
+        the product of the degrees of invariant polynomials.
+        
+        """
+        bound = self.inner_product(self.characters[0], chi) - 1 # CHECK IF THIS IS THE RIGHT WAY AROUND | Sets initial bound to dimension of the associated projective rep
+        degree_product = 1 
+        irr_poly = self.irr_poly(chi) # place holder while irr_poly function is being developed
+        ran_out_of_molien = True
+        limited_by_max_subgroup = None
+        
+        i = 1
+        # start at the first non zero entry in irr_poly
+        while irr_poly[i] == 0 and i < len(irr_poly):
+            i += 1
+
+        while i < len(irr_poly):
+            # if something > order(largest maximal subgroup):
+            #     limited_by_max_subgroup = True
+            #     break 
+            if degree_product * i > bound:
+                ran_out_of_molien = False
+                limited_by_max_subgroup = False
+                break
+            else:
+                bound += -1
+                degree_product *= i     
+                irr_poly[i] += -1
+                if irr_poly[i] == 0: # note to future self: MAKE SURE YOU CHECK THE FIRST TERM ISNT 0
+                    i += 1
+        return bound, ran_out_of_molien, limited_by_max_subgroup
 
 def primes_up_to(k):
     """
@@ -138,15 +177,15 @@ def partition_tuple(n):
         tuples.append(counts)
     return tuples
 
-"""
+
 # G = GroupCharacters( "PSU(3, 7)")
 G = GroupCharacters("Sz(8)")
-print(G.classes)
-print(G.power_maps["2a"])
-print(G.characters[1])
-print(G.eval_char(G.characters[1], "2a", 11))
+G.print_char()
+# print(G.classes)
+# print(G.power_maps["2a"])
+# print(G.characters[1])
+# print(G.eval_char(G.characters[1], "2a", 11))
 print(G.sym_power(G.characters[1], 3))
 
 #Sym_3 = G.sym_power(G.characters[0], 3)
 # Sym_3["2a"]
-"""
