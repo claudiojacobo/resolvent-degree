@@ -12,7 +12,7 @@ class GroupCharacters:
     primes = None
     power_maps = None
     characters = None
-
+    lmsg_order = None # order of largest maximal subgroup--we still need to import this 
     def __init__(self, group_name):
         # invoke GAP via libgap
         G = eval(f"libgap.{group_name}")
@@ -40,6 +40,12 @@ class GroupCharacters:
         # sort characters by degree
         ct = sorted(ct.Irr().sage(), key=lambda x:x[0])
         self.characters = [ { self.classes[i]:chi[i] for i in range(r) } for chi in ct]
+
+        # largest maximal subgroups computation--this is likely a bottleneck and could be simplified via fruits of lit review
+        lmsg_order = 0
+        for subgroup in G.MaximalSubgroups():
+            if subgroup.Size() > lmsg_order:
+                lmsg_order = subgroup.Size()
 
     def inner_product(self, f1, f2):
         """
@@ -107,7 +113,10 @@ class GroupCharacters:
             molien_coefs = []
             molien_coefs.append(self.inner_product(sym_pows[0], sym_pows[i]))
         return molien_coefs 
-        
+    def lmsg_prder(self):
+        # maximal_subgroups = G.
+        return None
+
     
 
     def print_char(self):
@@ -124,7 +133,7 @@ class GroupCharacters:
         the product of the degrees of invariant polynomials.
         
         """
-        bound = self.inner_product(self.characters[0], chi) - 1 # CHECK IF THIS IS THE RIGHT WAY AROUND | Sets initial bound to dimension of the associated projective rep
+        bound = chi[self.classes[0]] - 1 # CHECK IF THIS IS THE RIGHT WAY AROUND | Sets initial bound to dimension of the associated projective rep
         degree_product = 1 
         irr_poly = self.irr_poly(chi) # place holder while irr_poly function is being developed
         ran_out_of_molien = True
@@ -136,9 +145,9 @@ class GroupCharacters:
             i += 1
 
         while i < len(irr_poly):
-            # if something > order(largest maximal subgroup):
-            #     limited_by_max_subgroup = True
-            #     break 
+            if i >= self.lmsg_order:  # Check w/ Claudio that this is right. 
+                limited_by_max_subgroup = True
+                break 
             if degree_product * i > bound:
                 ran_out_of_molien = False
                 limited_by_max_subgroup = False
@@ -147,7 +156,7 @@ class GroupCharacters:
                 bound += -1
                 degree_product *= i     
                 irr_poly[i] += -1
-                if irr_poly[i] == 0: # note to future self: MAKE SURE YOU CHECK THE FIRST TERM ISNT 0
+                if irr_poly[i] == 0:
                     i += 1
         return bound, ran_out_of_molien, limited_by_max_subgroup    
 
@@ -194,12 +203,15 @@ def partition_tuple(n):
 
 # G = GroupCharacters( "PSU(3, 7)")
 G = GroupCharacters("Sz(8)")
-G.print_char()
+# G.print_char()
+# print(G.inner_product(G.characters[1], G.characters[1]))
 # print(G.classes)
 # print(G.power_maps["2a"])
 # print(G.characters[1])
 # print(G.eval_char(G.characters[1], "2a", 11))
-print(G.sym_power(G.characters[1], 3))
+# print(G.sym_power(G.characters[1], 3))
 
 #Sym_3 = G.sym_power(G.characters[0], 3)
 # Sym_3["2a"]
+
+
