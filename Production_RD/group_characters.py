@@ -111,7 +111,8 @@ class GroupCharacters:
             sym_pows.append(self.sym_power(chi,i))
         for i in k: 
             molien_coefs = []
-            molien_coefs.append(self.inner_product(sym_pows[0], sym_pows[i]))
+            molien_coefs.append(self.inner_product(G.CharacterTable()[0], sym_pows[i])) 
+            #maybe we call ct, not sure about naming
         return molien_coefs 
     def lmsg_prder(self):
         # maximal_subgroups = G.
