@@ -1,3 +1,6 @@
+import math
+
+
 class GroupCharacters:
     classes = None
     class_order = None
@@ -47,6 +50,47 @@ class GroupCharacters:
         """
         return sum([ chi[g]/self.centralizer_order[g] for g in self.classes ])
 
+    def eval_char(self, chi, conj, n):
+        """
+        Evaluates a specific character at a conjugacy class raised to the nth power.
+        :param chi: Relevant character dictionary
+        :param conj: conjugacy class of interest
+        :param n: Power we raise conj to
+        :return:
+        """
+        m = n % self.class_order[conj]
+        prime_factorization = []
+        i = 0
+        if m == 0:
+            return chi[self.classes[0]]
+        while i < len(self.primes):
+            if m % self.primes[i] == 0:
+                m = m / self.primes[i]
+                prime_factorization.append(self.primes[i])
+            else:
+                i += 1
+        curr_class = conj
+        for num in prime_factorization:
+            curr_class = self.power_maps[curr_class][num]
+
+        return chi[curr_class]
+
+    def sym_power(self, chi, k):
+        sym_power = {}
+        for g in self.classes:
+            sum = 0
+            for partition in partition_tuple(k):
+                product = 1
+                for i in range(1, k+1):
+                    product *= (((self.eval_char(chi, g, i)) ** partition[i-1]) *
+                                (1 / ((math.factorial(partition[i-1])) * (i ** partition[i-1]))))
+                sum += product
+            sym_power[g] = sum
+
+    def print_char(self):
+        print(self.characters)
+
+
 def primes_up_to(k):
     """
     returns an ascending list of all primes up through k
@@ -59,18 +103,20 @@ def primes_up_to(k):
             primes.append(i)
     return(primes)
 
+
 def partitions(n, k=1):
     """
     returns all partitions of n into pieces at least k big
     """
     result = []
-    if smallest <= n:
+    if k <= n: # changed smallest <= n to k <= n -- not sure if that's right
         result = [(n,)]
     for i in range(n//2,k-1,-1):
         result += [ p + (i,) for p in partitions(n-i,i)]
     return result
 
-def partition_tuples(n):
+
+def partition_tuple(n):
     """
     returns all partitions of n, where each partition p is encoded as a dictionary:
     p[k] is the multiplicity of k in the partition. For example, if p stands for the 
@@ -83,3 +129,4 @@ def partition_tuples(n):
             counts[i] += 1
         tuples.append(counts)
     return tuples
+
