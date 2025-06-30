@@ -101,6 +101,7 @@ class GroupCharacters:
                 sum += product
             sym_power[g] = sum
         return(sym_power)
+        
     def get_coef(self, chi, k): 
         '''
         first makes a list of dictionaries from symmetric power function and calculates
@@ -118,12 +119,13 @@ class GroupCharacters:
         # maximal_subgroups = G.
         return None
 
-    
-
-    def print_char(self):
+    def print_chars(self):
         for character in self.characters:
             print(character)
             print("")
+
+    def print_char(self, k):
+        print(self.characters[k])
     
     def the_game(self, chi):
         """
