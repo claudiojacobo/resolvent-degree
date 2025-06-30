@@ -108,7 +108,6 @@ class GroupCharacters:
             molien_coefs.append(self.inner_product(G.CharacterTable()[0], sym_pows[i])) 
             #maybe we call ct, not sure about naming
         return molien_coefs 
-        
     
 
     def print_char(self):
