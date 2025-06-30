@@ -46,7 +46,7 @@ class GroupCharacters:
         compute the inner product of two class functions (encoded as dictionaries with keys = classes)
         """
         return sum([ f1[g].conjugate()*f2[g]/self.centralizer_order[g] for g in self.classes ])
-
+ 
     def invariant_dimension(self, chi):
         """
         computes the dimension of G-invariants for the representation corresponding to chi
@@ -95,6 +95,19 @@ class GroupCharacters:
                 sum += product
             sym_power[g] = sum
         return(sym_power)
+    def get_coef(self, chi, k): 
+        '''
+        first makes a list of dictionaries from symmetric power function and calculates
+        the inner product..outputs a list of the coef where posiiton of the list 
+        corresponds to kth power'''
+        sym_pows = []
+        for i in k: 
+            sym_pows.append(self.sym_power(chi,i))
+        for i in k: 
+            molien_coefs = []
+            molien_coefs.append(self.inner_product(sym_pows[0], sym_pows[i]))
+        return molien_coefs 
+        
     
 
     def print_char(self):
@@ -136,7 +149,8 @@ class GroupCharacters:
                 irr_poly[i] += -1
                 if irr_poly[i] == 0: # note to future self: MAKE SURE YOU CHECK THE FIRST TERM ISNT 0
                     i += 1
-        return bound, ran_out_of_molien, limited_by_max_subgroup
+        return bound, ran_out_of_molien, limited_by_max_subgroup    
+
 
 def primes_up_to(k):
     """
