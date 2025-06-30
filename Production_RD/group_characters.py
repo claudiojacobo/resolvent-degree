@@ -101,11 +101,11 @@ class GroupCharacters:
         the inner product..outputs a list of the coef where posiiton of the list 
         corresponds to kth power'''
         sym_pows = []
-        for i in k: 
+        for i in range(0,k+1): # check for off by 1 errors abd what sym^0 is
             sym_pows.append(self.sym_power(chi,i))
-        for i in k: 
-            molien_coefs = []
-            molien_coefs.append(self.inner_product(G.CharacterTable()[0], sym_pows[i])) 
+        molien_coefs = []
+        for i in range(0,k+1): 
+            molien_coefs.append(self.inner_product(G.characters[0], sym_pows[i])) 
             #maybe we call ct, not sure about naming
         return molien_coefs 
         
@@ -195,12 +195,14 @@ def partition_tuple(n):
 
 # G = GroupCharacters( "PSU(3, 7)")
 G = GroupCharacters("Sz(8)")
-G.print_char()
+# G.print_char()
 # print(G.classes)
 # print(G.power_maps["2a"])
 # print(G.characters[1])
 # print(G.eval_char(G.characters[1], "2a", 11))
-print(G.sym_power(G.characters[1], 3))
+# print(G.sym_power(G.characters[1], 3))
+print(G.get_coef(G.characters[1],10))
+
 
 #Sym_3 = G.sym_power(G.characters[0], 3)
 # Sym_3["2a"]
