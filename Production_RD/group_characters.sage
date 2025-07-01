@@ -155,9 +155,10 @@ class GroupCharacters:
         """
         bound = chi[self.classes[0]] - 1 # CHECK IF THIS IS THE RIGHT WAY AROUND | Sets initial bound to dimension of the associated projective rep
         degree_product = 1 
-        irr_poly = self.irr_poly(chi) # place holder while irr_poly function is being developed
+        alg_indp_poly = self.alg_indp_poly(chi) # place holder while irr_poly function is being developed
         ran_out_of_molien = True
-        limited_by_action = None
+        limited_by_action = False
+        limited_by_variety = False
         
         i = 1
         # start at the first non zero entry in irr_poly
@@ -167,12 +168,15 @@ class GroupCharacters:
         while i < len(irr_poly):
             if degree_product * i >= self.minimal_perm:
                 limited_by_action = True
+                ran_out_of_molien = False
+                if RD(degree_product * i) > bound-1:
+                    limited_by_variety = True
                 break 
             
             # Stop when product of degrees is larger than bound
             if RD(degree_product * i) > bound-1:
                 ran_out_of_molien = False
-                limited_by_action = False
+                limited_by_variety = True
                 break
 
             else:
@@ -239,3 +243,12 @@ print(G.sym_power(G.characters[2], 3))
 
 # # print(G.get_coef(G.characters[1],10))
 print(G.molien_coeff(G.characters[1],11))
+
+"""
+To do: 
+calculate some RD stuff by hand
+do printy function
+do timing stuff 
+lit review group identifiers--how to calculate schur covers, etc.
+"""
+
