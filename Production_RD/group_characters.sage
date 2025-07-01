@@ -157,7 +157,7 @@ class GroupCharacters:
         degree_product = 1 
         irr_poly = self.irr_poly(chi) # place holder while irr_poly function is being developed
         ran_out_of_molien = True
-        limited_by_max_subgroup = None
+        limited_by_action = None
         
         i = 1
         # start at the first non zero entry in irr_poly
@@ -165,23 +165,23 @@ class GroupCharacters:
             i += 1
 
         while i < len(irr_poly):
-            if degree_product * i >= self.lmsg_order:  # Check w/ Claudio that this is right. 
-                limited_by_max_subgroup = True
+            if degree_product * i >= self.minimal_perm:
+                limited_by_action = True
                 break 
             
             # Stop when product of degrees is larger than bound
-            if RD(degree_product * i) > bound:
+            if RD(degree_product * i) > bound-1:
                 ran_out_of_molien = False
-                limited_by_max_subgroup = False
+                limited_by_action = False
                 break
 
             else:
-                bound += -1
+                bound -= 1
                 degree_product *= i     
-                irr_poly[i] += -1
+                irr_poly[i] -= 1
                 while irr_poly[i] == 0 and i < len(irr_poly):
                     i += 1
-        return bound, ran_out_of_molien, limited_by_max_subgroup 
+        return bound, ran_out_of_molien, limited_by_action 
     
 def primes_up_to(k):
     """
@@ -221,36 +221,5 @@ def partition_tuple(n):
         tuples.append(counts)
     return tuples
 
-
-
-
-G = GroupCharacters( "PSU(3, 7)")
-    # G = GroupCharacters("Sz(8)")
-# # G.print_char()
-# print(G.inner_product(G.characters[1], G.characters[1]))
-# print(G.classes)
-# print(G.power_maps["2a"])
-# print(G.characters[1])
-# print(G.eval_char(G.characters[1], "2a", 11))
-print(G.power_maps["4a"])
-print(G.characters[2])
-print(G.sym_power(G.characters[2], 3))
-
-# # print(G.get_coef(G.characters[1],10))
+G = GroupCharacters("PSU(3,4)")
 print(G.molien_coeff(G.characters[1],11))
-
-
-# def main(self): 
-#     G = GroupCharacters("Sz(8)")
-
-#     print("G", G)
-#     print("Power maps:\n", G.power_maps,"\n\n")
-#     print("Characters:\n", G.characters, "\n\n")
-#     print("Centralizer order:\n", G.centralizer_order, "\n\n")
-    
-#     print("Molient coefficients:\n",G.get_coef(chi, ) )
-# #molien series 
-
-#     #print molien series readable 
-
-
