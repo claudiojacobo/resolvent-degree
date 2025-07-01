@@ -115,9 +115,6 @@ class GroupCharacters:
             molien_coefs.append(self.inner_product(G.characters[0], sym_pows[i])) 
             #maybe we call ct, not sure about naming
         return molien_coefs 
-    def lmsg_prder(self):
-        # maximal_subgroups = G.
-        return None
 
     def print_chars(self):
         for character in self.characters:
@@ -148,13 +145,16 @@ class GroupCharacters:
             i += 1
 
         while i < len(irr_poly):
-            if i >= self.lmsg_order:  # Check w/ Claudio that this is right. 
+            if degree_product * i >= self.lmsg_order:  # Check w/ Claudio that this is right. 
                 limited_by_max_subgroup = True
                 break 
+            
+            # Stop when product of degrees is larger than bound
             if degree_product * i > bound:
                 ran_out_of_molien = False
                 limited_by_max_subgroup = False
                 break
+
             else:
                 bound += -1
                 degree_product *= i     
