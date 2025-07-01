@@ -41,7 +41,7 @@ class GroupCharacters:
         self.characters = [ { self.classes[i]:chi[i] for i in range(r) } for chi in ct]
 
         # this is likely a bottleneck
-        minimal_perm = G.MinimalFaithfulPermutationDegree()
+        self.minimal_perm = G.MinimalFaithfulPermutationDegree()
 
     def inner_product(self, f1, f2):
         """
@@ -224,7 +224,7 @@ def partition_tuple(n):
 
 
 
-G = GroupCharacters( "PSU(3, 7)")
+G = GroupCharacters( "Sz(8)")
     # G = GroupCharacters("Sz(8)")
 # # G.print_char()
 # print(G.inner_product(G.characters[1], G.characters[1]))
@@ -232,6 +232,7 @@ G = GroupCharacters( "PSU(3, 7)")
 # print(G.power_maps["2a"])
 # print(G.characters[1])
 # print(G.eval_char(G.characters[1], "2a", 11))
+print(G.minimal_perm)
 print(G.power_maps["4a"])
 print(G.characters[2])
 print(G.sym_power(G.characters[2], 3))
