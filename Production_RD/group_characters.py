@@ -161,9 +161,8 @@ class GroupCharacters:
                 irr_poly[i] += -1
                 if irr_poly[i] == 0:
                     i += 1
-        return bound, ran_out_of_molien, limited_by_max_subgroup    
-
-
+        return bound, ran_out_of_molien, limited_by_max_subgroup 
+    
 def primes_up_to(k):
     """
     returns an ascending list of all primes up through k
