@@ -114,7 +114,7 @@ class GroupCharacters:
 
     def power_class(self, g, k):
         """
-        Recursively omputes the conjugacy class of g^k using power map data
+        Recursively computes the conjugacy class of g^k using power map data
         """
         k = k % self.class_order[g]
         if k == 0:
