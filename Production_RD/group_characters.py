@@ -203,8 +203,11 @@ def partition_tuple(n):
     return tuples
 
 
-# G = GroupCharacters( "PSU(3, 7)")
-G = GroupCharacters("Sz(8)")
+
+
+
+G = GroupCharacters( "PSU(3, 7)")
+    # G = GroupCharacters("Sz(8)")
 # # G.print_char()
 # print(G.inner_product(G.characters[1], G.characters[1]))
 # print(G.classes)
@@ -212,10 +215,22 @@ G = GroupCharacters("Sz(8)")
 # print(G.characters[1])
 # print(G.eval_char(G.characters[1], "2a", 11))
 # # print(G.sym_power(G.characters[1], 3))
-print(G.get_coef(G.characters[1],10))
-
-
+# print(G.get_coef(G.characters[1],10))
 #Sym_3 = G.sym_power(G.characters[0], 3)
 # Sym_3["2a"]
+
+
+# def main(self): 
+#     G = GroupCharacters("Sz(8)")
+
+#     print("G", G)
+#     print("Power maps:\n", G.power_maps,"\n\n")
+#     print("Characters:\n", G.characters, "\n\n")
+#     print("Centralizer order:\n", G.centralizer_order, "\n\n")
+    
+#     print("Molient coefficients:\n",G.get_coef(chi, ) )
+# #molien series 
+
+#     #print molien series readable 
 
 
