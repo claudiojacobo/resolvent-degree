@@ -151,7 +151,6 @@ class GroupCharacters:
         and the second and there are booleans indicating (2) wether or not we had enough molien series terms 
         to finish our calculations and (3) wether we were limited by the size of our maximal subgroup or by
         the product of the degrees of invariant polynomials.
-        
         """
         bound = chi[self.classes[0]] - 1 # CHECK IF THIS IS THE RIGHT WAY AROUND | Sets initial bound to dimension of the associated projective rep
         degree_product = 1 
