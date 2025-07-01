@@ -200,6 +200,5 @@ G.print_char()
 # print(G.characters[1])
 # print(G.eval_char(G.characters[1], "2a", 11))
 print(G.sym_power(G.characters[1], 3))
-
 #Sym_3 = G.sym_power(G.characters[0], 3)
 # Sym_3["2a"]
