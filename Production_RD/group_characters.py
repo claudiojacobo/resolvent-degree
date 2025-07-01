@@ -3,7 +3,6 @@ from sage.all import libgap
 # print(libgap.SymmetricGroup(3).CharacterTable())
 # run this file via "sage -python group_chracters.py" in sage terminal
 
-
 class GroupCharacters:
     classes = None
     class_order = None
@@ -12,7 +11,8 @@ class GroupCharacters:
     primes = None
     power_maps = None
     characters = None
-    lmsg_order = None # order of largest maximal subgroup--we still need to import this 
+    minimal_perm = None # order of minimal permutation representation
+    
     def __init__(self, group_name):
         # invoke GAP via libgap
         G = eval(f"libgap.{group_name}")
@@ -41,11 +41,8 @@ class GroupCharacters:
         ct = sorted(ct.Irr().sage(), key=lambda x:x[0])
         self.characters = [ { self.classes[i]:chi[i] for i in range(r) } for chi in ct]
 
-        # largest maximal subgroups computation--this is likely a bottleneck and could be simplified via fruits of lit review
-        lmsg_order = 0
-        for subgroup in G.MaximalSubgroups():
-            if subgroup.Size() > lmsg_order:
-                lmsg_order = subgroup.Size()
+        # this is likely a bottleneck
+        minimal_perm = G.MinimalFaithfulPermutationDegree()
 
     def inner_product(self, f1, f2):
         """
@@ -115,9 +112,6 @@ class GroupCharacters:
             molien_coefs.append(self.inner_product(G.characters[0], sym_pows[i])) 
             #maybe we call ct, not sure about naming
         return molien_coefs 
-    def lmsg_prder(self):
-        # maximal_subgroups = G.
-        return None
 
     def print_chars(self):
         for character in self.characters:
@@ -188,7 +182,6 @@ def partitions(n, k=1):
         result += [ p + (i,) for p in partitions(n-i,i)]
     return result
 
-
 def partition_tuple(n):
     """
     returns all partitions of n, where each partition p is encoded as a dictionary:
@@ -202,7 +195,6 @@ def partition_tuple(n):
             counts[i] += 1
         tuples.append(counts)
     return tuples
-
 
 # G = GroupCharacters( "PSU(3, 7)")
 G = GroupCharacters("Sz(8)")
