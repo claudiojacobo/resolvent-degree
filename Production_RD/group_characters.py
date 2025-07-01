@@ -1,8 +1,5 @@
 import math
 from sage.all import libgap
-# print(libgap.SymmetricGroup(3).CharacterTable())
-# run this file via "sage -python group_chracters.py" in sage terminal
-
 
 class GroupCharacters:
     classes = None
@@ -12,7 +9,8 @@ class GroupCharacters:
     primes = None
     power_maps = None
     characters = None
-    lmsg_order = None # order of largest maximal subgroup--we still need to import this 
+    minimal_perm = None
+    
     def __init__(self, group_name):
         # invoke GAP via libgap
         G = eval(f"libgap.{group_name}")
@@ -41,11 +39,8 @@ class GroupCharacters:
         ct = sorted(ct.Irr().sage(), key=lambda x:x[0])
         self.characters = [ { self.classes[i]:chi[i] for i in range(r) } for chi in ct]
 
-        # largest maximal subgroups computation--this is likely a bottleneck and could be simplified via fruits of lit review
-        lmsg_order = 0
-        for subgroup in G.MaximalSubgroups():
-            if subgroup.Size() > lmsg_order:
-                lmsg_order = subgroup.Size()
+        # this is likely a bottleneck
+        minimal_perm = G.MinimalFaithfulPermutationDegree()
 
     def inner_product(self, f1, f2):
         """
@@ -115,9 +110,30 @@ class GroupCharacters:
             molien_coefs.append(self.inner_product(G.characters[0], sym_pows[i])) 
             #maybe we call ct, not sure about naming
         return molien_coefs 
-    def lmsg_prder(self):
-        # maximal_subgroups = G.
-        return None
+
+    def power_class(self, g, k):
+        """
+        Recursively omputes the conjugacy class of g^k using power map data
+        """
+        k = k % self.class_order[g]
+        if k == 0:
+            return self.classes[0]
+        elif k == 1:
+            return g
+        for p in self.primes:
+            if k%p == 0:
+                return self.power_class(self.power_maps[g][p],k//p)
+
+    def molien_coeff(self, chi, k): 
+        """
+        Returns the first k coefficients of the Molien series for chi
+        """
+        sym = [{ g:1 for g in self.classes }, chi]
+        for i in range(2,k):
+            sym.append({})
+            for g in self.classes:
+                sym[i][g] = sum([ sym[i-1-j][g] * chi[self.power_class(g,j+1)] for j in range(i)])/i
+        return [ G.invariant_dimension(char) for char in sym ]
 
     def print_chars(self):
         for character in self.characters:
@@ -148,13 +164,16 @@ class GroupCharacters:
             i += 1
 
         while i < len(irr_poly):
-            if i >= self.lmsg_order:  # Check w/ Claudio that this is right. 
+            if degree_product * i >= self.lmsg_order:  # Check w/ Claudio that this is right. 
                 limited_by_max_subgroup = True
                 break 
+            
+            # Stop when product of degrees is larger than bound
             if degree_product * i > bound:
                 ran_out_of_molien = False
                 limited_by_max_subgroup = False
                 break
+
             else:
                 bound += -1
                 degree_product *= i     
@@ -187,7 +206,6 @@ def partitions(n, k=1):
         result += [ p + (i,) for p in partitions(n-i,i)]
     return result
 
-
 def partition_tuple(n):
     """
     returns all partitions of n, where each partition p is encoded as a dictionary:
@@ -205,7 +223,6 @@ def partition_tuple(n):
 
 
 
-
 G = GroupCharacters( "PSU(3, 7)")
     # G = GroupCharacters("Sz(8)")
 # # G.print_char()
@@ -216,8 +233,7 @@ G = GroupCharacters( "PSU(3, 7)")
 # print(G.eval_char(G.characters[1], "2a", 11))
 # # print(G.sym_power(G.characters[1], 3))
 # print(G.get_coef(G.characters[1],10))
-#Sym_3 = G.sym_power(G.characters[0], 3)
-# Sym_3["2a"]
+print(G.molien_coeff(G.characters[1],11))
 
 
 # def main(self): 
