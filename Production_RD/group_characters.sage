@@ -41,7 +41,7 @@ class GroupCharacters:
         self.characters = [ { self.classes[i]:chi[i] for i in range(r) } for chi in ct]
 
         # this is likely a bottleneck
-        minimal_perm = G.MinimalFaithfulPermutationDegree()
+        self.minimal_perm = G.MinimalFaithfulPermutationDegree()
 
     def inner_product(self, f1, f2):
         """
