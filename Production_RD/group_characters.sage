@@ -186,8 +186,8 @@ class GroupCharacters:
                 while irr_poly[i] == 0 and i < len(irr_poly):
                     i += 1
         return bound, limited_by_action, limited_by_variety, ran_out_of_molien 
-    
->>>>>>> 1dcd3429a853acde95ac798a10cbb9873c66fad8:Production_RD/group_characters.sage
+#>>>>>>> 1dcd3429a853acde95ac798a10cbb9873c66fad8:Production_RD/group_characters.sage
+#not sure what ^^ is, but have it as a bookmark in case we need it. 
 def primes_up_to(k):
     """
     returns an ascending list of all primes up through k
@@ -227,9 +227,7 @@ def partition_tuple(n):
     return tuples
 
 
-<<<<<<< HEAD:Production_RD/group_characters.py
 # G = GroupCharacters( "PSU(3, 7)")
-=======
 
 G = GroupCharacters( "MathieuGroup(11)")
 for character in G.characters:
@@ -255,4 +253,16 @@ do printy function
 do timing stuff 
 lit review group identifiers--how to calculate schur covers, etc.
 """
->>>>>>> 1dcd3429a853acde95ac798a10cbb9873c66fad8:Production_RD/group_characters.sage
+
+def display(group_name, char_index, molien_deg): 
+    print("----------RD info for", group_name,"----------\n")
+    G = GroupCharacters(group_name)
+    print("---Conjugacy classes of", group_name, "---\n", G.classes)
+    print("----------Power maps---------- \n", G.power_maps)
+    print("Power maps \n", G.classes)
+    for c in range(char_index):
+        chi = G.characters[c]
+        print("----------Molien coef for character #", c, "up to", molien_deg, "th degree----------\n")
+        mcoefs = G.get_coef(chi, molien_deg)
+        print(mcoefs)
+display("PSU(2,13)", 6, 6) 
