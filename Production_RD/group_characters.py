@@ -107,7 +107,7 @@ class GroupCharacters:
             sym_pows.append(self.sym_power(chi,i))
         molien_coefs = []
         for i in range(0,k+1): 
-            molien_coefs.append(self.inner_product(G.characters[0], sym_pows[i])) 
+            molien_coefs.append(self.inner_product(self.characters[0], sym_pows[i])) 
             #maybe we call ct, not sure about naming
         return molien_coefs 
 
@@ -181,7 +181,6 @@ class GroupCharacters:
                 if irr_poly[i] == 0:
                     i += 1
         return bound, ran_out_of_molien, limited_by_max_subgroup 
-    
 def primes_up_to(k):
     """
     returns an ascending list of all primes up through k
@@ -221,9 +220,7 @@ def partition_tuple(n):
     return tuples
 
 
-
-
-G = GroupCharacters( "PSU(3, 7)")
+# G = GroupCharacters( "PSU(3, 7)")
     # G = GroupCharacters("Sz(8)")
 # # G.print_char()
 # print(G.inner_product(G.characters[1], G.characters[1]))
@@ -233,7 +230,7 @@ G = GroupCharacters( "PSU(3, 7)")
 # print(G.eval_char(G.characters[1], "2a", 11))
 # # print(G.sym_power(G.characters[1], 3))
 # print(G.get_coef(G.characters[1],10))
-print(G.molien_coeff(G.characters[1],11))
+# print(G.molien_coeff(G.characters[1],11))
 
 
 # def main(self): 
@@ -248,5 +245,16 @@ print(G.molien_coeff(G.characters[1],11))
 # #molien series 
 
 #     #print molien series readable 
+def display(group_name, char_index, molien_deg): 
+    print("RD info for:", group_name,"\n\n")
+    G = GroupCharacters(group_name)
+    chi = G.characters[char_index]
+    print("Conjugacy classes of", group_name, "\n", G.classes)
+    print("Power maps \n", )
+     #not totally sure how to do this part 
+    print("Molein coef for", chi, "up to", molien_deg, "th degree\n")
+    mcoefs = G.get_coef(chi, molien_deg)
+    print(mcoefs)
+display("Sz(8)", 3, 6) 
 
 
