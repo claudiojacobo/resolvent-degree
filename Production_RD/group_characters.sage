@@ -1,7 +1,7 @@
 import math
 from sage.all import libgap # is this necessary? 
 import time
-from rd_of_n import RD
+load("helper_functions.sage")
 
 class GroupCharacters:
     classes = None
@@ -155,17 +155,17 @@ class GroupCharacters:
         """
         bound = chi[self.classes[0]] - 1 # CHECK IF THIS IS THE RIGHT WAY AROUND | Sets initial bound to dimension of the associated projective rep
         degree_product = 1 
-        alg_indp_poly = self.alg_indp_poly(chi) # place holder while this function is being developed
+        alg_indp_poly = generators_from_molien(self.molien_coeff(chi, 10)) # place holder while this function is being developed
         ran_out_of_molien = True
         limited_by_action = False
         limited_by_variety = False
         
         i = 1
-        # start at the first non zero entry in irr_poly
-        while irr_poly[i] == 0 and i < len(irr_poly):
+        # start at the first non zero entry in alg_indp_poly
+        while alg_indp_poly[i] == 0 and i < len(alg_indp_poly):
             i += 1
 
-        while i < len(irr_poly):
+        while i < len(alg_indp_poly):
             if degree_product * i >= self.minimal_perm:
                 limited_by_action = True
                 ran_out_of_molien = False
@@ -182,57 +182,20 @@ class GroupCharacters:
             else:
                 bound -= 1
                 degree_product *= i     
-                irr_poly[i] -= 1
-                while irr_poly[i] == 0 and i < len(irr_poly):
+                alg_indp_poly[i] -= 1
+                while alg_indp_poly[i] == 0 and i < len(alg_indp_poly):
                     i += 1
-        return bound, limited_by_action, limited_by_variety, ran_out_of_molien 
-#>>>>>>> 1dcd3429a853acde95ac798a10cbb9873c66fad8:Production_RD/group_characters.sage
-#not sure what ^^ is, but have it as a bookmark in case we need it. 
-def primes_up_to(k):
-    """
-    returns an ascending list of all primes up through k
-    """
-    primes = [2]
-    for i in range(3,k):
-        for p in primes:
-            if i%p == 0: break
-        else:
-            primes.append(i)
-    return(primes)
+        return bound, limited_by_action, limited_by_variety, ran_out_of_molien     
 
-
-def partitions(n, k=1):
-    """
-    returns all partitions of n into pieces at least k big
-    """
-    result = []
-    if k <= n: # changed smallest <= n to k <= n -- not sure if that's right
-        result = [(n,)]
-    for i in range(n//2,k-1,-1):
-        result += [ p + (i,) for p in partitions(n-i,i)]
-    return result
-
-def partition_tuple(n):
-    """
-    returns all partitions of n, where each partition p is encoded as a dictionary:
-    p[k] is the multiplicity of k in the partition. For example, if p stands for the 
-    partition 4+3+3+2 of 12, we have p[4]=1, p[3]=2, p[2]=1, and p[i]=0 otherwise.
-    """
-    tuples = []
-    for partition in partitions(n):
-        counts = { i+1:0 for i in range(n) }
-        for i in partition:
-            counts[i] += 1
-        tuples.append(counts)
-    return tuples
-
-
-# G = GroupCharacters( "PSU(3, 7)")
-
-G = GroupCharacters( "MathieuGroup(11)")
-for character in G.characters:
-    print(G.molien_coeff(character, 15), character["1a"])
+"""
+G = GroupCharacters( "Sz(8)")
 print(G.minimal_perm)
+molien_coeff = G.molien_coeff(G.characters[1], 15)
+print(generators_from_molien(molien_coeff))
+print(molien_coeff)
+print(G.the_game(G.characters[1]))
+"""
+
 """
 G = GroupCharacters( "PSU(3, 4)")
 t0 = time.time()
