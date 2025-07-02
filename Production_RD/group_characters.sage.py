@@ -273,6 +273,3 @@ def display(group_name, char_index, molien_deg):
         print(mcoefs)
 display("PSU(2,13)", _sage_const_6 , _sage_const_6 ) 
 
-#G = GroupCharacters(“PSU(3,4)”)
-#G.display() # this might write out the centralizer orders, the power maps, the conjugacy classes, and the known characters, in the way that GAP does
-
