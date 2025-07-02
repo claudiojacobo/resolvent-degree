@@ -187,45 +187,4 @@ class GroupCharacters:
                     i += 1
         return bound, limited_by_action, limited_by_variety, ran_out_of_molien     
 
-"""
-G = GroupCharacters( "Sz(8)")
-print(G.minimal_perm)
-molien_coeff = G.molien_coeff(G.characters[1], 15)
-print(generators_from_molien(molien_coeff))
-print(molien_coeff)
-print(G.the_game(G.characters[1]))
-"""
-
-"""
-G = GroupCharacters( "PSU(3, 4)")
-t0 = time.time()
-r1 = G.get_coef(G.characters[4],12)
-t1 = time.time()
-r2 = G.molien_coeff(G.characters[4],12)
-t2 = time.time()
-print(f"get_coef took {t1 - t0}ms to run")
-print(f"molien_coeff took {t2 - t1}ms to run")
-print(r1)
-print(r2)
-"""
-
-"""
-To do: 
-calculate some RD stuff by hand
-do printy function
-do timing stuff 
-lit review group identifiers--how to calculate schur covers, etc.
-"""
-
-def display(group_name, char_index, molien_deg): 
-    print("----------RD info for", group_name,"----------\n")
-    G = GroupCharacters(group_name)
-    print("---Conjugacy classes of", group_name, "---\n", G.classes)
-    print("----------Power maps---------- \n", G.power_maps)
-    print("Power maps \n", G.classes)
-    for c in range(char_index):
-        chi = G.characters[c]
-        print("----------Molien coef for character #", c, "up to", molien_deg, "th degree----------\n")
-        mcoefs = G.get_coef(chi, molien_deg)
-        print(mcoefs)
 display("PSU(2,13)", 6, 6) 

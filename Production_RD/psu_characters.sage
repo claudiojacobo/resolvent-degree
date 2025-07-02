@@ -1,5 +1,5 @@
-from group_characters import GroupCharacters
-class SuzukiCharacters(GroupCharacters): # ChildClass inherits from ParentClass
+load("group_characters.sage")
+class PSU_Characters(GroupCharacters): 
         def __init__(self, q):
             ct = libgap.CharacterTable("Suzuki", q)
             self.classes = libgap.ClassNames(ct).sage()
