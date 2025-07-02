@@ -216,3 +216,16 @@ do printy function
 do timing stuff 
 lit review group identifiers--how to calculate schur covers, etc.
 """
+
+def display(group_name, char_index, molien_deg): 
+    print("----------RD info for", group_name,"----------\n")
+    G = GroupCharacters(group_name)
+    print("---Conjugacy classes of", group_name, "---\n", G.classes)
+    print("----------Power maps---------- \n", G.power_maps)
+    print("Power maps \n", G.classes)
+    for c in range(char_index):
+        chi = G.characters[c]
+        print("----------Molien coef for character #", c, "up to", molien_deg, "th degree----------\n")
+        mcoefs = G.get_coef(chi, molien_deg)
+        print(mcoefs)
+display("PSU(2,13)", 6, 6) 
