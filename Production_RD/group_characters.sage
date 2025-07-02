@@ -187,7 +187,5 @@ class GroupCharacters:
                     i += 1
         return bound, limited_by_action, limited_by_variety, ran_out_of_molien     
 
-display("PSU(2,13)", 6, 6) 
-
 #G = GroupCharacters(“PSU(3,4)”)
 #G.display() # this might write out the centralizer orders, the power maps, the conjugacy classes, and the known characters, in the way that GAP does
