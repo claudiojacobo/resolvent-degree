@@ -1,6 +1,6 @@
 import math
 from sage.all import libgap
-from Resolvent_Degree_Polynomial import RD
+from rd_of_n.py import RD
 
 class GroupCharacters:
     classes = None
