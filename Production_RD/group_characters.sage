@@ -186,4 +186,3 @@ class GroupCharacters:
                 while alg_indp_poly[i] == 0 and i < len(alg_indp_poly):
                     i += 1
         return bound, limited_by_action, limited_by_variety, ran_out_of_molien     
-

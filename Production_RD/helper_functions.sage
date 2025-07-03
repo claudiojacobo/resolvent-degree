@@ -1,3 +1,5 @@
+from sage.all import gap
+import numpy as np
 def primes_up_to(k):
     """
     returns an ascending list of all primes up through k
@@ -99,16 +101,24 @@ def RD(n):
         if n >= G[m]:
             return n-m
     return 1
+def power_map_table(power_maps)
+    power_tbl = np.zeros(len(primes)), len(classes)
 
-def display(group_name, char_index, molien_deg): 
+
+def display(group_name, char_index, molien_deg):
+    G = GroupCharacters(group_name) 
     print("----------RD info for", group_name,"----------\n")
-    G = GroupCharacters(group_name)
-    print("---Conjugacy classes of", group_name, "---\n", G.classes)
-    print("----------Power maps---------- \n", G.power_maps)
+    print("Centralizer orders:", G.centralizer_order)
+    print("Conjugacy classes of", group_name, ":\n", G.classes)
+    print("Power maps:\n", G.power_maps) # or return power map table 
+
     print("Power maps \n", G.classes)
+    print("Characters: \n", G.CharacterTable)
     for c in range(char_index):
         chi = G.characters[c]
         print("----------Molien coef for character #", c, "up to", molien_deg, "th degree----------\n")
         mcoefs = G.get_coef(chi, molien_deg)
         print(mcoefs)
+display("PSU(3,4)", 6,10)
+
 
