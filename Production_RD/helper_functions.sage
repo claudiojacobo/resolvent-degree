@@ -1,5 +1,4 @@
 from sage.all import gap
-import numpy as np
 def primes_up_to(k):
     """
     returns an ascending list of all primes up through k
@@ -111,11 +110,11 @@ for power in powers
 
 
 def display(group_name, char_index, molien_deg):
-    print("----------RD info for", group_name,"----------\n")
+    print("---------- RD info for", group_name,"----------\n")
     G = GroupCharacters(group_name)
     print("Conjugacy classes of", group_name, ":\n", G.classes)
     print("Centralizer orders:", G.centralizer_order)
-    print("Power maps:\n", G.power_maps) # or return power map table 
+    print("Power maps:\n", G.power_maps) # or return power map table idk how to do this and make it not look super ugly
    # print("Power maps \n", G.classes)
     print("Characters: \n", G.characters)
     for c in range(char_index):
