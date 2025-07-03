@@ -106,12 +106,11 @@ def power_map_table(power_maps)
 
 
 def display(group_name, char_index, molien_deg):
-    G = GroupCharacters(group_name) 
     print("----------RD info for", group_name,"----------\n")
+    G = GroupCharacters(group_name)
     print("Centralizer orders:", G.centralizer_order)
     print("Conjugacy classes of", group_name, ":\n", G.classes)
     print("Power maps:\n", G.power_maps) # or return power map table 
-
     print("Power maps \n", G.classes)
     print("Characters: \n", G.CharacterTable)
     for c in range(char_index):
@@ -119,6 +118,6 @@ def display(group_name, char_index, molien_deg):
         print("----------Molien coef for character #", c, "up to", molien_deg, "th degree----------\n")
         mcoefs = G.get_coef(chi, molien_deg)
         print(mcoefs)
-display("PSU(3,4)", 6,10)
+
 
 
