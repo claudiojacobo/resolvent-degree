@@ -6,13 +6,9 @@ class PSU_Characters(GroupCharacters):
             if gcd(n,q+1) != 1:
                 tup = self.get_schur_cover(n,q)
                 G = eval(f"libgap.PerfectGroup({tup[0]}, {tup[1]})")
-                print(type(G))
             else:
                 G = eval(f"libgap.PSU({n}, {q})")
-                print(type(G))
             ct = G.CharacterTable() # We can add a custom generic character table from our lit. rev. if neccessary
-            print(type(ct))
-            print(ct)
             self.classes = libgap.ClassNames(ct).sage()
             r = len(self.classes)
 
