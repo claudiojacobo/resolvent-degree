@@ -43,4 +43,37 @@ class PSU_Characters(GroupCharacters):
                 self.minimal_perm = (q^n -(-1)^n) * (q^(n-1) - (-1)^(n-1))/(q^2 - 1) # from https://arxiv.org/pdf/1301.5166
                 
         def get_schur_cover(self):
+
+# Initialize GAP through Sage
+gap = Gap()
+
+# Load packages
+gap.eval('LoadPackage("atlasrep");')
+gap.eval('LoadPackage("perfectgroups");')
+
+# Define target group - use local variable assignment
+gap.eval("G := PSU(2,8);")
+gap.eval('target := G;')
+
+# Set parameters
+gap.eval("size := Size(G);")
+gap.eval("mlist := AbelianInvariantsMultiplier(G);")
+gap.eval('N := size * Product(mlist) ;')
+gap.eval('num := NumberPerfectGroups(N);')
+gap.eval('found := false;')
+
+# Search through groups
+for i in range(1, int(gap.eval('num')) + 1):
+    gap.eval(f'G := PerfectGroup(N, {i});')
+    gap.eval('H := Center(G);')
+    gap.eval('Q := G/H;')
+    if gap.eval('IsomorphismGroups(Q, target) <> fail;') == 'true':
+        print("Found group: PerfectGroup(", gap.eval("N"), i)
+        print("Structure:", gap.eval('StructureDescription(G);'))
+        print("Order:", gap.eval('Size(G);'))
+        print("Center order:", gap.eval('Size(H);'))
+        print("Quotient is PSU(2,8): True")
+        break
+else:
+    print("No suitable group found.")
             
