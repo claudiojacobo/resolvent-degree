@@ -1,7 +1,7 @@
 load("group_characters.sage")
 class PSU_Characters(GroupCharacters): 
         def __init__(self, n, q):
-            ct = libgap.CharacterTable("Suzuki", q)
+            # ct = libgap.CharacterTable("Suzuki", q)
             self.classes = libgap.ClassNames(ct).sage()
             r = len(self.classes)
 
@@ -27,4 +27,12 @@ class PSU_Characters(GroupCharacters):
             self.characters = [ { self.classes[i]:chi[i] for i in range(r) } for chi in ct]
 
             # this is likely a bottleneck
-            self.minimal_perm = q ** 2 + 1 # from https://arxiv.org/pdf/1301.5166
+            if n == 3: 
+                if q == 5:
+                    self.minimal_perm = 50
+                else:
+                    self.minimal_perm = q^3 + 1
+            if n == 4:
+                self.minimal_perm = (q+1)(q^3 + 1)
+            elif q != 2:
+                self.minimal_perm = (q^n -(-1)^n)(q^(n-1) - (-1)^(n-1))/(q^2 - 1) # from https://arxiv.org/pdf/1301.5166

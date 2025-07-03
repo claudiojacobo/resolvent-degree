@@ -15,8 +15,8 @@ class GroupCharacters:
     
     def __init__(self, group_name):
         # invoke GAP via libgap
-        G = eval(f"libgap.{group_name}")
-        ct = G.CharacterTable()
+        group = eval(f"libgap.{group_name}")
+        ct = group.CharacterTable()
         self.classes = libgap.ClassNames(ct).sage()
         r = len(self.classes)
 
@@ -42,7 +42,7 @@ class GroupCharacters:
         self.characters = [ { self.classes[i]:chi[i] for i in range(r) } for chi in ct]
 
         # this is likely a bottleneck
-        self.minimal_perm = G.MinimalFaithfulPermutationDegree()
+        self.minimal_perm = group.MinimalFaithfulPermutationDegree()
 
     def inner_product(self, f1, f2):
         """
@@ -135,7 +135,7 @@ class GroupCharacters:
             sym.append({})
             for g in self.classes:
                 sym[i][g] = sum([ sym[i-1-j][g] * chi[self.power_class(g,j+1)] for j in range(i)])/i
-        return [ G.invariant_dimension(char) for char in sym ]
+        return [ self.invariant_dimension(char) for char in sym ]
 
     def print_chars(self):
         for character in self.characters:
