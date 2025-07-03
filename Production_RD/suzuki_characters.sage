@@ -1,6 +1,7 @@
 load("group_characters.sage")
 class Suzuki_Characters(GroupCharacters): 
         def __init__(self, q):
+            self.name = f"Suzuki({q})"
             ct = libgap.CharacterTable("Suzuki", q)
             self.classes = libgap.ClassNames(ct).sage()
             r = len(self.classes)
