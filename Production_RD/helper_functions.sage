@@ -101,8 +101,8 @@ def RD(n):
         if n >= G[m]:
             return n-m
     return 1
-def power_map_table(power_maps)
-    power_tbl = np.zeros(len(primes)), len(classes)
+#def power_map_table(power_maps)
+    #power_tbl = np.zeros(len(primes)), len(classes)
 
 
 def display(group_name, char_index, molien_deg):
