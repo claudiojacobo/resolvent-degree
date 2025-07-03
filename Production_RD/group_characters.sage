@@ -16,6 +16,7 @@ class GroupCharacters:
     
     def __init__(self, group_name):
         # invoke GAP via libgap
+        self.name = group_name
         group = eval(f"libgap.{group_name}")
         ct = group.CharacterTable()
         self.classes = libgap.ClassNames(ct).sage()
@@ -48,25 +49,29 @@ class GroupCharacters:
     def display(self, decimal=False):
         print(f"----------- Character data for {self.name} ------------")
         
-        print("Conjugacy classes:\n", end="\t")
+        print("\nConjugacy classes:\n\n", end="\t")
         for g in self.classes:
             print(g,end = "\t")
 
-        print("Centralizers:\n", end="\t")
+        print("\n\nCentralizers:\n\n", end="\t")
         for g in self.classes:
             print(self.centralizer_order[g],end = "\t")
 
-        print("Power maps:")
+        print("\n\nPower maps:")
         for p in self.primes:
-            print(p, end="\t")
+            print(f"\n{p}", end="\t")
             for g in self.classes:
                 print(self.power_map[g][p],end = "\t")
 
-        print("Characters:")
+        print("\n\nCharacters:")
         for i, chi in enumerate(self.characters):
-            print(f"χ{i}:", end="\t")
+            print(f"\nχ{i}:", end="\t")
             for g in self.classes:
-                print(chi[g],end = "\t")
+                if decimal:
+                    print(f"{complex(chi[g]):.3f}",end = "\t")
+                else:
+                    print(chi[g],end = "\t")
+        print("\n")
 
     def inner_product(self, f1, f2):
         """
