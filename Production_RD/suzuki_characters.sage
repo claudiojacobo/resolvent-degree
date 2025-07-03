@@ -17,10 +17,10 @@ class Suzuki_Characters(GroupCharacters):
             # load necessary power maps
             largest_order = max(orders)
             self.primes = primes_up_to(largest_order)
-            self.power_maps = { g:{} for g in self.classes }
+            self.power_map = { g:{} for g in self.classes }
             for p in self.primes:
                 for i in range(len(self.classes)):
-                    self.power_maps[self.classes[i]][p] = self.classes[ct.PowerMap(p).sage()[i]-1]
+                    self.power_map[self.classes[i]][p] = self.classes[ct.PowerMap(p).sage()[i]-1]
 
             # sort characters by degree
             ct = sorted(ct.Irr().sage(), key=lambda x:x[0])
