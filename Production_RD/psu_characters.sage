@@ -1,13 +1,18 @@
 load("group_characters.sage")
 class PSU_Characters(GroupCharacters): 
         def __init__(self, n, q):
-            # ct = libgap.CharacterTable("Suzuki", q)
+            # Get schur cover
+            if gcd(n,q+1) != 1:
+                G = self.get_schur_cover()
+            else:
+                G = eval(f"libgap.PSU({n}, {q})")
+                ct = G.CharacterTable() # We can add a custom generic character table from our lit. rev. if neccessary
             self.classes = libgap.ClassNames(ct).sage()
             r = len(self.classes)
 
             # parse orders of each conjugacy class representative
             orders = ct.OrdersClassRepresentatives().sage()
-            self.class_order = { self.classes[i]:orders[i] for i in range(r) }
+            self.class_order = { self.classes[i]:orders[i] for i in range(r)}
 
             # parse centralizer orders
             centralizers = ct.SizesCentralizers().sage()
@@ -34,5 +39,8 @@ class PSU_Characters(GroupCharacters):
                     self.minimal_perm = q^3 + 1
             if n == 4:
                 self.minimal_perm = (q+1)(q^3 + 1)
-            elif q != 2:
-                self.minimal_perm = (q^n -(-1)^n)(q^(n-1) - (-1)^(n-1))/(q^2 - 1) # from https://arxiv.org/pdf/1301.5166
+            elif q != 2: # Let's just avoid the q = 2 case for now
+                self.minimal_perm = (q^n -(-1)^n) * (q^(n-1) - (-1)^(n-1))/(q^2 - 1) # from https://arxiv.org/pdf/1301.5166
+                
+        def get_schur_cover(self):
+            

@@ -49,7 +49,7 @@ class GroupCharacters:
 
         # this is likely a bottleneck
         self.minimal_perm = G.MinimalFaithfulPermutationDegree()
-
+        
     def inner_product(self, f1, f2):
         """
         compute the inner product of two class functions (encoded as dictionaries with keys = classes)

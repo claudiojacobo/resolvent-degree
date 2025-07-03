@@ -11,4 +11,5 @@ def get_PSU_order(n,q):
         k *= q ** (i + 1) - ((-1) ** (i + 1))
     return k * (q ** ((1/2) * n * (n+1))) * (1/(math.gcd(n+1, q+1)))
 
-print(get_PSU_order(3, 4))
+print(get_PSU_order(2, 7))
+    
