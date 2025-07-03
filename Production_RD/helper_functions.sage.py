@@ -113,8 +113,8 @@ def display(group_name, char_index, molien_deg):
     print("Centralizer order:", G.centralizer_order)
     print("Conjugacy classes of", group_name, ":\n", G.classes)
     print("Power maps:\n", G.power_maps)
-    print("Power maps \n", G.classes)
-    print("Characters: \n", G.CharacterTable())
+    print("Conjugacy classes:\n", G.classes)
+    print("Characters: \n", G.CharacterTable)
     for c in range(char_index):
         chi = G.characters[c]
         print("----------Molien coef for character #", c, "up to", molien_deg, "th degree----------\n")
