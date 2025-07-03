@@ -120,7 +120,7 @@ def display(group_name, char_index, molien_deg):
         print("----------Molien coef for character #", c, "up to", molien_deg, "th degree----------\n")
         mcoefs = G.get_coef(chi, molien_deg)
         print(mcoefs)
-display("PSU(3,4)", _sage_const_6 ,_sage_const_10 )
+# display("PSU(3,4)", _sage_const_6 ,_sage_const_10 )
 import math
 
 def get_PSU_order(n,q):
