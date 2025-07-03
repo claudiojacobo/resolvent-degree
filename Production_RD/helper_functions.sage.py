@@ -113,7 +113,7 @@ def display(group_name, char_index, molien_deg):
     print("Centralizer order:", G.centralizer_order)
     print("Conjugacy classes of", group_name, ":\n", G.classes)
     print("Power maps:\n", G.power_maps)
-    print("Power maps \n", G.classes)
+    print("Conjugacy classes:\n", G.classes)
     print("Characters: \n", G.CharacterTable)
     for c in range(char_index):
         chi = G.characters[c]
