@@ -4,17 +4,19 @@ import time
 load("helper_functions.sage")
 
 class GroupCharacters:
-    classes = None
-    class_order = None
-    centralizer_order = None
-    group_order = None
-    primes = None
-    power_maps = None
-    characters = None
-    minimal_perm = None
+    name = None # string
+    classes = None # list of strings
+    class_order = None # dictionary string->int
+    centralizer_order = None # dictionary string->int
+    group_order = None # int
+    primes = None # list of ints
+    power_maps = None # dictionary string->dictionary (int->string)
+    characters = None # list of dictionaries string->algebraic number
+    minimal_perm = None # int
     
     def __init__(self, group_name):
         # invoke GAP via libgap
+        self.name = group_name
         group = eval(f"libgap.{group_name}")
         ct = group.CharacterTable()
         self.classes = libgap.ClassNames(ct).sage()
@@ -32,10 +34,10 @@ class GroupCharacters:
         # load necessary power maps
         largest_order = max(orders)
         self.primes = primes_up_to(largest_order)
-        self.power_maps = { g:{} for g in self.classes }
+        self.power_map = { g:{} for g in self.classes }
         for p in self.primes:
             for i in range(len(self.classes)):
-                self.power_maps[self.classes[i]][p] = self.classes[ct.PowerMap(p).sage()[i]-1]
+                self.power_map[self.classes[i]][p] = self.classes[ct.PowerMap(p).sage()[i]-1]
 
         # sort characters by degree
         ct = sorted(ct.Irr().sage(), key=lambda x:x[0])
@@ -43,6 +45,33 @@ class GroupCharacters:
 
         # this is likely a bottleneck
         self.minimal_perm = group.MinimalFaithfulPermutationDegree()
+
+    def display(self, decimal=False):
+        print(f"----------- Character data for {self.name} ------------")
+        
+        print("\nConjugacy classes:\n\n", end="\t")
+        for g in self.classes:
+            print(g,end = "\t")
+
+        print("\n\nCentralizers:\n\n", end="\t")
+        for g in self.classes:
+            print(self.centralizer_order[g],end = "\t")
+
+        print("\n\nPower maps:")
+        for p in self.primes:
+            print(f"\n{p}", end="\t")
+            for g in self.classes:
+                print(self.power_map[g][p],end = "\t")
+
+        print("\n\nCharacters:")
+        for i, chi in enumerate(self.characters):
+            print(f"\nχ{i}:", end="\t")
+            for g in self.classes:
+                if decimal:
+                    print(f"{complex(chi[g]):.3f}",end = "\t")
+                else:
+                    print(chi[g],end = "\t")
+        print("\n")
 
     def inner_product(self, f1, f2):
         """
@@ -77,7 +106,7 @@ class GroupCharacters:
                 i += 1
         curr_class = conj
         for num in prime_factorization:
-            curr_class = self.power_maps[curr_class][num]
+            curr_class = self.power_map[curr_class][num]
 
         return chi[curr_class]
 
@@ -124,7 +153,7 @@ class GroupCharacters:
             return g
         for p in self.primes:
             if k%p == 0:
-                return self.power_class(self.power_maps[g][p],k//p)
+                return self.power_class(self.power_map[g][p],k//p)
 
     def molien_coeff(self, chi, k): 
         """
