@@ -5,5 +5,5 @@ load("group_characters.sage")
 load("suzuki_characters.sage")
 
 display("PSU(2,13)", 6, 6) 
-G = Suzuki_Characters(32)
-print(G.the_game(G.characters[1]))
+# G = Suzuki_Characters(128)
+# print(G.the_game(G.characters[1]))
