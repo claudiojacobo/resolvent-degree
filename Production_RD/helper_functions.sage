@@ -103,26 +103,6 @@ def RD(n):
     return 1
 #def power_map_table(power_maps)
     #power_tbl = np.zeros(len(primes)), len(classes)
-'''
-for cls in class_names 
-
-for power in powers 
-'''
-
-
-def display(group_name, char_index, molien_deg):
-    print("---------- RD info for", group_name,"----------\n")
-    G = GroupCharacters(group_name)
-    print("Conjugacy classes of", group_name, ":\n", G.classes)
-    print("Centralizer orders:", G.centralizer_order)
-    print("Power maps:\n", G.power_maps) # or return power map table idk how to do this and make it not look super ugly
-   # print("Power maps \n", G.classes)
-    print("Characters: \n", G.characters)
-    for c in range(char_index):
-        chi = G.characters[c]
-        print("----------Molien coef for character #", c, "up to", molien_deg, "th degree----------\n")
-        mcoefs = G.get_coef(chi, molien_deg)
-        print(mcoefs)
 
 def get_PSU_order(n,q):
     """
