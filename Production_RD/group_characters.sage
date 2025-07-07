@@ -174,20 +174,21 @@ class GroupCharacters:
     def print_char(self, k):
         print(self.characters[k])
     
-    def the_game(self, chi):
+    def the_game(self, chi, n):
         """
-        Calculates a bound on G using chi and thereoms about nice G-varieties 
+        Calculates a bound on G using chi and theorems about nice G-varieties 
         returns triple (bound, ran_out_of_molien, limited_by_subgroup) where the first entry is an integer
         and the second and there are booleans indicating (2) wether or not we had enough molien series terms 
         to finish our calculations and (3) wether we were limited by the size of our maximal subgroup or by
         the product of the degrees of invariant polynomials.
         """
-        bound = chi[self.classes[0]] - 1 # CHECK IF THIS IS THE RIGHT WAY AROUND | Sets initial bound to dimension of the associated projective rep
+        bound = chi[self.classes[0]] - 1 # sets initial bound to dimension of the associated projective rep
         degree_product = 1 
-        alg_indp_poly = generators_from_molien(self.molien_coeff(chi, 8)) # place holder while this function is being developed
+        alg_indp_poly = generators_from_molien(self.molien_coeff(chi, n))
         ran_out_of_molien = True
         limited_by_action = False
-        limited_by_variety = False
+        limited_by_versality = False
+
         i = 1
         # start at the first non zero entry in alg_indp_poly
         while i < len(alg_indp_poly) and alg_indp_poly[i] == 0:
@@ -198,19 +199,19 @@ class GroupCharacters:
                 limited_by_action = True
                 ran_out_of_molien = False
                 if RD(degree_product * i) > bound-1:
-                    limited_by_variety = True
+                    limited_by_versality = True
                 break 
             
             # Stop when product of degrees is larger than bound
             if RD(degree_product * i) > bound-1:
                 ran_out_of_molien = False
-                limited_by_variety = True
+                limited_by_versality = True
                 break
 
-            else:
-                bound -= 1
-                degree_product *= i     
-                alg_indp_poly[i] -= 1
-                while alg_indp_poly[i] == 0 and i < len(alg_indp_poly):
-                    i += 1
-        return bound, limited_by_action, limited_by_variety, ran_out_of_molien     
+            bound -= 1
+            degree_product *= i     
+            alg_indp_poly[i] -= 1
+            while alg_indp_poly[i] == 0 and i < len(alg_indp_poly):
+                i += 1
+
+        return bound, limited_by_action, limited_by_versality, ran_out_of_molien     
