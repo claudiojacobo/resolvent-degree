@@ -194,11 +194,12 @@ class GroupCharacters:
         ran_out_of_molien = True
         limited_by_action = False
         limited_by_variety = False
-        
+        print(alg_indp_poly)
         i = _sage_const_1 
         # start at the first non zero entry in alg_indp_poly
         while alg_indp_poly[i] == _sage_const_0  and i < len(alg_indp_poly):
             i += _sage_const_1 
+            print(i)
 
         while i < len(alg_indp_poly):
             if degree_product * i >= self.minimal_perm:

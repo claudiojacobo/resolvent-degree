@@ -34,7 +34,7 @@ class PSU_Characters(GroupCharacters):
             ct = sorted(ct.Irr().sage(), key=lambda x:x[0])
             self.characters = [ { self.classes[i]:chi[i] for i in range(r) } for chi in ct]
 
-            # this is likely a bottleneck
+            # Calculate minimal perm group
             if n == 3: 
                 if q == 5:
                     self.minimal_perm = 50
@@ -64,7 +64,8 @@ class PSU_Characters(GroupCharacters):
             gap.eval('N := size * SchurM ;')
             gap.eval('num := NumberPerfectGroups(N);')
             gap.eval('found := false;')
-
+            if gap.eval('num') == "fail":
+                raise Exception("size of Schur cover was too large")
             # Search through groups
             for i in range(1, int(gap.eval('num')) + 1):
                 gap.eval(f'G := PerfectGroup(N, {i});')
@@ -74,5 +75,3 @@ class PSU_Characters(GroupCharacters):
                     return (int(gap.eval("N")), i)
                 else:
                     raise Exception("No suitable group found.")
-                    
-                        

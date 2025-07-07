@@ -14,7 +14,7 @@ class PSU_Characters(GroupCharacters):
                 G = eval(f"libgap.PerfectGroup({tup[_sage_const_0 ]}, {tup[_sage_const_1 ]})")
             else:
                 G = eval(f"libgap.PSU({n}, {q})")
-            self.name = f"PSU({n}, {q})"
+            self.name = f"PSU({n},      {q})"
             ct = G.CharacterTable() # We can add a custom generic character table from our lit. rev. if neccessary
             self.classes = libgap.ClassNames(ct).sage()
             r = len(self.classes)
@@ -40,7 +40,7 @@ class PSU_Characters(GroupCharacters):
             ct = sorted(ct.Irr().sage(), key=lambda x:x[_sage_const_0 ])
             self.characters = [ { self.classes[i]:chi[i] for i in range(r) } for chi in ct]
 
-            # this is likely a bottleneck
+            # Calculate minimal perm group
             if n == _sage_const_3 : 
                 if q == _sage_const_5 :
                     self.minimal_perm = _sage_const_50 
@@ -70,7 +70,8 @@ class PSU_Characters(GroupCharacters):
             gap.eval('N := size * SchurM ;')
             gap.eval('num := NumberPerfectGroups(N);')
             gap.eval('found := false;')
-
+            if gap.eval('num') == "fail":
+                raise Exception("size of Schur cover was too large")
             # Search through groups
             for i in range(_sage_const_1 , int(gap.eval('num')) + _sage_const_1 ):
                 gap.eval(f'G := PerfectGroup(N, {i});')
@@ -80,6 +81,6 @@ class PSU_Characters(GroupCharacters):
                     return (int(gap.eval("N")), i)
                 else:
                     raise Exception("No suitable group found.")
-                    
-                        
+
+PSU_Characters(_sage_const_4 ,_sage_const_3 )
 

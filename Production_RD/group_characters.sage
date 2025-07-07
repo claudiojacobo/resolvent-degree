@@ -184,14 +184,13 @@ class GroupCharacters:
         """
         bound = chi[self.classes[0]] - 1 # CHECK IF THIS IS THE RIGHT WAY AROUND | Sets initial bound to dimension of the associated projective rep
         degree_product = 1 
-        alg_indp_poly = generators_from_molien(self.molien_coeff(chi, 10)) # place holder while this function is being developed
+        alg_indp_poly = generators_from_molien(self.molien_coeff(chi, 8)) # place holder while this function is being developed
         ran_out_of_molien = True
         limited_by_action = False
         limited_by_variety = False
-        
         i = 1
         # start at the first non zero entry in alg_indp_poly
-        while alg_indp_poly[i] == 0 and i < len(alg_indp_poly):
+        while i < len(alg_indp_poly) and alg_indp_poly[i] == 0:
             i += 1
 
         while i < len(alg_indp_poly):
@@ -215,6 +214,3 @@ class GroupCharacters:
                 while alg_indp_poly[i] == 0 and i < len(alg_indp_poly):
                     i += 1
         return bound, limited_by_action, limited_by_variety, ran_out_of_molien     
-
-    def get_schur_cover(self):
-        return
