@@ -188,6 +188,8 @@ class GroupCharacters:
         ran_out_of_molien = True
         limited_by_action = False
         limited_by_versality = False
+        beat_by_perm = False
+        invariants = []
 
         i = 1
         # start at the first non zero entry in alg_indp_poly
@@ -209,9 +211,25 @@ class GroupCharacters:
                 break
 
             bound -= 1
-            degree_product *= i     
+            degree_product *= i
+            invariants.append(int(i))
             alg_indp_poly[i] -= 1
             while alg_indp_poly[i] == 0 and i < len(alg_indp_poly):
                 i += 1
 
-        return bound, limited_by_action, limited_by_versality, ran_out_of_molien     
+        if RD(self.minimal_perm) <= bound:
+            bound = RD(self.minimal_perm)
+            beat_by_perm = True
+
+        output = {"group":self.name, "rep-degree":int(chi[self.classes[0]]), "bound":int(bound), "invariants":tuple(invariants), "limitation":[], "notes":""}
+        if limited_by_action:
+            output["limitation"].append("generic-freeness")
+        if limited_by_versality:
+            output["limitation"].append("versality-degree")
+        if beat_by_perm:
+            output["limitation"].append("permutation-rep")
+        if ran_out_of_molien:
+            output["limitation"].append("insufficient-invariants")
+            print("We ran out of Molien terms before the game ended!")
+
+        return output
