@@ -221,7 +221,14 @@ class GroupCharacters:
             bound = RD(self.minimal_perm)
             beat_by_perm = True
 
-        output = {"group":self.name, "rep-degree":int(chi[self.classes[0]]), "bound":int(bound), "invariants":tuple(invariants), "limitation":[], "notes":""}
+        output = {
+            "group":self.name, 
+            "rep-degree":int(chi[self.classes[0]]), 
+            "bound":int(bound), 
+            "invariants":tuple(invariants), 
+            "limitation":[], 
+            "notes":""
+        }
         if limited_by_action:
             output["limitation"].append("generic-freeness")
         if limited_by_versality:
