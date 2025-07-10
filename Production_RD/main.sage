@@ -64,9 +64,10 @@ def run_with_time(q):
 
     with open("RD-bounds.json", "a") as f: 
         f.write(json.dumps(result) + "\n")
-seen = check_previous_runs()
+
 
 for q in [3]: 
+    seen = check_previous_runs()
     if q in seen: 
         print(f"We already ran q = {q} silly") 
     else: 
