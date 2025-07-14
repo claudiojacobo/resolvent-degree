@@ -1,4 +1,7 @@
 from math import gcd
+import statistics
+import time
+
 load("group_characters.sage")
 class GroupCharactersPSU3(GroupCharacters):
     q = 1
@@ -13,6 +16,11 @@ class GroupCharactersPSU3(GroupCharacters):
     power_map = {}
     characters = []
     minimal_perm = 0
+    tp = 0
+    rp = 0 
+    r = 0
+    s = 0
+    t = 0
 
     def __init__(self, prime, exp):
 
@@ -28,6 +36,11 @@ class GroupCharactersPSU3(GroupCharacters):
         t = q**2-q+1
         rp = r//d
         tp = t//d
+        self.tp = tp
+        self.rp = rp
+        self.s = s
+        self.r = r
+        self.t = t
         self.group_order = q**3*r**2*s*tp
         self.exp = exp
 
@@ -72,9 +85,11 @@ class GroupCharactersPSU3(GroupCharacters):
                 if m == 0:
                     m = r
                 if l < m:
+                    
                     c = f"C_6^{{{k},{l},{m}}}"
                     self.classes.append(c)
                     self.centralizer_order[c] = rp*r
+                    """
                     # there is definitely a better way to do this (Pablo's formula?)
                     # (and we need to know it) but this works for now
                     n = 1
@@ -87,6 +102,10 @@ class GroupCharactersPSU3(GroupCharacters):
                         if cn[2] == "1":
                             self.class_order[c] = n
                             break
+                    """
+                    # This was taking a while so I've replaced it with a maybe incorrect formula
+                    self.class_order[c] = int(r / gcd(k,l,m,r))
+                    
 
         for k in range(1,rp*s):
             if k*s == 0:
@@ -112,25 +131,27 @@ class GroupCharactersPSU3(GroupCharacters):
 
         ### compute power maps
         # this is NOT a good way to do it, but it'll do (for known powers) for now
+        start_pm_time = time.time()
         for g in self.classes:
-            if int(g[2]) not in [3,7,8]: # we need to figure these cases out!
-                self.power_map[g] = {}
-                for p in self.primes:
-                    self.power_map[g][p] = self.power_of(g,p)
-
+            self.power_map[g] = {}
+            for p in self.primes:
+                self.power_map[g][p] = self.power_of(g,p)
+        print(f"Power Map took {time.time() - start_pm_time}")
         ### implement characters of degree qs and t
         # Generates character table data for Chi_qs and Chi_t^(u)
+        start_char_time = time.time()
         UCF = UniversalCyclotomicField() 
         eps = UCF.gen(r) # epsilon as an rth root of unity
         self.characters = [{}]
-
+        for j in range(rp):
+            self.characters.append({})
         for g in self.classes:
             i = int(g[2]) 
             k,l,m = 0,0,0 
             if i in [3,4,5,7,8]:
                 k = int(g[4:])
             elif i == 6:
-                k,l,m = map(int,g[5:-1].split(',')
+                k,l,m = map(int,g[5:-1].split(','))
             if i == 1: 
                 self.characters[0][g] = q * s 
             elif i == 2: 
@@ -158,7 +179,7 @@ class GroupCharactersPSU3(GroupCharacters):
                 elif i == 4: 
                     self.characters[u][g] = -s * eps^(3 * u * k) + eps^(-6 * u * k)  
                 elif i == 5: 
-                    self.characers[u][g] = eps^(3 * u * k) + eps^(-6 * u * k) 
+                    self.characters[u][g] = eps^(3 * u * k) + eps^(-6 * u * k) 
                 elif i == 6 : 
                     if g[-1] == "'": 
                         self.characters[u][g] = 3
@@ -168,7 +189,8 @@ class GroupCharactersPSU3(GroupCharacters):
                     self.characters[u][g] = eps^(3 * u * k) 
                 elif i == 8: 
                     self.characters[u][g] = 0 
-            return self.characters #end of check for our 2 chars 
+        print(f"Characters took {time.time() - start_char_time}")
+            # return self.characters #end of check for our 2 chars 
 
 
         if self.q == 5:
@@ -180,11 +202,11 @@ class GroupCharactersPSU3(GroupCharacters):
         """
         computes the conjugacy class of g^n
         """
-
         q = self.q
         d = self.d
         s = q - 1
         r = (q + 1) // d
+        tp = self.tp
         p = self.characteristic
         i = int(g[2])
 
@@ -206,18 +228,18 @@ class GroupCharactersPSU3(GroupCharacters):
                 return "C_1"
             return "C_2"
         elif i == 3:
-            if self.prime == 2:
+            if self.characteristic == 2:
                 if n%4 == 0:
                     return "C_1"
                 elif n%2 == 2:
                     return "C_2"
                 else:
-                    return g # Claudio what do I put here
+                    return g 
             else:
-                if n%self.prime == 0:
+                if n%self.characteristic == 0:
                     return "C_1"
                 else:
-                    return g # Claudio what do I put here
+                    return g 
         elif i == 4:
             e = (n*k) % ((q+1)//d)
             if e == 0:
@@ -241,7 +263,7 @@ class GroupCharactersPSU3(GroupCharacters):
                 return self.power_of(f"C_4^1", l)
             return f"C_6^{{{k},{l},{m}}}"
         elif i == 7:
-           if k*n % (s*r) == 0:
+            if k*n % (s*r) == 0:
                 return "C_1"
             elif k*n % s == 0:
                 return f"C_4^{(statistics.mode([s*k*n % (s*r), k*n % (s*r), (-q*k*n) % (s*r)])// s)}"
@@ -267,12 +289,11 @@ def primes_up_to(k):
             primes.append(i)
     return(primes)
 
-import time
 start = time.time()
 
-g = GroupCharactersPSU3(3, 5)
-print(g.power_of("C_7^3",3))
+g = GroupCharactersPSU3(2, 6)
+print(g.power_of("C_7^3",5))
 
 end = time.time()
 
-print(f"Elapsed time: {end - start:.4f} seconds")
+print(f"Elapsed time: {end - start:.4f} seconds")   
