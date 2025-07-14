@@ -10,7 +10,7 @@ class GroupCharacters:
     centralizer_order = None # dictionary string->int
     group_order = None # int
     primes = None # list of ints
-    power_maps = None # dictionary string->dictionary (int->string)
+    power_map = None # dictionary string->dictionary (int->string)
     characters = None # list of dictionaries string->algebraic number
     minimal_perm = None # int
     
