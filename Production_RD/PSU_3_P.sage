@@ -119,7 +119,56 @@ class GroupCharactersPSU3(GroupCharacters):
                     self.power_map[g][p] = self.power_of(g,p)
 
         ### implement characters of degree qs and t
-        # SOMEONE DO THIS!
+        # Generates character table data for Chi_qs and Chi_t^(u)
+        UCF = UniversalCyclotomicField() 
+        eps = UCF.gen(r) # epsilon as an rth root of unity
+        self.characters = [{}]
+
+        for g in self.classes:
+            i = int(g[2]) 
+            k,l,m = 0,0,0 
+            if i in [3,4,5,7,8]:
+                k = int(g[4:])
+            elif i == 6:
+                k,l,m = map(int,g[5:-1].split(',')
+            if i == 1: 
+                self.characters[0][g] = q * s 
+            elif i == 2: 
+                self.characters[0][g] = -q
+            elif i == 3: 
+                self.characters[0][g] = 0 
+            elif i == 4: 
+                self.characters[0][g] = -s
+            elif i == 5: 
+                self.characters[0][g] = 1 
+            elif i == 6: 
+                self.characters[0][g] = 2
+            elif i == 7: 
+                self.characters[0][g] = 0
+            elif i == 8: 
+                self.characters[0][g] = -1
+
+            for u in range(1,rp):
+                if i == 1: 
+                    self.characters[u][g] = t 
+                elif i == 2: 
+                    self.characters[u][g] = -s 
+                elif i == 3: 
+                    self.characters[u][g] = 1
+                elif i == 4: 
+                    self.characters[u][g] = -s * eps^(3 * u * k) + eps^(-6 * u * k)  
+                elif i == 5: 
+                    self.characers[u][g] = eps^(3 * u * k) + eps^(-6 * u * k) 
+                elif i == 6 : 
+                    if g[-1] == "'": 
+                        self.characters[u][g] = 3
+                    else: 
+                        self.characters[u][g] = eps^(3 * u * k) + eps^(3 * u * l) + eps^(3 * u * m) 
+                elif i == 7: 
+                    self.characters[u][g] = eps^(3 * u * k) 
+                elif i == 8: 
+                    self.characters[u][g] = 0 
+            return self.characters #end of check for our 2 chars 
 
 
         if self.q == 5:
