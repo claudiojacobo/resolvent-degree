@@ -93,7 +93,7 @@ class GroupCharactersPSU3(GroupCharacters):
                 continue
             c = f"C_7^{k}" 
             self.classes.append(c)
-            ### PUT IN CLASS ORDER
+            self.class_order[c] = rp*s // gcd(k, rp*s)
             self.centralizer_order[c] = rp*s
 
         for k in range(1,tp):
@@ -184,6 +184,8 @@ class GroupCharactersPSU3(GroupCharacters):
 
         q = self.q
         d = self.d
+        s = q - 1
+        r = (q + 1) // d
         p = self.characteristic
         i = int(g[2])
 
@@ -240,9 +242,19 @@ class GroupCharactersPSU3(GroupCharacters):
                 return self.power_of(f"C_4^1", l)
             return f"C_6^{{{k},{l},{m}}}"
         elif i == 7:
-            return "CARMEN, WHAT DO WE DO???"
+           if k*n % (s*r) == 0:
+                return "C_1"
+            elif k*n % s == 0:
+                return f"C_4^{(statistics.mode([s*k*n % (s*r), k*n % (s*r), (-q*k*n) % (s*r)])// s)}"
+            y = k*n % (s*r)
+            y = min(y, abs(-q*y))
+            return f"C_7^{y}"
         elif i == 8:
-            return "ELLA, DO YOU HAVE THOUGHTS?"
+            if k*n % tp == 0:
+                return "C_1"
+            w = k*n % tp
+            w = min(w, abs(w*(-q) % tp), abs(w*q*q % tp))
+            return f"C_8^{w}"
 
 def primes_up_to(k):
     """
@@ -255,3 +267,13 @@ def primes_up_to(k):
         else:
             primes.append(i)
     return(primes)
+
+import time
+start = time.time()
+
+g = GroupCharactersPSU3(3, 5)
+print(g.power_of("C_7^3",3))
+
+end = time.time()
+
+print(f"Elapsed time: {end - start:.4f} seconds")
