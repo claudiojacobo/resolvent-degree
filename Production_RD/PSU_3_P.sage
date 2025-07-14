@@ -131,6 +131,7 @@ class GroupCharactersPSU3(GroupCharacters):
                 k = int(g[4:])
             elif i == 6:
                 k,l,m = map(int,g[5:-1].split(',')
+
             if i == 1: 
                 self.characters[0][g] = q * s 
             elif i == 2: 
@@ -168,7 +169,7 @@ class GroupCharactersPSU3(GroupCharacters):
                     self.characters[u][g] = eps^(3 * u * k) 
                 elif i == 8: 
                     self.characters[u][g] = 0 
-            return self.characters #end of check for our 2 chars 
+            return self.characters  
 
 
         if self.q == 5:
