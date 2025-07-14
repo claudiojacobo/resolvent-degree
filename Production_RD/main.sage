@@ -15,14 +15,14 @@ def save_output(data):
     with open("RD-bounds.json", "a") as f:
         f.write(json.dumps(data) + "\n")
 
-'''
-previous in case we don't like new version
+
+# in case we don't like new version
 for q in [2]:
     G = GroupCharacters(f"PSU(3, {q})")
     result = G.the_game(G.characters[1],10)
     save_output(result)
-'''
 
+'''
 def check_previous_runs(): 
     # retrieve a list of the q's we have in .json by checking string
     seen = set()
@@ -76,6 +76,5 @@ for q in [3]:
         result_info = G.display(decimal=False)
         run_with_time(q) 
         #save_output(result)
-
-
+'''
         
