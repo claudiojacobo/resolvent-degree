@@ -51,36 +51,37 @@ this doesnt work yet mb
 
 def run_with_time(q): 
     g_name = f"PSU(3, {q})" 
-    results = {"group": g_name} 
-
     try: 
         start_time = time.time()
-        G = GroupCharacters(group_name)
+        G = GroupCharacters(g_name)
         output = G.the_game(G.characters[_sage_const_1 ], _sage_const_10 ) 
         result.update(output) 
-        result["Status"] = "Success!" 
+        result["status"] = "Success!" 
     except MemoryError: 
         result["status"] = "Ran out of memory"
     except Exception as e: 
         result["status"] = "Failed" 
         result["notes"] = f"{e}" 
     end_time = time.time()
-    result["approx_run_length"] = round (end_time - start_time, _sage_const_2 ) 
+    result["approx_run_length"] = round(end_time - start_time, _sage_const_2 ) 
     result["time"] = datetime.now().isoformat()
 
     with open("RD-bounds.json", "a") as f: 
         f.write(json.dumps(result) + "\n")
-seen = check_previous_runs()
+
 
 for q in [_sage_const_3 ]: 
+    seen = check_previous_runs()
     if q in seen: 
         print(f"We already ran q = {q} silly") 
     else: 
         print(f"Now running q = {q}, hold please!")
+
         G = GroupCharacters(f"PSU(3, {q})")
         result = G.the_game(G.characters[_sage_const_1 ],_sage_const_10 )
-        #run_with_time(q) 
-        save_output(result)
+        result_info = G.display(decimal=False)
+        run_with_time(q) 
+        #save_output(result)
 
 
         

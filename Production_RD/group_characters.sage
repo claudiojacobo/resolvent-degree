@@ -227,7 +227,7 @@ class GroupCharacters:
             "bound":int(bound), 
             "invariants":tuple(invariants), 
             "limitation":[], 
-            "notes":""
+            "notes":"",
         }
         if limited_by_action:
             output["limitation"].append("generic-freeness")
