@@ -291,9 +291,9 @@ def primes_up_to(k):
 
 start = time.time()
 
-g = GroupCharactersPSU3(2, 6)
-print(g.power_of("C_7^3",5))
+g = GroupCharactersPSU3(2, 5)
+print(g.power_of("C_7^1",5))
 
 end = time.time()
-
+print(g.the_game(g.characters[1], 10))
 print(f"Elapsed time: {end - start:.4f} seconds")   
