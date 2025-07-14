@@ -6,3 +6,4 @@ Note: if looking at results and adding notes, make sure that your cursor is at t
 {"group": "PSU(3, 7)", "rep-degree": 42, "bound": 39, "invariants": [4, 6], "limitation": ["versality-degree"], "notes": ""}
 {"group": "PSU(3, 8)", "rep-degree": 56, "bound": 53, "invariants": [4, 4], "limitation": ["versality-degree"], "notes": ""}
 {"group": "PSU(3, 9)", "rep-degree": 72, "bound": 69, "invariants": [4, 6], "limitation": ["versality-degree"], "notes": "Wow, it ran!"}
+{"group": "PSU(3, 3)", "rep-degree": 6, "bound": 4, "invariants": [6], "limitation": ["generic-freeness", "versality-degree"], "notes": ""}
