@@ -1,5 +1,6 @@
 """
 Note: if looking at results and adding notes, make sure that your cursor is at the end of the last line before running main again
+(previous run did not add a new line)
 """
 {"group": "PSU(3, 4)", "rep-degree": 12, "bound": 10, "invariants": [4], "limitation": ["versality-degree"], "notes": ""}
 {"group": "PSU(3, 5)", "rep-degree": 20, "bound": 17, "invariants": [4, 4], "limitation": ["generic-freeness", "versality-degree"], "notes": ""}
