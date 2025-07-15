@@ -46,10 +46,6 @@ def generator_combinations(generators, degree, limit=None):
     degree i as part of the sum. Example usage: generator_combinations([1,3,1],3) returns a
     list of the 13 products of f0, f1, f2, and g (deg(fi) = 1 and deg(g) = 2) of degree 3.
     """
-    print(generators, degree)
-    if generators != []:
-        print(type(generators[-1]))
-        print(generators[-1])
     # initial function call
     if limit == None: 
         limit = (len(generators),generators[-1]-1)
@@ -74,7 +70,6 @@ def generator_combinations(generators, degree, limit=None):
 # [1,1,2,3,4,5,7,8]
 
 def generators_from_molien(molien_terms):
-
     # initialize generators with first non-zero element in molien terms
     generators = [1]
     for e in molien_terms[1:]:

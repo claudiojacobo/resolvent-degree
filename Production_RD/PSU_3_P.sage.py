@@ -264,6 +264,8 @@ class GroupCharactersPSU3(GroupCharacters):
                 return "C_1"
             elif k*n % ((q+_sage_const_1 )//d) == _sage_const_0 :
                 return "C_2"
+            elif n % p == _sage_const_0 :
+                return f"C_4^{n * k % rp}" # added 7/15--might not  work
             return f"C_5^{k*n % ((q+_sage_const_1 )//d)}"
         elif i == _sage_const_6 :
             # Logic for C_6'
@@ -314,16 +316,15 @@ def primes_up_to(k):
 
 start = time.time()
 
-G = GroupCharactersPSU3(_sage_const_5 , _sage_const_1 )
-end = time.time()
-print(G.classes)
-print(len(G.classes))
 
-load("psu_characters.sage")
-H = GroupCharacters("PSU(3, 5)")
-print(len(H.classes))
-# H.display()
-# G.display()
+
+
+G = GroupCharactersPSU3(_sage_const_5 , _sage_const_2 )
+print(G.the_game(G.characters[_sage_const_0 ], _sage_const_10 ))
 print(G.the_game(G.characters[_sage_const_1 ], _sage_const_10 ))
+G = GroupCharactersPSU3(_sage_const_2 , _sage_const_6 )
+print(G.the_game(G.characters[_sage_const_0 ], _sage_const_10 ))
+print(G.the_game(G.characters[_sage_const_1 ], _sage_const_10 ))
+end = time.time()
 print(f"Elapsed time: {end - start:.4f} seconds")   
 

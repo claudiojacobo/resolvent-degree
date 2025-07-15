@@ -53,6 +53,9 @@ def generator_combinations(generators, degree, limit=None):
     list of the 13 products of f0, f1, f2, and g (deg(fi) = 1 and deg(g) = 2) of degree 3.
     """
     print(generators, degree)
+    if generators != []:
+        print(type(generators[-_sage_const_1 ]))
+        print(generators[-_sage_const_1 ])
     # initial function call
     if limit == None: 
         limit = (len(generators),generators[-_sage_const_1 ]-_sage_const_1 )
@@ -62,15 +65,19 @@ def generator_combinations(generators, degree, limit=None):
     for i in range(_sage_const_1 ,len(generators)):
         if degree < i:
             break
-        for j in range(int(generators[i])):
+        if str(generators[i]) == '49/10':
+            print(f"generators are: {generators}")
+        for j in range(int(str(generators[i]))): ### FIX THIS int(str()) is evil 
             # only allow weakly decreasing combinations to avoid duplicates
             if (i,j) > limit: break
 
             if degree == i: # base case
                 combinations.append(((i,j),))
+                print(f"2! {generators})"
             else: # inductive step
                 for c in generator_combinations(generators[:i+_sage_const_1 ],degree-i,(i,j),):
                     combinations.append(((i,j),) + c)
+                print(f"3! {generators}")
 
     return combinations
 
