@@ -238,7 +238,7 @@ class GroupCharactersPSU3(GroupCharacters):
             if self.characteristic == 2:
                 if n%4 == 0:
                     return "C_1"
-                elif n%2 == 2:
+                elif n%2 == 0:
                     return "C_2"
                 else:
                     return g 
@@ -254,7 +254,7 @@ class GroupCharactersPSU3(GroupCharacters):
             else:
                 return f"C_4^{e}"
         elif i == 5:
-            if k*n % ((q+1)*p//d) == 0:
+            if k*n % ((q+1)//d) == 0 and n%p == 0 :
                 return "C_1"
             elif k*n % ((q+1)//d) == 0:
                 return "C_2"
@@ -313,11 +313,12 @@ start = time.time()
 
 
 
-G = GroupCharactersPSU3(5, 2)
-print(G.the_game(G.characters[0], 10))
-print(G.the_game(G.characters[1], 10))
-G = GroupCharactersPSU3(2, 6)
-print(G.the_game(G.characters[0], 10))
-print(G.the_game(G.characters[1], 10))
+
+ξ = GroupCharactersPSU3(3, 2)
+ξ.display()
+print(ξ.the_game(ξ.characters[0], 10))
+# H = GroupCharacters("PSU(3, 8)")
+# H.display()
+
 end = time.time()
 print(f"Elapsed time: {end - start:.4f} seconds")   
