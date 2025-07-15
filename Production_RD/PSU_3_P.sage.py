@@ -5,13 +5,17 @@ from sage.all_cmdline import *   # import sage library
 
 _sage_const_1 = Integer(1); _sage_const_0 = Integer(0); _sage_const_3 = Integer(3); _sage_const_2 = Integer(2); _sage_const_4 = Integer(4); _sage_const_5 = Integer(5); _sage_const_7 = Integer(7); _sage_const_8 = Integer(8); _sage_const_6 = Integer(6); _sage_const_50 = Integer(50); _sage_const_10 = Integer(10)
 from math import gcd
-import statistics
 import time
 
 load("group_characters.sage")
 class GroupCharactersPSU3(GroupCharacters):
     q = _sage_const_1 
     d = _sage_const_0 
+    r = _sage_const_0 
+    s = _sage_const_0 
+    t = _sage_const_0 
+    tp = _sage_const_0 
+    rp = _sage_const_0  
     characteristic = _sage_const_1 
     name = ""
     classes = []
@@ -22,11 +26,6 @@ class GroupCharactersPSU3(GroupCharacters):
     power_map = {}
     characters = []
     minimal_perm = _sage_const_0 
-    tp = _sage_const_0 
-    rp = _sage_const_0  
-    r = _sage_const_0 
-    s = _sage_const_0 
-    t = _sage_const_0 
 
     def __init__(self, prime, exp):
 
@@ -66,19 +65,19 @@ class GroupCharactersPSU3(GroupCharacters):
                 self.class_order[c] = _sage_const_4 
             else:
                 self.class_order[c] = prime
-            self.centralizer_order[c] = q**_sage_const_3 *rp
+            self.centralizer_order[c] = q**_sage_const_2 
 
         for k in range(_sage_const_1 ,rp):
             c = f"C_4^{k}"
             self.classes.append(c)
             self.class_order[c] = rp//gcd(rp,k)
-            self.centralizer_order[c] = q**_sage_const_2 
+            self.centralizer_order[c] = q*rp*r*s
 
         for k in range(_sage_const_1 ,rp):
             c = f"C_5^{k}"
             self.classes.append(c)
             self.class_order[c] = rp*p//gcd(rp*p,k)
-            self.centralizer_order[c] = q*rp*r*s
+            self.centralizer_order[c] = q*rp
 
         if d == _sage_const_3 :
             self.classes.append("C_6'")
@@ -112,18 +111,27 @@ class GroupCharactersPSU3(GroupCharacters):
                     # This was taking a while so I've replaced it with a maybe incorrect formula
                     self.class_order[c] = int(r / gcd(k,l,m,r))
                     
-
+        klist = []
         for k in range(_sage_const_1 ,rp*s):
-            if k*s == _sage_const_0 :
+            if k%s == _sage_const_0 :
                 continue
+            k = min(k, ((-q*k) % (rp * s)))
+            if k in klist:
+                continue
+            else: 
+                klist.append(k)
             c = f"C_7^{k}" 
             self.classes.append(c)
             self.class_order[c] = rp*s // gcd(k, rp*s)
             self.centralizer_order[c] = rp*s
 
+        klist = []
         for k in range(_sage_const_1 ,tp):
-            if k*s == _sage_const_0 :
-                continue
+            k = min(k, (-k * q) % tp, ((q ** _sage_const_2 ) * k) % tp )
+            if k in klist:
+                continue 
+            else: 
+                klist.append(k)
             c = f"C_8^{k}"
             self.classes.append(c)
             self.class_order[c] = tp
@@ -148,15 +156,13 @@ class GroupCharactersPSU3(GroupCharacters):
         start_char_time = time.time()
         UCF = UniversalCyclotomicField() 
         eps = UCF.gen(r) # epsilon as an rth root of unity
-        self.characters = [{}]
-        for j in range(rp):
-            self.characters.append({})
+        self.characters = [{} for u in range(rp)] 
         for g in self.classes:
             i = int(g[_sage_const_2 ]) 
             k,l,m = _sage_const_0 ,_sage_const_0 ,_sage_const_0  
             if i in [_sage_const_3 ,_sage_const_4 ,_sage_const_5 ,_sage_const_7 ,_sage_const_8 ]:
                 k = int(g[_sage_const_4 :])
-            elif i == _sage_const_6 :
+            elif i == _sage_const_6  and g[-_sage_const_1 ] != "'":
                 k,l,m = map(int,g[_sage_const_5 :-_sage_const_1 ].split(','))
             if i == _sage_const_1 : 
                 self.characters[_sage_const_0 ][g] = q * s 
@@ -213,6 +219,7 @@ class GroupCharactersPSU3(GroupCharacters):
         s = q - _sage_const_1 
         r = (q + _sage_const_1 ) // d
         tp = self.tp
+        rp = self.rp
         p = self.characteristic
         i = int(g[_sage_const_2 ])
 
@@ -223,7 +230,7 @@ class GroupCharactersPSU3(GroupCharacters):
         # we'll use this when computing characters, but annoying to package as a function
         if i in [_sage_const_3 ,_sage_const_4 ,_sage_const_5 ,_sage_const_7 ,_sage_const_8 ]:
             k = int(g[_sage_const_4 :])
-        elif i == _sage_const_6 :
+        elif i == _sage_const_6  and g[-_sage_const_1 ] != "'":
             k,l,m = map(int,g[_sage_const_5 :-_sage_const_1 ].split(','))
 
         # power map logic
@@ -259,28 +266,38 @@ class GroupCharactersPSU3(GroupCharacters):
                 return "C_2"
             return f"C_5^{k*n % ((q+_sage_const_1 )//d)}"
         elif i == _sage_const_6 :
+            # Logic for C_6'
             if g[-_sage_const_1 ] == "'":
                 if n%_sage_const_3  == _sage_const_0 :
                     return "C_1"
                 return "C_6'"
-            diag = [(n*x)%((q+_sage_const_1 )//d) for x in (k,l,m)]
-            k,l,m = sorted([ (q+_sage_const_1 )//d if x == _sage_const_0  else x for x in diag])
+            # Logic for C_6^{k,l,m}
+            diag = [(n*x)%((q+_sage_const_1 )) for x in (k,l,m)] # ((q+1)//d) ?
+            k,l,m = sorted([ (q+_sage_const_1 ) if x == _sage_const_0  else x for x in diag])  # ((q+1)//d) ?
+
+            if (k,l,m) == ((q+_sage_const_1 )//d, _sage_const_2  * ((q+_sage_const_1 )//d),  (q+_sage_const_1 )): # checks for C_6'
+                return "C_6'" 
+            while l > (q+_sage_const_1 )//d:
+                diag  = [(x + (q+_sage_const_1 )//d)%(q+_sage_const_1 ) for x in (k,l,m)]
+                k,l,m = sorted([ (q+_sage_const_1 ) if x == _sage_const_0  else x for x in diag])
+                
+
             if k == l or l == m: # broke the rules!
-                return self.power_of(f"C_4^1", l)
+                return self.power_of(f"C_4^1", l) 
             return f"C_6^{{{k},{l},{m}}}"
         elif i == _sage_const_7 :
-            if k*n % (s*r) == _sage_const_0 :
+            if k*n % (s*rp) == _sage_const_0 :
                 return "C_1"
             elif k*n % s == _sage_const_0 :
-                return f"C_4^{(statistics.mode([s*k*n % (s*r), k*n % (s*r), (-q*k*n) % (s*r)])// s)}"
-            y = k*n % (s*r)
-            y = min(y, abs(-q*y))
+                return f"C_4^{sorted([s*k*n % (s*rp), k*n % (s*rp), (-q*k*n) % (s*rp)])[_sage_const_1 ] // s}"
+            y = k*n % (s*rp)
+            y = min(y, (-q*y) % (s*rp))
             return f"C_7^{y}"
         elif i == _sage_const_8 :
             if k*n % tp == _sage_const_0 :
                 return "C_1"
             w = k*n % tp
-            w = min(w, abs(w*(-q) % tp), abs(w*q*q % tp))
+            w = min(w, w*(-q) % tp, w*q*q % tp)
             return f"C_8^{w}"
 
 def primes_up_to(k):
@@ -297,10 +314,16 @@ def primes_up_to(k):
 
 start = time.time()
 
-g = GroupCharactersPSU3(_sage_const_2 , _sage_const_5 )
-print(g.power_of("C_7^1",_sage_const_5 ))
-
+G = GroupCharactersPSU3(_sage_const_5 , _sage_const_1 )
 end = time.time()
-print(g.the_game(g.characters[_sage_const_1 ], _sage_const_10 ))
+print(G.classes)
+print(len(G.classes))
+
+load("psu_characters.sage")
+H = GroupCharacters("PSU(3, 5)")
+print(len(H.classes))
+# H.display()
+# G.display()
+print(G.the_game(G.characters[_sage_const_1 ], _sage_const_10 ))
 print(f"Elapsed time: {end - start:.4f} seconds")   
 

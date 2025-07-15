@@ -5,6 +5,7 @@ from sage.all_cmdline import *   # import sage library
 
 _sage_const_2 = Integer(2); _sage_const_3 = Integer(3); _sage_const_0 = Integer(0); _sage_const_1 = Integer(1); _sage_const_4 = Integer(4); _sage_const_5 = Integer(5); _sage_const_9 = Integer(9); _sage_const_6 = Integer(6); _sage_const_21 = Integer(21); _sage_const_7 = Integer(7); _sage_const_109 = Integer(109); _sage_const_8 = Integer(8); _sage_const_325 = Integer(325); _sage_const_1681 = Integer(1681); _sage_const_10 = Integer(10); _sage_const_15121 = Integer(15121); _sage_const_11 = Integer(11); _sage_const_151201 = Integer(151201); _sage_const_12 = Integer(12); _sage_const_1663201 = Integer(1663201); _sage_const_13 = Integer(13); _sage_const_5250198 = Integer(5250198); _sage_const_14 = Integer(14); _sage_const_51891840 = Integer(51891840); _sage_const_15 = Integer(15); _sage_const_726485761 = Integer(726485761); _sage_const_16 = Integer(16); _sage_const_10897286401 = Integer(10897286401); _sage_const_17 = Integer(17); _sage_const_174356582401 = Integer(174356582401); _sage_const_18 = Integer(18); _sage_const_2964061900801 = Integer(2964061900801); _sage_const_19 = Integer(19); _sage_const_53353114214401 = Integer(53353114214401); _sage_const_20 = Integer(20); _sage_const_1013709170073601 = Integer(1013709170073601); _sage_const_20274183401472001 = Integer(20274183401472001); _sage_const_22 = Integer(22); _sage_const_381918437071508900 = Integer(381918437071508900)
 from sage.all import gap
+import math
 def primes_up_to(k):
     """
     returns an ascending list of all primes up through k
@@ -51,7 +52,7 @@ def generator_combinations(generators, degree, limit=None):
     degree i as part of the sum. Example usage: generator_combinations([1,3,1],3) returns a
     list of the 13 products of f0, f1, f2, and g (deg(fi) = 1 and deg(g) = 2) of degree 3.
     """
-
+    print(generators, degree)
     # initial function call
     if limit == None: 
         limit = (len(generators),generators[-_sage_const_1 ]-_sage_const_1 )
@@ -106,22 +107,8 @@ def RD(n):
         if n >= G[m]:
             return n-m
     return _sage_const_1 
-
-def display(group_name, char_index, molien_deg):
-    G = GroupCharacters(group_name) 
-    print("----------RD info for", group_name,"----------\n")
-    print("Centralizer order:", G.centralizer_order)
-    print("Conjugacy classes of", group_name, ":\n", G.classes)
-    print("Power maps:\n", G.power_maps)
-    print("Conjugacy classes:\n", G.classes)
-    print("Characters: \n", G.CharacterTable)
-    for c in range(char_index):
-        chi = G.characters[c]
-        print("----------Molien coef for character #", c, "up to", molien_deg, "th degree----------\n")
-        mcoefs = G.get_coef(chi, molien_deg)
-        print(mcoefs)
-# display("PSU(3,4)", _sage_const_6 ,_sage_const_10 )
-import math
+#def power_map_table(power_maps)
+    #power_tbl = np.zeros(len(primes)), len(classes)
 
 def get_PSU_order(n,q):
     """
@@ -129,10 +116,11 @@ def get_PSU_order(n,q):
     :param q: prime
     :return: order of PSU(n+1, q)
     """
-    n += -1 # correction to make the wikipedia formula work (as it's for the differently labeled )
-    k = 1
-    for i in range(1, n+1):
-        k *= q ** (i + 1) - ((-1) ** (i + 1))
-    return k * (q ** ((1/2) * n * (n+1))) * (1/(math.gcd(n+1, q+1)))
+    n += -_sage_const_1  # correction to make the wikipedia formula work (as it's for the differently labeled )
+    k = _sage_const_1 
+    for i in range(_sage_const_1 , n+_sage_const_1 ):
+        k *= q ** (i + _sage_const_1 ) - ((-_sage_const_1 ) ** (i + _sage_const_1 ))
+    return k * (q ** ((_sage_const_1 /_sage_const_2 ) * n * (n+_sage_const_1 ))) * (_sage_const_1 /(math.gcd(n+_sage_const_1 , q+_sage_const_1 )))
 
+    
 

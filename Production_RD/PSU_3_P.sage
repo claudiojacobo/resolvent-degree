@@ -1,11 +1,15 @@
 from math import gcd
-import statistics
 import time
 
 load("group_characters.sage")
 class GroupCharactersPSU3(GroupCharacters):
     q = 1
     d = 0
+    r = 0
+    s = 0
+    t = 0
+    tp = 0
+    rp = 0 
     characteristic = 1
     name = ""
     classes = []
@@ -16,11 +20,6 @@ class GroupCharactersPSU3(GroupCharacters):
     power_map = {}
     characters = []
     minimal_perm = 0
-    tp = 0
-    rp = 0 
-    r = 0
-    s = 0
-    t = 0
 
     def __init__(self, prime, exp):
 
@@ -60,19 +59,19 @@ class GroupCharactersPSU3(GroupCharacters):
                 self.class_order[c] = 4
             else:
                 self.class_order[c] = prime
-            self.centralizer_order[c] = q**3*rp
+            self.centralizer_order[c] = q**2
 
         for k in range(1,rp):
             c = f"C_4^{k}"
             self.classes.append(c)
             self.class_order[c] = rp//gcd(rp,k)
-            self.centralizer_order[c] = q**2
+            self.centralizer_order[c] = q*rp*r*s
 
         for k in range(1,rp):
             c = f"C_5^{k}"
             self.classes.append(c)
             self.class_order[c] = rp*p//gcd(rp*p,k)
-            self.centralizer_order[c] = q*rp*r*s
+            self.centralizer_order[c] = q*rp
 
         if d == 3:
             self.classes.append("C_6'")
@@ -106,18 +105,27 @@ class GroupCharactersPSU3(GroupCharacters):
                     # This was taking a while so I've replaced it with a maybe incorrect formula
                     self.class_order[c] = int(r / gcd(k,l,m,r))
                     
-
+        klist = []
         for k in range(1,rp*s):
-            if k*s == 0:
+            if k%s == 0:
                 continue
+            k = min(k, ((-q*k) % (rp * s)))
+            if k in klist:
+                continue
+            else: 
+                klist.append(k)
             c = f"C_7^{k}" 
             self.classes.append(c)
             self.class_order[c] = rp*s // gcd(k, rp*s)
             self.centralizer_order[c] = rp*s
 
+        klist = []
         for k in range(1,tp):
-            if k*s == 0:
-                continue
+            k = min(k, (-k * q) % tp, ((q ** 2) * k) % tp )
+            if k in klist:
+                continue 
+            else: 
+                klist.append(k)
             c = f"C_8^{k}"
             self.classes.append(c)
             self.class_order[c] = tp
@@ -142,15 +150,13 @@ class GroupCharactersPSU3(GroupCharacters):
         start_char_time = time.time()
         UCF = UniversalCyclotomicField() 
         eps = UCF.gen(r) # epsilon as an rth root of unity
-        self.characters = [{}]
-        for j in range(rp):
-            self.characters.append({})
+        self.characters = [{} for u in range(rp)] 
         for g in self.classes:
             i = int(g[2]) 
             k,l,m = 0,0,0 
             if i in [3,4,5,7,8]:
                 k = int(g[4:])
-            elif i == 6:
+            elif i == 6 and g[-1] != "'":
                 k,l,m = map(int,g[5:-1].split(','))
             if i == 1: 
                 self.characters[0][g] = q * s 
@@ -207,6 +213,7 @@ class GroupCharactersPSU3(GroupCharacters):
         s = q - 1
         r = (q + 1) // d
         tp = self.tp
+        rp = self.rp
         p = self.characteristic
         i = int(g[2])
 
@@ -217,7 +224,7 @@ class GroupCharactersPSU3(GroupCharacters):
         # we'll use this when computing characters, but annoying to package as a function
         if i in [3,4,5,7,8]:
             k = int(g[4:])
-        elif i == 6:
+        elif i == 6 and g[-1] != "'":
             k,l,m = map(int,g[5:-1].split(','))
 
         # power map logic
@@ -253,28 +260,38 @@ class GroupCharactersPSU3(GroupCharacters):
                 return "C_2"
             return f"C_5^{k*n % ((q+1)//d)}"
         elif i == 6:
+            # Logic for C_6'
             if g[-1] == "'":
                 if n%3 == 0:
                     return "C_1"
                 return "C_6'"
-            diag = [(n*x)%((q+1)//d) for x in (k,l,m)]
-            k,l,m = sorted([ (q+1)//d if x == 0 else x for x in diag])
+            # Logic for C_6^{k,l,m}
+            diag = [(n*x)%((q+1)) for x in (k,l,m)] # ((q+1)//d) ?
+            k,l,m = sorted([ (q+1) if x == 0 else x for x in diag])  # ((q+1)//d) ?
+
+            if (k,l,m) == ((q+1)//d, 2 * ((q+1)//d),  (q+1)): # checks for C_6'
+                return "C_6'" 
+            while l > (q+1)//d:
+                diag  = [(x + (q+1)//d)%(q+1) for x in (k,l,m)]
+                k,l,m = sorted([ (q+1) if x == 0 else x for x in diag])
+                
+
             if k == l or l == m: # broke the rules!
-                return self.power_of(f"C_4^1", l)
+                return self.power_of(f"C_4^1", l) 
             return f"C_6^{{{k},{l},{m}}}"
         elif i == 7:
-            if k*n % (s*r) == 0:
+            if k*n % (s*rp) == 0:
                 return "C_1"
             elif k*n % s == 0:
-                return f"C_4^{(statistics.mode([s*k*n % (s*r), k*n % (s*r), (-q*k*n) % (s*r)])// s)}"
-            y = k*n % (s*r)
-            y = min(y, abs(-q*y))
+                return f"C_4^{sorted([s*k*n % (s*rp), k*n % (s*rp), (-q*k*n) % (s*rp)])[1] // s}"
+            y = k*n % (s*rp)
+            y = min(y, (-q*y) % (s*rp))
             return f"C_7^{y}"
         elif i == 8:
             if k*n % tp == 0:
                 return "C_1"
             w = k*n % tp
-            w = min(w, abs(w*(-q) % tp), abs(w*q*q % tp))
+            w = min(w, w*(-q) % tp, w*q*q % tp)
             return f"C_8^{w}"
 
 def primes_up_to(k):
@@ -291,9 +308,15 @@ def primes_up_to(k):
 
 start = time.time()
 
-g = GroupCharactersPSU3(2, 5)
-print(g.power_of("C_7^1",5))
-
+G = GroupCharactersPSU3(5, 1)
 end = time.time()
-print(g.the_game(g.characters[1], 10))
+print(G.classes)
+print(len(G.classes))
+
+load("psu_characters.sage")
+H = GroupCharacters("PSU(3, 5)")
+print(len(H.classes))
+# H.display()
+# G.display()
+print(G.the_game(G.characters[1], 10))
 print(f"Elapsed time: {end - start:.4f} seconds")   

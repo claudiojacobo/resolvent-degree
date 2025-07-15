@@ -46,7 +46,10 @@ def generator_combinations(generators, degree, limit=None):
     degree i as part of the sum. Example usage: generator_combinations([1,3,1],3) returns a
     list of the 13 products of f0, f1, f2, and g (deg(fi) = 1 and deg(g) = 2) of degree 3.
     """
-
+    print(generators, degree)
+    if generators != []:
+        print(type(generators[-1]))
+        print(generators[-1])
     # initial function call
     if limit == None: 
         limit = (len(generators),generators[-1]-1)
@@ -56,7 +59,7 @@ def generator_combinations(generators, degree, limit=None):
     for i in range(1,len(generators)):
         if degree < i:
             break
-        for j in range(int(generators[i])):
+        for j in range(int(str(generators[i]))): ### FIX THIS int(str()) is evil 
             # only allow weakly decreasing combinations to avoid duplicates
             if (i,j) > limit: break
 
