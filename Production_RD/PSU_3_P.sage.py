@@ -244,7 +244,7 @@ class GroupCharactersPSU3(GroupCharacters):
             if self.characteristic == _sage_const_2 :
                 if n%_sage_const_4  == _sage_const_0 :
                     return "C_1"
-                elif n%_sage_const_2  == _sage_const_2 :
+                elif n%_sage_const_2  == _sage_const_0 :
                     return "C_2"
                 else:
                     return g 
@@ -260,7 +260,7 @@ class GroupCharactersPSU3(GroupCharacters):
             else:
                 return f"C_4^{e}"
         elif i == _sage_const_5 :
-            if k*n % ((q+_sage_const_1 )*p//d) == _sage_const_0 :
+            if k*n % ((q+_sage_const_1 )//d) == _sage_const_0  and n%p == _sage_const_0  :
                 return "C_1"
             elif k*n % ((q+_sage_const_1 )//d) == _sage_const_0 :
                 return "C_2"
@@ -319,12 +319,13 @@ start = time.time()
 
 
 
-G = GroupCharactersPSU3(_sage_const_5 , _sage_const_2 )
-print(G.the_game(G.characters[_sage_const_0 ], _sage_const_10 ))
-print(G.the_game(G.characters[_sage_const_1 ], _sage_const_10 ))
-G = GroupCharactersPSU3(_sage_const_2 , _sage_const_6 )
-print(G.the_game(G.characters[_sage_const_0 ], _sage_const_10 ))
-print(G.the_game(G.characters[_sage_const_1 ], _sage_const_10 ))
+
+G = GroupCharactersPSU3(_sage_const_3 , _sage_const_1 )
+G.display()
+print(G.the_game(G.characters[_sage_const_3 ], _sage_const_10 ))
+# H = GroupCharacters("PSU(3, 3)")
+# H.display()
+
 end = time.time()
 print(f"Elapsed time: {end - start:.4f} seconds")   
 
