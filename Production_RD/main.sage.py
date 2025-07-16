@@ -33,28 +33,60 @@ print(result)
 result["notes"] = "this info may be incorrect as our model is not yet finished"
 save_output(result)
 
-G = GroupCharactersPSU3(_sage_const_2 , _sage_const_5 )
-result = G.the_game(G.characters[_sage_const_0 ], _sage_const_10 )
-print(result)
-result["notes"] = "this info may be incorrect as our model is not yet finished"
-save_output(result)
+'''
+def check_previous_runs(): 
+    # retrieve a list of the q's we have in .json by checking string
+    seen = set()
+    if not os.path.exists("RD-bounds.json"):
+        return seen 
+    with open("RD-bounds.json","r") as f: 
+        for line in f: 
+            try: 
+                if f"PSU(3, " in line:
+                    q = line.split("PSU(3, ")[1].split(")")[0].strip()
+                    q = int(q)
+                    seen.add(q)
+            except (IndexError, ValueError): 
+                pass
+    return seen
 
-G = GroupCharactersPSU3(_sage_const_5 , _sage_const_2 )
-result = G.the_game(G.characters[_sage_const_0 ], _sage_const_10 )
-print(result)
-result["notes"] = "this info may be incorrect as our model is not yet finished"
-save_output(result)
+"""
+this doesnt work yet mb
+"""
 
-G = GroupCharactersPSU3(_sage_const_7 , _sage_const_2 )
-result = G.the_game(G.characters[_sage_const_0 ], _sage_const_10 )
-print(result)
-result["notes"] = "this info may be incorrect as our model is not yet finished"
-save_output(result)
-# Works for: q = 2, 5, 25, 16, 32, 49, 11, 13, 17, 19, 23, 29
+def run_with_time(q): 
+    g_name = f"PSU(3, {q})" 
+    try: 
+        start_time = time.time()
+        G = GroupCharacters(g_name)
+        output = G.the_game(G.characters[1], 10) 
+        result.update(output) 
+        result["status"] = "Success!" 
+    except MemoryError: 
+        result["status"] = "Ran out of memory"
+    except Exception as e: 
+        result["status"] = "Failed" 
+        result["notes"] = f"{e}" 
+    end_time = time.time()
+    result["approx_run_length"] = round(end_time - start_time, 2) 
+    result["time"] = datetime.now().isoformat()
 
-# 31, 37, 41, 43, 47
+    with open("RD-bounds.json", "a") as f: 
+        f.write(json.dumps(result) + "\n")
 
-# G = GroupCharactersPSU3(5, 2)
-# result = G.the_game(G.characters[0], 10)
-# save_output(result)
+
+for q in [3]: 
+    seen = check_previous_runs()
+    if q in seen: 
+        print(f"We already ran q = {q} silly") 
+    else: 
+        print(f"Now running q = {q}, hold please!")
+
+        G = GroupCharacters(f"PSU(3, {q})")
+        result = G.the_game(G.characters[1],10)
+        result_info = G.display(decimal=False)
+        run_with_time(q) 
+        #save_output(result)
+'''
+        
 
