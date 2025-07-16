@@ -129,7 +129,7 @@ mapping = create_mapping(
     ('gap_classes', gap_data['centralizers'])
 )
 
-# Verify the mapping by printing corresponding classes
+# Verify the mapping by printing corrx1esponding classes
 print("Class mapping based on centralizer sizes:")
 for our_idx, gap_idx in mapping.items():
     print(f"{our_data['classes'][our_idx]} (size {our_data['centralizers'][our_idx]}) <-> {gap_data['classes'][gap_idx]} (size {gap_data['centralizers'][gap_idx]})")

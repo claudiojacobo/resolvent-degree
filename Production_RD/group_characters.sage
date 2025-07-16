@@ -148,7 +148,7 @@ class GroupCharacters:
         """
         k = k % self.class_order[g]
         if k == 0:
-            return self.classes[0]
+            return self.classes[0] # Assumes 0th class is the identity
         elif k == 1:
             return g
         for p in self.primes:

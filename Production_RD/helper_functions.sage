@@ -78,8 +78,9 @@ def generators_from_molien(molien_terms):
             break
  
     # iteratively compute number of new generators from old
-    for i in range(len(generators),len(molien_terms)):
+    for i in range(len(generators), len(molien_terms)):
         generators.append(molien_terms[i]-(len(generator_combinations(generators,i))))
+
 
     return generators
 

@@ -20,6 +20,7 @@ class GroupCharactersPSU3(GroupCharacters):
     power_map = {}
     characters = []
     minimal_perm = 0
+    name = ""
 
     def __init__(self, prime, exp):
 
@@ -43,6 +44,7 @@ class GroupCharactersPSU3(GroupCharacters):
         self.group_order = q**3*r**2*s*tp
         self.exp = exp
 
+        self.name = f"PSU({prime},{exp}) (prime, exp)"
 
         ### conjugacy classes, class orders, and centralizer orders
         self.classes = [ "C_1", "C_2" ]
@@ -70,9 +72,14 @@ class GroupCharactersPSU3(GroupCharacters):
         for k in range(1,rp):
             c = f"C_5^{k}"
             self.classes.append(c)
-            self.class_order[c] = rp*p//gcd(rp*p,k)
+            self.class_order[c] = 0
             self.centralizer_order[c] = q*rp
-
+            n = 1
+            while True:
+                if k*n % ((q+1)//d) == 0 and n%p == 0:
+                    self.class_order[c] = n
+                    break
+                n += 1
         if d == 3:
             self.classes.append("C_6'")
             self.class_order["C_6'"] = 3
@@ -314,11 +321,17 @@ start = time.time()
 
 
 
-G = GroupCharactersPSU3(3, 1)
-G.display()
-# print(G.the_game(G.characters[0], 10))
+G = GroupCharactersPSU3(3,6)
+# print(G.class_order)
+# G.display()
+print(G.the_game(G.characters[0], 10))
 # H = GroupCharacters("PSU(3, 3)")
+# print(H.the_game(H.characters[1], 10))
+# print(H.the_game(H.characters[1], 10))
 # H.display()
+
+# currently fails for q = 125, 4, 8, 3, 7, 27 -- struggling with third powers, small primes, and a couple other things?
+# Works for: q = 2, 5, 25, 16, 32, 49, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47
 
 end = time.time()
 print(f"Elapsed time: {end - start:.4f} seconds")   
