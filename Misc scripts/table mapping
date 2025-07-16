@@ -1,0 +1,147 @@
+def parse_data(data_str):
+    lines = [line.strip() for line in data_str.split('\n') if line.strip()]
+    headers = [h.strip() for h in lines[0].split('\t') if h.strip()]
+    data = []
+    for line in lines[1:]:
+        parts = [p.strip() for p in line.split('\t') if p.strip()]
+        if parts:
+            data.append(parts)
+    return headers, data
+
+def create_mapping(our_centralizers, gap_centralizers):
+    # Pair classes based on centralizer sizes
+    mapping = {}
+    our_sizes = [int(c) for c in our_centralizers[1]]
+    gap_sizes = [int(c) for c in gap_centralizers[1]]
+    
+    # Create a list of (size, index) pairs for both tables
+    our_pairs = [(size, i) for i, size in enumerate(our_sizes)]
+    gap_pairs = [(size, i) for i, size in enumerate(gap_sizes)]
+    
+    # Sort both lists by size to match corresponding elements
+    our_pairs.sort()
+    gap_pairs.sort()
+    
+    # Create the mapping
+    for (our_size, our_idx), (gap_size, gap_idx) in zip(our_pairs, gap_pairs):
+        if our_size != gap_size:
+            print(f"Warning: Centralizer sizes don't match: {our_size} vs {gap_size}")
+        mapping[our_idx] = gap_idx
+    
+    return mapping
+
+def check_power_maps(our_power_maps, gap_power_maps, mapping, our_classes, gap_classes):
+    # Create inverse mapping from our class names to their indices
+    our_class_to_idx = {name: i for i, name in enumerate(our_classes)}
+    gap_class_to_idx = {name: i for i, name in enumerate(gap_classes)}
+    
+    # For each prime in power maps
+    for prime in ['2', '3', '5', '7', '11', '13']:
+        # Find the corresponding rows in both power maps
+        our_row = None
+        gap_row = None
+        
+        for row in our_power_maps:
+            if row[0] == prime:
+                our_row = row[1:]  # Skip the prime number
+                break
+                
+        for row in gap_power_maps:
+            if row[0] == prime:
+                gap_row = row[1:]  # Skip the prime number
+                break
+                
+        if not our_row or not gap_row:
+            print(f"Warning: Missing power map for prime {prime}")
+            continue
+            
+        # Check each mapped pair
+        for our_idx, gap_idx in mapping.items():
+            our_target = our_row[our_idx]
+            gap_target = gap_row[gap_idx]
+            
+            # Find the indices of the target classes
+            our_target_idx = our_class_to_idx.get(our_target, -1)
+            gap_target_idx = gap_class_to_idx.get(gap_target, -1)
+            
+            if our_target_idx == -1 or gap_target_idx == -1:
+                print(f"Warning: Couldn't find target class for prime {prime}:")
+                print(f"  Our class: {our_classes[our_idx]} -> {our_target}")
+                print(f"  GAP class: {gap_classes[gap_idx]} -> {gap_target}")
+                continue
+                
+            # Check if the mapped targets match
+            expected_gap_target_idx = mapping.get(our_target_idx, -1)
+            if expected_gap_target_idx != gap_target_idx:
+                if  (our_classes[our_idx])[0:3] != our_target[0:3]:
+                    print(f"Mismatch for prime {prime}:")
+                    print(f"  Our class {our_classes[our_idx]} (idx {our_idx}) maps to {our_target} (idx {our_target_idx})")
+                    print(f"  GAP class {gap_classes[gap_idx]} (idx {gap_idx}) maps to {gap_target} (idx {gap_target_idx})")
+                    print(f"  Expected GAP target idx {expected_gap_target_idx} but got {gap_target_idx}")
+                    print("---")
+
+# Input data
+our_data = {
+    'classes': ['C_1', 'C_2', 'C_3^0', 'C_4^1', 'C_4^2', 'C_4^3', 'C_4^4', 'C_5^1', 'C_5^2', 'C_5^3', 'C_5^4', 
+                'C_6^{2,3,5}', 'C_6^{1,4,5}', 'C_7^1', 'C_7^2', 'C_7^4', 'C_7^5', 'C_7^8', 'C_8^1', 'C_8^2', 'C_8^4', 'C_8^7'],
+    'centralizers': ['62400', '320', '16', '300', '300', '300', '300', '20', '20', '20', '20', 
+                     '25', '25', '15', '15', '15', '15', '15', '13', '13', '13', '13'],
+    'power_maps': [
+        ['2', 'C_1', 'C_1', 'C_2', 'C_4^2', 'C_4^4', 'C_4^1', 'C_4^3', 'C_4^2', 'C_4^4', 'C_4^1', 'C_4^3', 
+         'C_6^{1,4,5}', 'C_6^{2,3,5}', 'C_7^2', 'C_7^4', 'C_7^8', 'C_7^5', 'C_7^1', 'C_8^2', 'C_8^4', 'C_8^7', 'C_8^1'],
+        ['3', 'C_1', 'C_2', 'C_3^0', 'C_4^3', 'C_4^1', 'C_4^4', 'C_4^2', 'C_5^3', 'C_5^1', 'C_5^4', 'C_5^2', 
+         'C_6^{1,4,5}', 'C_6^{2,3,5}', 'C_4^1', 'C_4^2', 'C_4^4', 'C_1', 'C_4^3', 'C_8^1', 'C_8^2', 'C_8^4', 'C_8^7'],
+        ['5', 'C_1', 'C_2', 'C_3^0', 'C_1', 'C_1', 'C_1', 'C_1', 'C_2', 'C_2', 'C_2', 'C_2', 
+         'C_1', 'C_1', 'C_7^5', 'C_7^5', 'C_7^5', 'C_7^5', 'C_7^5', 'C_8^2', 'C_8^4', 'C_8^7', 'C_8^1'],
+        ['7', 'C_1', 'C_2', 'C_3^0', 'C_4^2', 'C_4^4', 'C_4^1', 'C_4^3', 'C_5^2', 'C_5^4', 'C_5^1', 'C_5^3', 
+         'C_6^{1,4,5}', 'C_6^{2,3,5}', 'C_7^2', 'C_7^4', 'C_7^8', 'C_7^5', 'C_7^1', 'C_8^7', 'C_8^1', 'C_8^2', 'C_8^4'],
+        ['11', 'C_1', 'C_2', 'C_3^0', 'C_4^1', 'C_4^2', 'C_4^3', 'C_4^4', 'C_5^1', 'C_5^2', 'C_5^3', 'C_5^4', 
+         'C_6^{2,3,5}', 'C_6^{1,4,5}', 'C_7^1', 'C_7^2', 'C_7^4', 'C_7^5', 'C_7^8', 'C_8^7', 'C_8^1', 'C_8^2', 'C_8^4'],
+        ['13', 'C_1', 'C_2', 'C_3^0', 'C_4^3', 'C_4^1', 'C_4^4', 'C_4^2', 'C_5^3', 'C_5^1', 'C_5^4', 'C_5^2', 
+         'C_6^{1,4,5}', 'C_6^{2,3,5}', 'C_7^8', 'C_7^1', 'C_7^2', 'C_7^5', 'C_7^4', 'C_1', 'C_1', 'C_1', 'C_1']
+    ]
+}
+
+gap_data = {
+    'classes': ['1a', '3a', '5a', '5b', '5c', '5d', '15a', '15b', '15c', '15d', '2a', 
+                '10a', '10b', '10c', '10d', '13a', '13b', '13c', '13d', '5e', '5f', '4a'],
+    'centralizers': ['62400', '15', '300', '300', '300', '300', '15', '15', '15', '15', '320', 
+                     '20', '20', '20', '20', '13', '13', '13', '13', '25', '25', '16'],
+    'power_maps': [
+        ['2', '1a', '3a', '5d', '5a', '5b', '5c', '15b', '15c', '15d', '15a', '1a', 
+         '5a', '5b', '5d', '5c', '13d', '13a', '13b', '13c', '5f', '5e', '2a'],
+        ['3', '1a', '1a', '5b', '5c', '5d', '5a', '5a', '5d', '5c', '5b', '2a', 
+         '10b', '10d', '10a', '10c', '13a', '13b', '13c', '13d', '5f', '5e', '4a'],
+        ['5', '1a', '3a', '1a', '1a', '1a', '1a', '3a', '3a', '3a', '3a', '2a', 
+         '2a', '2a', '2a', '2a', '13d', '13a', '13b', '13c', '1a', '1a', '4a'],
+        ['7', '1a', '3a', '5d', '5a', '5b', '5c', '15b', '15c', '15d', '15a', '2a', 
+         '10c', '10a', '10d', '10b', '13b', '13c', '13d', '13a', '5f', '5e', '4a'],
+        ['11', '1a', '3a', '5a', '5b', '5c', '5d', '15a', '15b', '15c', '15d', '2a', 
+         '10a', '10b', '10c', '10d', '13b', '13c', '13d', '13a', '5e', '5f', '4a'],
+        ['13', '1a', '3a', '5b', '5c', '5d', '5a', '15d', '15a', '15b', '15c', '2a', 
+         '10b', '10d', '10a', '10c', '1a', '1a', '1a', '1a', '5f', '5e', '4a']
+    ]
+}
+
+# Create mapping based on centralizer sizes
+mapping = create_mapping(
+    ('our_classes', our_data['centralizers']),
+    ('gap_classes', gap_data['centralizers'])
+)
+
+# Verify the mapping by printing corresponding classes
+print("Class mapping based on centralizer sizes:")
+for our_idx, gap_idx in mapping.items():
+    print(f"{our_data['classes'][our_idx]} (size {our_data['centralizers'][our_idx]}) <-> {gap_data['classes'][gap_idx]} (size {gap_data['centralizers'][gap_idx]})")
+
+# Check power maps
+print("\nChecking power maps...")
+check_power_maps(
+    our_data['power_maps'],
+    gap_data['power_maps'],
+    mapping,
+    our_data['classes'],
+    gap_data['classes']
+)
+
+print("\nDone.")

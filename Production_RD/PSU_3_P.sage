@@ -314,10 +314,10 @@ start = time.time()
 
 
 
-ξ = GroupCharactersPSU3(3, 2)
-ξ.display()
-print(ξ.the_game(ξ.characters[0], 10))
-# H = GroupCharacters("PSU(3, 8)")
+G = GroupCharactersPSU3(3, 1)
+G.display()
+# print(G.the_game(G.characters[0], 10))
+# H = GroupCharacters("PSU(3, 3)")
 # H.display()
 
 end = time.time()
