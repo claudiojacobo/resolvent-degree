@@ -4,7 +4,7 @@ File used for testing and running our production code
 # load("group_characters.sage")
 # load("suzuki_characters.sage")
 # load("psu_characters.sage")
-# load("helper_functions.sage")
+load("helper_functions.sage")
 load("PSU_3_P.sage")
 
 import json
@@ -13,7 +13,7 @@ import time
 from datetime import datetime
 
 def save_output(data):
-    with open("PC-data-dump.json", "a") as f:
+    with open("RD-bounds.json", "a") as f:
         f.write(json.dumps(data) + "\n")
 
 
@@ -34,6 +34,15 @@ for j in range(10):
             print(f"PSU({i},1 does not have a index {j} character")
 
 """
+
+for a,b in get_unicorn(100):
+    G = GroupCharactersPSU3(a,b)
+    for j, char in enumerate(G.characters):
+        result = G.the_game(char, 7)
+        print(result)
+        result["character_index"] = f"{j}"
+        save_output(result)
+
 G = GroupCharactersPSU3(3, 6)
 result = G.the_game(G.characters[0], 7)
 print(result)
