@@ -17,29 +17,13 @@ import os
 import time
 from datetime import datetime
 
-def save_output(data):
-    with open("RD-bounds.json", "a") as f:
+
+def save_output(data, file):
+    with open(file, "a") as f:
         f.write(json.dumps(data) + "\n")
 
 
-
-# G = GroupCharacters(f"PSU(3, {q})")
-# result = G.the_game(G.characters[1],10)
-"""
-for j in range(10):
-    for a,b in [(3,3), (3,4), (5, 3), (11, 2), (2, 6), (2,7)]:
-        try:
-            print(a,b)
-            G = GroupCharactersPSU3(a, b)
-            result = G.the_game(G.characters[j], 7)
-            print(result)
-            result["character_index"] = f"{j}"
-            save_output(result)
-        except: 
-            print(f"PSU({i},1 does not have a index {j} character")
-
-"""
-
+file = "Carmen-data-dump.json"
 for a,b in get_unicorn(_sage_const_100 ):
     c, d = b.split(',')
     c = int(c)
@@ -50,13 +34,13 @@ for a,b in get_unicorn(_sage_const_100 ):
         result = G.the_game(char, _sage_const_7 )
         print(result)
         result["character_index"] = f"{j}"
-        save_output(result)
+        save_output(result, file)
+
 
 G = GroupCharactersPSU3(_sage_const_3 , _sage_const_6 )
 result = G.the_game(G.characters[_sage_const_0 ], _sage_const_7 )
 print(result)
 save_output(result)
-
 
 
 

@@ -134,6 +134,4 @@ def get_unicorn(a):
     unicorn= sorted(unicorn.items())
     return(unicorn)
 
-    
-
 print(get_unicorn(100))

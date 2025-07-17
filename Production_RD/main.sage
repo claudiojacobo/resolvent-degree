@@ -29,13 +29,13 @@ for a,b in get_unicorn(100):
         result = G.the_game(char, 7)
         print(result)
         result["character_index"] = f"{j}"
-        save_output(result)
+        save_output(result, file)
+
 
 G = GroupCharactersPSU3(3, 6)
 result = G.the_game(G.characters[0], 7)
 print(result)
 save_output(result)
-
 
 
 
