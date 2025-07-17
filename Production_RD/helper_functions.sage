@@ -116,3 +116,24 @@ def get_PSU_order(n,q):
     return k * (q ** ((1/2) * n * (n+1))) * (1/(math.gcd(n+1, q+1)))
 
     
+def get_unicorn(a):
+    primes = primes_up_to(a)
+    unicorn = {}
+    for t in range(1,a):
+        te = 2 ** t
+        if te > a:
+            break
+        t += 1
+    bound = t
+
+    for p in primes: 
+        for b in range(1, bound):
+            if p ** b < a:
+                num = p ** b
+                unicorn[num] = f"{p},{b}"
+    unicorn= sorted(unicorn.items())
+    return(unicorn)
+
+    
+
+print(get_unicorn(100))
