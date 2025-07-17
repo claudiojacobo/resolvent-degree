@@ -190,7 +190,12 @@ class GroupCharacters:
         limited_by_versality = False
         beat_by_perm = False
         invariants = []
-        print(alg_indp_poly)
+
+        alg_indp_poly_copy = tuple(alg_indp_poly)
+        alg_indp_poly_copy = list(alg_indp_poly_copy)
+        for i, val in enumerate(alg_indp_poly_copy):
+            alg_indp_poly_copy[i] = int(val)
+
         i = 1
         # start at the first non zero entry in alg_indp_poly
         while i < len(alg_indp_poly) and alg_indp_poly[i] == 0:
@@ -224,7 +229,8 @@ class GroupCharacters:
             "group":self.name, 
             "rep-degree":int(chi[self.classes[0]]), 
             "bound":int(bound), 
-            "invariants":tuple(invariants), 
+            "invariants":tuple(invariants),
+            "total polynomials":alg_indp_poly_copy,
             "limitation":[], 
             "notes":"",
         }

@@ -13,7 +13,7 @@ import time
 from datetime import datetime
 
 def save_output(data):
-    with open("RD-bounds.json", "a") as f:
+    with open("PC-data-dump.json", "a") as f:
         f.write(json.dumps(data) + "\n")
 
 
@@ -34,10 +34,13 @@ for j in range(10):
             print(f"PSU({i},1 does not have a index {j} character")
 
 """
-G = GroupCharactersPSU3(2, 7)
-result = G.the_game(G.characters[0], 5)
+G = GroupCharactersPSU3(3, 6)
+result = G.the_game(G.characters[0], 7)
 print(result)
 save_output(result)
+
+
+
 
 # 31, 37, 41, 43, 47
 

@@ -1,7 +1,3 @@
-"""
-Note: if looking at results and adding notes, make sure that your cursor is at the end of the last line before running main again
-(previous run did not add a new line)
-"""
 {"group": "PSU(3, 4)", "rep-degree": 12, "bound": 10, "invariants": [4], "limitation": ["versality-degree"], "notes": ""}
 {"group": "PSU(3, 5)", "rep-degree": 20, "bound": 17, "invariants": [4, 4], "limitation": ["generic-freeness", "versality-degree"], "notes": ""}
 {"group": "PSU(3, 7)", "rep-degree": 42, "bound": 39, "invariants": [4, 6], "limitation": ["versality-degree"], "notes": ""}
@@ -24,7 +20,6 @@ Note: if looking at results and adding notes, make sure that your cursor is at t
 {"group": "PSU(2,4) (prime, exp)", "rep-degree": 240, "bound": 236, "invariants": [4, 4, 4], "limitation": ["versality-degree"], "notes": "this info may be incorrect as our model is not yet finished"}
 {"group": "PSU(2,5) (prime, exp)", "rep-degree": 992, "bound": 987, "invariants": [4, 4, 4, 4], "limitation": ["versality-degree"], "notes": "this info may be incorrect as our model is not yet finished"}
 {"group": "PSU(5,2) (prime, exp)", "rep-degree": 600, "bound": 595, "invariants": [4, 4, 4, 4], "limitation": ["versality-degree"], "notes": "this info may be incorrect as our model is not yet finished"}
-
 {"group": "PSU(3,1) (prime, exp)", "rep-degree": 7, "bound": 5, "invariants": [2], "limitation": ["versality-degree"], "notes": "", "character_index": "2"}
 {"group": "PSU(7,1) (prime, exp)", "rep-degree": 43, "bound": 40, "invariants": [4, 6], "limitation": ["versality-degree"], "notes": "", "character_index": "2"}
 {"group": "PSU(11,1) (prime, exp)", "rep-degree": 111, "bound": 107, "invariants": [2, 4, 4], "limitation": ["versality-degree"], "notes": "", "character_index": "2"}
@@ -270,3 +265,5 @@ Note: if looking at results and adding notes, make sure that your cursor is at t
 {"group": "PSU(2,5) (prime, exp)", "rep-degree": 992, "bound": 987, "invariants": [4, 4, 4, 4], "limitation": ["versality-degree"], "notes": ""}
 {"group": "PSU(2,6) (prime, exp)", "rep-degree": 4032, "bound": 4026, "invariants": [4, 4, 4, 4, 4], "limitation": ["versality-degree"], "notes": ""}
 {"group": "PSU(2,7) (prime, exp)", "rep-degree": 16256, "bound": 16249, "invariants": [4, 4, 4, 4, 4, 4], "limitation": ["versality-degree"], "notes": ""}
+{"group": "PSU(3,3) (prime, exp)", "rep-degree": 702, "bound": 697, "invariants": [4, 4, 4, 4], "total polynomials": [1, 0, 0, 0, 4], "limitation": ["insufficient-invariants"], "notes": ""}
+{"group": "PSU(3,3) (prime, exp)", "rep-degree": 702, "bound": 697, "invariants": [4, 4, 4, 4], "total polynomials": [1, 0, 0, 0, 4, 0, 705], "limitation": ["versality-degree"], "notes": ""}
