@@ -75,7 +75,7 @@ class GroupCharactersPSU3(GroupCharacters):
             self.class_order[c] = 0
             self.centralizer_order[c] = q*rp
             n = 1
-            while True:
+            while True: # this sucks, we should find a better way to do this
                 if k*n % ((q+1)//d) == 0 and n%p == 0:
                     self.class_order[c] = n
                     break
@@ -321,10 +321,10 @@ start = time.time()
 
 
 
-G = GroupCharactersPSU3(3,6)
+# G = GroupCharactersPSU3(3,6)
 # print(G.class_order)
 # G.display()
-print(G.the_game(G.characters[0], 10))
+# print(G.the_game(G.characters[0], 10))
 # H = GroupCharacters("PSU(3, 3)")
 # print(H.the_game(H.characters[1], 10))
 # print(H.the_game(H.characters[1], 10))

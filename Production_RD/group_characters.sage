@@ -190,12 +190,11 @@ class GroupCharacters:
         limited_by_versality = False
         beat_by_perm = False
         invariants = []
-
+        print(alg_indp_poly)
         i = 1
         # start at the first non zero entry in alg_indp_poly
         while i < len(alg_indp_poly) and alg_indp_poly[i] == 0:
             i += 1
-
         while i < len(alg_indp_poly):
             if degree_product * i >= self.minimal_perm:
                 limited_by_action = True
@@ -214,7 +213,7 @@ class GroupCharacters:
             degree_product *= i
             invariants.append(int(i))
             alg_indp_poly[i] -= 1
-            while alg_indp_poly[i] == 0 and i < len(alg_indp_poly):
+            while i < len(alg_indp_poly) and alg_indp_poly[i] == 0:
                 i += 1
 
         if RD(self.minimal_perm) <= bound:
