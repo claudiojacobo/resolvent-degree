@@ -194,7 +194,7 @@ class GroupCharacters:
         alg_indp_poly_copy = tuple(alg_indp_poly)
         alg_indp_poly_copy = list(alg_indp_poly_copy)
         for i, val in enumerate(alg_indp_poly_copy):
-            alg_indp_poly_copy[i] = int(val)
+            alg_indp_poly_copy[i] = str(val)
 
         i = 1
         # start at the first non zero entry in alg_indp_poly
