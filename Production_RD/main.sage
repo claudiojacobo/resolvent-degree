@@ -18,8 +18,11 @@ def save_output(data, file):
         f.write(json.dumps(data) + "\n")
 
 
-file = "Carmen-data-dump.json"
-for a,b in get_unicorn(100):
+file = "PC-data-dump.json"
+q_to_200 = get_unicorn(200)
+q_to_100 = get_unicorn(100)
+q_vals = [item for item in q_to_200 if item not in q_to_100]
+for a,b in q_vals:
     c, d = b.split(',')
     c = int(c)
     d = int(d)
@@ -29,7 +32,7 @@ for a,b in get_unicorn(100):
         result = G.the_game(char, 7)
         print(result)
         result["character_index"] = f"{j}"
-        save_output(result)
+        save_output(result, file)
 
 G = GroupCharactersPSU3(3, 6)
 result = G.the_game(G.characters[0], 7)
