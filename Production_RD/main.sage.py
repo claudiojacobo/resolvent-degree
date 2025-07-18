@@ -23,11 +23,25 @@ def save_output(data, file):
         f.write(json.dumps(data) + "\n")
 
 
-file = "PC-data-dump.json"
-q_to_200 = get_unicorn(_sage_const_200 )
-q_to_100 = get_unicorn(_sage_const_100 )
-q_vals = [item for item in q_to_200 if item not in q_to_100]
-for a,b in q_vals:
+
+# G = GroupCharacters(f"PSU(3, {q})")
+# result = G.the_game(G.characters[1],10)
+"""
+for j in range(10):
+    for a,b in [(3,3), (3,4), (5, 3), (11, 2), (2, 6), (2,7)]:
+        try:
+            print(a,b)
+            G = GroupCharactersPSU3(a, b)
+            result = G.the_game(G.characters[j], 7)
+            print(result)
+            result["character_index"] = f"{j}"
+            save_output(result)
+        except: 
+            print(f"PSU({i},1 does not have a index {j} character")
+
+"""
+
+for a,b in get_unicorn(_sage_const_100 ):
     c, d = b.split(',')
     c = int(c)
     d = int(d)
@@ -37,13 +51,12 @@ for a,b in q_vals:
         result = G.the_game(char, _sage_const_7 )
         print(result)
         result["character_index"] = f"{j}"
-        save_output(result, file)
+        save_output(result)
 
 G = GroupCharactersPSU3(_sage_const_3 , _sage_const_6 )
 result = G.the_game(G.characters[_sage_const_0 ], _sage_const_7 )
 print(result)
 save_output(result)
-
 
 
 

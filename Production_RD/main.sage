@@ -41,7 +41,6 @@ save_output(result)
 
 
 
-
 # 31, 37, 41, 43, 47
 
 # G = GroupCharactersPSU3(5, 2)
