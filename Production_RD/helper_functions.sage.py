@@ -140,7 +140,5 @@ def get_unicorn(a):
     unicorn= sorted(unicorn.items())
     return(unicorn)
 
-    
-
 print(get_unicorn(_sage_const_100 ))
 
