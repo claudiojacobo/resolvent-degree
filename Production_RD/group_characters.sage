@@ -201,11 +201,13 @@ class GroupCharacters:
         while i < len(alg_indp_poly) and alg_indp_poly[i] == 0:
             i += 1
         while i < len(alg_indp_poly):
-            if degree_product * i >= self.minimal_perm:
+            if degree_product * i >= self.minimal_perm: # failed b/c irreducibility
                 limited_by_action = True
                 ran_out_of_molien = False
-                if RD(degree_product * i) > bound-1:
+                if RD(degree_product * i) > bound-1: # also failed b/c versality
                     limited_by_versality = True
+                else: # truly failed b/c irreducibility
+                    invariants.append(int(i))
                 break 
             
             # Stop when product of degrees is larger than bound
@@ -222,8 +224,12 @@ class GroupCharacters:
                 i += 1
 
         if RD(self.minimal_perm) <= bound:
-            bound = RD(self.minimal_perm)
             beat_by_perm = True
+            if RD(self.minimal_perm) < bound:
+                limited_by_action = False
+                limited_by_versality = False
+                bound = RD(self.minimal_perm)
+
 
         output = {
             "group":self.name, 
@@ -240,8 +246,8 @@ class GroupCharacters:
             output["limitation"].append("versality-degree")
         if beat_by_perm:
             output["limitation"].append("permutation-rep")
-        if ran_out_of_molien:
+        if ran_out_of_molien and RD(degree_product * (n-1)) < bound:
             output["limitation"].append("insufficient-invariants")
-            print("We ran out of Molien terms before the game ended!")
+            print(f"{self.name} We ran out of Molien terms before the game ended!")
 
         return output

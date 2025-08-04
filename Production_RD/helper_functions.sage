@@ -131,7 +131,5 @@ def get_unicorn(a):
             if p ** b < a:
                 num = p ** b
                 unicorn[num] = f"{p},{b}"
-    unicorn= sorted(unicorn.items())
+    unicorn= sorted(unicorn.items()) 
     return(unicorn)
-
-print(get_unicorn(100))

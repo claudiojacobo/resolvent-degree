@@ -29,7 +29,7 @@ class GroupCharactersPSU3(GroupCharacters):
     name = ""
 
     def __init__(self, prime, exp):
-
+        start_pm_time = time.time()
         ### useful constants
         self.q = prime**exp
         self.characteristic = prime
@@ -152,12 +152,12 @@ class GroupCharactersPSU3(GroupCharacters):
 
         ### compute power maps
         # this is NOT a good way to do it, but it'll do (for known powers) for now
-        start_pm_time = time.time()
         for g in self.classes:
             self.power_map[g] = {}
-            for p in self.primes:
+            #for p in self.primes:
+            for p in [_sage_const_2 ,_sage_const_3 ,_sage_const_5 ,_sage_const_7 ]: # we only need primes up to the # of molien coefficients we're asking for.
                 self.power_map[g][p] = self.power_of(g,p)
-        print(f"Power Map took {time.time() - start_pm_time}")
+        print(f"Power Map and Class Initialization took {time.time() - start_pm_time}")
         ### implement characters of degree qs and t
         # Generates character table data for Chi_qs and Chi_t^(u)
         start_char_time = time.time()
@@ -187,7 +187,6 @@ class GroupCharactersPSU3(GroupCharacters):
                 self.characters[_sage_const_0 ][g] = _sage_const_0 
             elif i == _sage_const_8 : 
                 self.characters[_sage_const_0 ][g] = -_sage_const_1 
-
             for u in range(_sage_const_1 ,rp):
                 if i == _sage_const_1 : 
                     self.characters[u][g] = t 
@@ -208,7 +207,7 @@ class GroupCharactersPSU3(GroupCharacters):
                     self.characters[u][g] = eps**(_sage_const_3  * u * k) 
                 elif i == _sage_const_8 : 
                     self.characters[u][g] = _sage_const_0  
-        print(f"Characters took {time.time() - start_char_time}")
+        print(f"Character Table took {time.time() - start_char_time}")
             # return self.characters #end of check for our 2 chars 
 
 
@@ -341,4 +340,7 @@ start = time.time()
 
 end = time.time()
 print(f"Elapsed time: {end - start:.4f} seconds")   
+
+G = GroupCharactersPSU3(_sage_const_3 ,_sage_const_5 )
+print(power_of(C_3**{_sage_const_2 },_sage_const_4 ))
 
