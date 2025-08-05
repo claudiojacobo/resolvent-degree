@@ -44,7 +44,7 @@ def get_points(data):
         if invariant == 4: 
             num_deg4 += 1
     return points 
-        
+"""       
 def plot(points): #want x to be prime_power and y to be degree 
     prime_powers = [] #need to identify btw distinct primes and their powers 
     colors = {}
@@ -62,13 +62,94 @@ def plot(points): #want x to be prime_power and y to be degree
     for i in prime_powers: # some other list? 
         colors[prime] = color_spec[i % len(color_spec)]
 
-    
-    
+def get_char_sym(a): 
+    load("group_characters.sage")
+    unicorn = get_unicorn(a) 
+    load("psu_characters.sage")
+    for primes in get_unicorn(a):
+        power = int(primes[-1][-1])
+        print(power) 
+        prime = int(primes[-1][0])
+        print(prime) 
+        q = int(prime ** power)
+        print("this is q", q) 
+        G = GroupCharacters(3,q)
+        print(f'Symmetric powers for PSU(3, {q} G.sym_power(chi,k) \n')  
+print(get_char_sym(7)) 
+"""
 
+def get_tex(file_name, latex_file):  
+    data = []
+    # Turn the json file into a list of dictionaries
+    with open(file_name) as f: 
+       for line in f: 
+        entry = json.loads(line)
+        if entry.get("character_index") == "0": 
+            data.append(entry) 
+    with open(latex_file, "w") as f:
+        for entry in data:
+            group = entry["group"]
+            pair = group.split('(')[1].split(')')[0] # 'a,b'
+            primes_str = pair.split(',') # ['a','b']
+            prime = int(primes_str[0]) 
+            exp = int(primes_str[1])
+            q = prime ** exp
+            dim_v = entry["rep-degree"]
+            bound = entry["bound"]
+            invariants_dict = str(entry["invariants"])
+            invariants = invariants_dict[1:-1]
+            # invariants = invariants.replace(' ', '')
+            limitation = entry["limitation"]
+            miu = 50 if q == 5 else q ** 3 + 1
+            rd_miu = " "
+            molien = " " 
+            if dim_v >= miu: 
+                f.write(f"\\hline\n \rowcolor{c1} {q} & {dim_v} & {bound} & {molien} & {invariants} & {miu} & {rd_miu} \\\\\n")
+                return True 
+            if limitation == "versality-degree":  
+                f.write(f"\\hline\n \rowcolor{c6} {q} & {dim_v} & {bound} & {molien} & {invariants} & {miu} & {rd_miu} \\\\\n")
+                retrun True 
+            if dim_v >= miu and limitation == "versality-degree"  == True: 
+                
+
+            
+% c1 = stopped by deg >= mu(G) % does this ever happen?
+% c6 = stopped by RD(deg)  
+% c5 = both of the above
+% c4 = smallest permutation rep beats the bound from the Game
+
+            f.write(f"\\hline\n{q} & {dim_v} & {bound} & {molien} & {invariants} & {miu} & {rd_miu} \\\\\n")
+def get_color_tex(file_name, latex_file): 
+    data = []
+    # Turn the json file into a list of dictionaries
+    with open(file_name) as f: 
+       for line in f: 
+        entry = json.loads(line)
+        if entry.get("character_index") == "0": 
+            data.append(entry) 
+    with open(latex_file, "w") as f:
+        for entry in data: 
+            group = entry["group"]
+            pair = group.split('(')[1].split(')')[0] # 'a,b'
+            primes_str = pair.split(',') # ['a','b']
+            prime = int(primes_str[0]) 
+            exp = int(primes_str[1])
+            q = prime ** exp
+            dim_v = entry["rep-degree"]
+            bound = entry["bound"]
+            invariants_dict = str(entry["invariants"])
+            invariants = invariants_dict[1:-1]
+            # invariants = invariants.replace(' ', '')
+            miu = 50 if q == 5 else q ** 3 + 1
+            rd_miu = " "
+            molien = " " 
+            f.write(f"\\hline\n{q} & {dim_v} & {bound} & {molien} & {invariants} & {miu} & {rd_miu} \\\\\n")
 
 def main(): 
     file_name = "Carmen-data-dump.json"
-    print(get_data(file_name))
+    latex_file = "latex_2.txt"
+    get_tex(file_name, latex_file) 
+    print(get_tex(file_name, latex_file))
 
 
 
