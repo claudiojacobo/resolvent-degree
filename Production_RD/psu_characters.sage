@@ -72,6 +72,18 @@ class PSU_Characters(GroupCharacters):
                 gap.eval('H := Center(G);')
                 gap.eval('Q := G/H;')
                 if gap.eval('IsomorphismGroups(Q, target) <> fail;') == 'true':
+                    print(int(gap.eval('num')))
                     return (int(gap.eval("N")), i)
                 else:
                     raise Exception("No suitable group found.")
+
+G = PSU_Characters(2, 37)
+print("2, 37")
+for character in G.characters:
+    print(G.the_game(character, 7))
+H = GroupCharacters("PSU(2, 37)")
+print(" normal 2, 37")
+for character in H.characters:
+    print(H.the_game(character, 7))
+G.display()
+H.display()

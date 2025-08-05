@@ -15,9 +15,12 @@ def save_output(data, file):
     with open(file, "a") as f:
         f.write(json.dumps(data) + "\n")
 
-"""
-file = "Carmen-data-dump.json"
-for a,b in get_unicorn(100):
+
+file = "PC-data-dump.json"
+q_to_200 = get_unicorn(200)
+q_to_100 = get_unicorn(100)
+q_vals = [item for item in q_to_200 if item not in q_to_100]
+for a,b in q_vals:
     c, d = b.split(',')
     c = int(c)
     d = int(d)
