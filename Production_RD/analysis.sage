@@ -77,8 +77,8 @@ def get_char_sym(a):
         print(f'Symmetric powers for PSU(3, {q} G.sym_power(chi,k) \n')  
 print(get_char_sym(7)) 
 """
-
-def get_tex(file_name, latex_file):  
+"""
+def get_color_tex(file_name, latex_file):  
     data = []
     # Turn the json file into a list of dictionaries
     with open(file_name) as f: 
@@ -111,20 +111,24 @@ def get_tex(file_name, latex_file):
                 retrun True 
             if dim_v >= miu and limitation == "versality-degree"  == True: 
                 
-
+"""
             
-% c1 = stopped by deg >= mu(G) % does this ever happen?
-% c6 = stopped by RD(deg)  
-% c5 = both of the above
-% c4 = smallest permutation rep beats the bound from the Game
+# c1 = stopped by deg >= mu(G) % does this ever happen?
+# c6 = stopped by RD(deg)  # c5 = both of the above
+# c4 = smallest permutation rep beats the bound from the Game
 
-            f.write(f"\\hline\n{q} & {dim_v} & {bound} & {molien} & {invariants} & {miu} & {rd_miu} \\\\\n")
-def get_color_tex(file_name, latex_file): 
+            # f.write(f"\\hline\n{q} & {dim_v} & {bound} & {molien} & {invariants} & {miu} & {rd_miu} \\\\\n")
+
+def molien_marsupial(chi, k): 
+    G = 
+    G.get_molien
+
+def get_tex(file_name, latex_file): 
     data = []
     # Turn the json file into a list of dictionaries
     with open(file_name) as f: 
-       for line in f: 
-        entry = json.loads(line)
+        for line in f: 
+            entry = json.loads(line)
         if entry.get("character_index") == "0": 
             data.append(entry) 
     with open(latex_file, "w") as f:
@@ -139,15 +143,14 @@ def get_color_tex(file_name, latex_file):
             bound = entry["bound"]
             invariants_dict = str(entry["invariants"])
             invariants = invariants_dict[1:-1]
-            # invariants = invariants.replace(' ', '')
             miu = 50 if q == 5 else q ** 3 + 1
-            rd_miu = " "
-            molien = " " 
+            rd_miu = "none"
+            molien = "none" 
             f.write(f"\\hline\n{q} & {dim_v} & {bound} & {molien} & {invariants} & {miu} & {rd_miu} \\\\\n")
 
 def main(): 
-    file_name = "Carmen-data-dump.json"
-    latex_file = "latex_2.txt"
+    file_name = "psu_3_q.json"
+    latex_file = "latex_3.txt"
     get_tex(file_name, latex_file) 
     print(get_tex(file_name, latex_file))
 
