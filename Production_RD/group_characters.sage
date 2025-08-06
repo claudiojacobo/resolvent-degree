@@ -131,7 +131,7 @@ class GroupCharacters:
     def get_coef(self, chi, k): 
         '''
         first makes a list of dictionaries from symmetric power function and calculates
-        the inner product..outputs a list of the coef where posiiton of the list 
+        the inner product..outputs a list of the coef where position of the list 
         corresponds to kth power'''
         sym_pows = []
         for i in range(0,k): # check for off by 1 errors abd what sym^0 is
