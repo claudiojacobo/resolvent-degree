@@ -30,6 +30,9 @@ for q in [2,3,4,5,7,8,9,11,13,16,17,19,23]:
     print(q)
     print(result,end="\n\n")
 '''
+G = GroupCharacters("SL(2, 11)")
+print(G.the_game(G.characters[1],7))
+# we want to compare the miminum perm rep of PSU(2, q), instead of SL(2, q)
 '''
 file = "ElderlyOwl-data-dump.json"
 for a,b in get_unicorn(150):
@@ -59,7 +62,7 @@ with open("Acorn-data-dump.json", "r") as f:
             save_output(entry, file)
 '''
 
-
+'''
 file = "Carmen-data-dump.json"
 for a,b in get_unicorn(126):
     c, d = b.split(',')
@@ -78,7 +81,7 @@ G = GroupCharactersPSU3(3, 6)
 result = G.the_game(G.characters[0], 7)
 print(result)
 save_output(result)
-
+'''
 
 
 # 31, 37, 41, 43, 47

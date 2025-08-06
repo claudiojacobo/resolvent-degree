@@ -201,6 +201,7 @@ class GroupCharacters:
         while i < len(alg_indp_poly) and alg_indp_poly[i] == 0:
             i += 1
         while i < len(alg_indp_poly):
+            print(self.minimal_perm)
             if degree_product * i >= self.minimal_perm: # failed b/c irreducibility
                 limited_by_action = True
                 ran_out_of_molien = False
