@@ -285,7 +285,7 @@ class GroupCharactersPSU3(GroupCharacters):
                 
 
             if k == l or l == m: # broke the rules!
-                return self.power_of(f"C_4^1", l) 
+                return self.power_of(f"C_4^1", l) # what's up with this?
             return f"C_6^{{{k},{l},{m}}}"
         elif i == 7:
             if k*n % (s*rp) == 0:
@@ -301,6 +301,97 @@ class GroupCharactersPSU3(GroupCharacters):
             w = k*n % tp
             w = min(w, w*(-q) % tp, w*q*q % tp)
             return f"C_8^{w}"
+    
+    def C_6_klm_sym_squared(self):
+        C4Counter = 0
+        C1Counter = 0
+        r = self.r
+        if self.r % 3 != 0:
+            if self.r % 2 == 1:
+                pass
+            else:
+                # Case 1b
+                k = math.ceil(r/4)
+                while k < r/3:
+                    k += 1
+                    C4Counter += 1
+                # Case 3a
+                k = 1
+                while k < r/6:
+                    k += 1
+                    C4Counter += 1
+                # Case 3b
+                k = math.ceil(r/3)
+                while k < r/2:
+                    k += 1
+                    C4Counter += 1
+                # Case 2a 
+                if self.r % 4 == 0:
+                    k = 1
+                    while k < r/6:
+                        if k % 2 == 0:
+                            C4Counter += 1
+                        k += 1
+                else: 
+                    k = 1
+                    while k < r/6:
+                        if k % 2 == 1:
+                            C4Counter += 1
+                        k += 1
+        # d = 3 case
+        else: 
+            # Case 3a
+            k = math.ceil(r/12)
+            while k < r/6:
+                k += 1
+                C4Counter += 1
+            # Case 2a 
+            if self.r % 4 == 0:
+                k = 1
+                while k < r/6:
+                    if k % 2 == 0:
+                        C4Counter += 1
+                    k += 1
+            else: 
+                k = 1
+                while k < r/6:
+                    if k % 2 == 1:
+                        C4Counter += 1
+                    k += 1
+
+        return C4Counter
+
+    def C_6_klm_sym_cubed(self):
+        C4Counter = 0 
+        r = self.r 
+        if r % 3 != 0:
+            pass
+        else: 
+            # Case 2a
+            k = math.ceil(r/6)
+            while k < 2*r/9:
+                C4Counter += 1
+                k += 1 
+            # Case 3a 
+            k = 1
+            while k < 2*r/9:
+                if k % 2 == 0:
+                    C4Counter += 1
+                k += 1
+            # Case 2a, 3a difference = 2r/3
+            k = 1
+            while k < r/9:
+                C4Counter += 1
+                if r % 6 == 0 and k % 2 == 0:
+                    C4Counter += 1
+                elif r % 6 == 3 and k % 2 == 1:
+                    C4Counter += 1
+                k += 1
+
+        return C4Counter
+            
+
+
 
 def primes_up_to(k):
     """
@@ -320,6 +411,7 @@ start = time.time()
 
 
 
+
 # G = GroupCharactersPSU3(3,6)
 # print(G.class_order)
 # G.display()
@@ -334,3 +426,26 @@ start = time.time()
 
 end = time.time()
 print(f"Elapsed time: {end - start:.4f} seconds")   
+i = 0
+G = GroupCharactersPSU3(2, 5)
+for g in G.classes:
+    if g[2] == "6":
+        if G.power_of(g, 2)[2] != "6":
+            print(g)
+            print(f"g squared is {G.power_of(g, 2)}")
+            i += 1
+print(i)
+print(G.C_6_klm_sym_squared())
+
+
+i = 0
+for g in G.classes:
+    if g[2] == "6" and g[3] != "'":
+        if G.power_of(g, 3)[2] != "6":
+            print(g)
+            print(f"g cubed is {G.power_of(g, 3)}")
+            i += 1
+print(f"emperical problem cases (cube): {i}")
+print(f"predicted problem cases (cube): {G.C_6_klm_sym_cubed()}")
+
+# so, this doesn't quite work. I don't know what's going on here but it looks like we're undercounting by 1 or 2 sometimes but asymptotically we're overcounting? 
