@@ -137,8 +137,9 @@ def get_unicorn(a):
             if p ** b < a:
                 num = p ** b
                 unicorn[num] = f"{p},{b}"
-    unicorn= sorted(unicorn.items())
+    unicorn= sorted(unicorn.items()) 
     return(unicorn)
 
-print(get_unicorn(_sage_const_100 ))
+for key, val in get_unicorn(_sage_const_100 ):
+    print(key, "\n")
 

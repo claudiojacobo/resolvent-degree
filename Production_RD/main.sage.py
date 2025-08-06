@@ -16,6 +16,7 @@ import json
 import os
 import time
 from datetime import datetime
+
 def save_output(data, file):
     with open(file, "a") as f:
         f.write(json.dumps(data) + "\n")
@@ -39,7 +40,8 @@ G = GroupCharactersPSU3(3, 6)
 result = G.the_game(G.characters[0], 7)
 print(result)
 save_output(result)
-"""
+'''
+
 
 # 31, 37, 41, 43, 47
 """
@@ -50,29 +52,26 @@ print(result)
 save_output(result)
 
 """
-def get_char_sym(a): 
-    load("group_characters.sage")
+# save_output(result)
+"""
+def get_char_sym(self, k, chi, a): 
     unicorn = get_unicorn(a) 
-    load("psu_characters.sage")
-    for primes in get_unicorn(a):
-        power = int(primes[-_sage_const_1 ][-_sage_const_1 ])
-        print(power) 
-        prime = int(primes[-_sage_const_1 ][_sage_const_0 ])
-        print(prime) 
-        # am i string handling this correctly? 
-        # if so then do i need .split something
-        # what is the input for the funtion in the class defined by G. 
-        q = int(prime ** power)
-        print("this is q",q) 
-        G = GroupCharactersPSU3(prime,power)
-        print(f'Symmetric powers for PSU(3, {q}\n', G.sym_power(chi,k))  
-   # print(G.sym_power(self, chi, k)) 
+    for primes in range(len(get_unicorn(a)): 
+        for item in primes
+            if len(
+        q =  unicorn[primes][0]
+        G = GroupCharactersPSU3(
     #print out characters for several symmetric powers for many PSU(3,q) 
     # to go through and run all of the different groups, we just need to look thorugh e
-# questions: do we need the self input..are we string handling correctly....are we calling the functin corrctly 
-# is the function being calledc correctly. 
-#print(type(GroupCharactersPSU3(3,5)))
+    for i in range(2, k+1): 
+        sym_power(self, chi, k) 
+
+"""
+def get_groups(a, k, chi): 
+    G = GroupCharactersPSU3(_sage_const_3 , a)
+    pps = G.get_unicorn(a)
+    for group in range(len(pps)): 
 
 
-print(get_char_sym(_sage_const_7 )) 
+print(get_unicorn(_sage_const_10 ))
 
