@@ -660,6 +660,7 @@ class GroupCharactersPSU3(GroupCharacters):
                         k += 1
 
         return C4Counter
+
     def C_6_klm_sym_squared_explicit(self):
         a = self.r % 12
         r = self.r
@@ -960,7 +961,7 @@ start = time.time()
 end = time.time()
 print(f"Elapsed time: {end - start:.4f} seconds")   
 i = 0
-G = GroupCharactersPSU3(31, 1)
+G = GroupCharactersPSU3(19, 1)
 for g in G.classes:
     if g[2] == "6":
         if G.power_of(g, 2)[2] != "6":
