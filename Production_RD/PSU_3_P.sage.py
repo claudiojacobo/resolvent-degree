@@ -308,6 +308,121 @@ class GroupCharactersPSU3(GroupCharacters):
             w = min(w, w*(-q) % tp, w*q*q % tp)
             return f"C_8^{w}"
     
+    def C_1_squared(self):
+        C1Counter = _sage_const_1 
+        return C1Counter
+    
+    def C_1_cubed(self):
+        C1Counter = _sage_const_1 
+        return C1Counter
+
+    def C_1_forth(self):
+        C1Counter = _sage_const_1 
+        return C1Counter
+    
+    def C_2_squared(self):
+        C1Counter = _sage_const_0 
+        C2Counter = _sage_const_0 
+        p = self.p
+        if p == _sage_const_2 :
+            C1Counter += _sage_const_1 
+        C2Counter += _sage_const_1 
+        return (C1Counter,C4Counter)
+
+    def C_2_cubbed(self):
+        C1Counter = _sage_const_0 
+        C2Counter = _sage_const_0 
+        p = self.p
+        if p == _sage_const_3 :
+            C1Counter += _sage_const_1 
+        C2Counter += _sage_const_1 
+        return (C1Counter,C4Counter)
+
+    def C_2_forth(self):
+        C1Counter = _sage_const_0 
+        C2Counter = _sage_const_0 
+        p = self.p
+        if p = _sage_const_2 :
+            C1Counter += _sage_const_1 
+        C2Counter += _sage_const_1 
+        return (C1Counter,C4Counter)
+
+    def C_4_squared(self):
+        q = self.q
+        d = self.d
+        C1Counter = _sage_const_1 
+        C4Counter = (q+_sage_const_1 )//d-_sage_const_2 
+        return (C1Counter, C4Counter)
+
+    def C_4_cubbed(self):
+        q = self.q
+        d = self.d
+        C1Counter = _sage_const_2 
+        C4Counter = (q+_sage_const_1 )//d-_sage_const_3 
+        return (C1Counter, C4Counter)
+
+    def C_4_forth(self):
+        q = self.q
+        d = self.d
+        C1Counter = _sage_const_3 
+        C4Counter = (q+_sage_const_1 )//d-_sage_const_4 
+        return (C1Counter, C4Counter)
+
+    def C_5_squared(self):
+        q = self.q
+        d = self.d
+        p = self.p
+        C1Counter = _sage_const_0 
+        C2Counter = _sage_const_0 
+        C5Counter = (q+_sage_const_1 )//d-_sage_const_2 
+        if p = _sage_const_2 :
+            C1Counter += _sage_const_1 
+        C2Counter+=_sage_const_1 
+        return (C1Counter, C2Counter, C5Counter)
+
+    def C_5_cubbed(self):
+        q = self.q
+        d = self.d
+        p = self.p
+        C1Counter = _sage_const_0 
+        C2Counter = _sage_const_0 
+        C5Counter = (q+_sage_const_1 )//d-_sage_const_3 
+        if p = _sage_const_3 :
+            C1Counter += _sage_const_2 
+        C2Counter+=_sage_const_2 
+        return (C1Counter, C2Counter, C5Counter)
+
+    def C_5_squared(self):
+        q = self.q
+        d = self.d
+        p = self.p
+        C1Counter = _sage_const_0 
+        C2Counter = _sage_const_0 
+        C5Counter = (q+_sage_const_1 )//d-_sage_const_4 
+        if p = _sage_const_2 :
+            C1Counter += _sage_const_3 
+        C2Counter+=_sage_const_3 
+        return (C1Counter, C2Counter, C5Counter)
+
+    def C_6_p_squared(self):
+        d = self.d
+        C6pCounter = _sage_const_1 -(_sage_const_3 -d)//_sage_const_2 
+        C1Counter = _sage_const_0 
+        return(C1Counter, C6pCounter)
+    
+    def C_6_p_cubbed(self):
+        d = self.d
+        C6pCounter = _sage_const_0 
+        C1Counter = _sage_const_1 -(_sage_const_3 -d)//_sage_const_2 
+        return(C1Counter, C6pCounter)
+
+    def C_6_p_forth(self):
+        d = self.d
+        C6pCounter = _sage_const_1 -(_sage_const_3 -d)//_sage_const_2 
+        C1Counter = _sage_const_0 
+        return(C1Counter, C6pCounter)
+
+
     def C_6_klm_sym_squared(self):
         C4Counter = _sage_const_0 
         C1Counter = _sage_const_0 
@@ -413,121 +528,7 @@ class GroupCharactersPSU3(GroupCharacters):
                 k += _sage_const_1 
 
         return C4Counter
-    
-    def C_6_klm_sym_fourth(self):
-        C4Counter = _sage_const_0  
-        C1Counter = _sage_const_0 
-        r = self.r
-        C4Counter += self.C_6_klm_sym_squared()
-        if r % _sage_const_4  != _sage_const_0 :
-            return C4Counter, C1Counter
-        elif r % _sage_const_3  != _sage_const_0 :
-            # We start by dealing with cases concerning a difference of r/4 
-            # Case 1a 
-            k = _sage_const_1  
-            while k < r/_sage_const_6 : 
-                C4Counter += _sage_const_1  
-                k += _sage_const_1 
-            # Case 1b
-            k = math.ceil(_sage_const_3 *r/_sage_const_8 )
-            while k < r/_sage_const_2 :
-                C4Counter += _sage_const_1 
-                k += _sage_const_1  
-            # Case 2a 
-            k = math.ceil(r/_sage_const_6 )
-            while k < r/_sage_const_4 :
-                k += _sage_const_1 
-                C4Counter += _sage_const_1 
-            # Case 2b 
-            k = int(r/_sage_const_2 ) + _sage_const_1  
-            while k < _sage_const_7  * r/_sage_const_12 :
-                k += _sage_const_1  
-                C4Counter += _sage_const_1  
-            # Case 3a
-            k = _sage_const_1  
-            while k < r/_sage_const_4 :
-                if r % _sage_const_8  == _sage_const_0  and k%_sage_const_2  == _sage_const_0 : 
-                    C4Counter += _sage_const_1 
-                elif r%_sage_const_8  == _sage_const_4  and k%_sage_const_2  == _sage_const_1 :
-                    C4Counter += _sage_const_1 
-                k += _sage_const_1 
-            # Case 3b
-            k = math.ceil(r/_sage_const_4 )
-            while k < _sage_const_7 /_sage_const_12  * r:
-                if r % _sage_const_8  == _sage_const_0  and k % _sage_const_2  == _sage_const_0 :
-                    C4Counter += _sage_const_1  
-                if r % _sage_const_8  == _sage_const_4  and k % _sage_const_2  == _sage_const_1 :
-                    C4Counter += _sage_const_1 
-                k += _sage_const_1  
-            # Now we move onto cases concerning a difference of 3r/4
-            # Case 1b
-            k = math.ceil(r/_sage_const_8 )
-            while k < r/_sage_const_6 :
-                k += _sage_const_1  
-                C4Counter += _sage_const_1 
-            # Case 2a
-            k = _sage_const_1 
-            while k < r/_sage_const_12 :
-                k += _sage_const_1  
-                C4Counter += _sage_const_1 
-            # Case 2b
-            k = math.ceil(r/_sage_const_6 )
-            while k <= r/_sage_const_4 : # note the '<=' weird huh?
-                k += _sage_const_1 
-                C4Counter += _sage_const_1 
-            # Case 3a
-            k = _sage_const_1  
-            while k <= r/_sage_const_12 :
-                if r%_sage_const_8  == _sage_const_0  and k % _sage_const_2  == _sage_const_0 :
-                    C4Counter += _sage_const_1 
-                elif r%_sage_const_8  == _sage_const_4  and k % _sage_const_2  == _sage_const_1 :
-                    C4Counter += _sage_const_1 
-                k += _sage_const_1  
-            # When 4 | r we get exactly 1 C1
-            C4Counter -= _sage_const_3  
-            C1Counter += _sage_const_1 
-        else:
-            # We start by dealing with cases concerning a difference of r/4 
-            # Case 1a 
-            k = _sage_const_1  
-            while k <= r/_sage_const_12 : 
-                C4Counter += _sage_const_1  
-                k += _sage_const_1 
-            # Case 2a 
-            k = math.ceil(_sage_const_5 *r/_sage_const_24 ) # this is weird no?
-            while k < r/_sage_const_4 :
-                k += _sage_const_1 
-                C4Counter += _sage_const_1 
-            # Case 3a
-            k = math.ceil(r/_sage_const_12 )
-            while k < r/_sage_const_4 :
-                if r % _sage_const_8  == _sage_const_0  and k%_sage_const_2  == _sage_const_0 : 
-                    C4Counter += _sage_const_1 
-                elif r%_sage_const_8  == _sage_const_4  and k%_sage_const_2  == _sage_const_1 :
-                    C4Counter += _sage_const_1 
-                k += _sage_const_1 
-            # Now we move onto cases concerning a difference of 3r/4
-            # Case 2a
-            k = _sage_const_1 
-            while k < r/_sage_const_12 :
-                k += _sage_const_1  
-                C4Counter += _sage_const_1 
-            # Case 3a
-            k = _sage_const_1  
-            while k <= r/_sage_const_12 :
-                if r%_sage_const_8  == _sage_const_0  and k % _sage_const_2  == _sage_const_0 :
-                    C4Counter += _sage_const_1 
-                elif r%_sage_const_8  == _sage_const_4  and k % _sage_const_2  == _sage_const_1 :
-                    C4Counter += _sage_const_1 
-                k += _sage_const_1  
-            # When 4 | r we get exactly 1 C1
-            C4Counter -= _sage_const_3  
-            C1Counter += _sage_const_1 
-            # We over counted the C1 case because there was a differnece of r/2 between k and m and so it was flagged by the squared function
-            C4Counter -= _sage_const_1 
-        return C4Counter, C1Counter
-        return C4Counter, C1Counter
-        
+            
 
 
 

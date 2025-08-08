@@ -17,8 +17,6 @@ import os
 import time
 from datetime import datetime
 
-
-
 def save_output(data, file):
     with open(file, "a") as f:
         f.write(json.dumps(data) + "\n")
@@ -50,6 +48,30 @@ save_output(result)
 G = GroupCharactersPSU3(5, 2)
 result = G.the_game(G.characters[0], 10)
 print(result)
+
+save_output(result)
+
 """
 # save_output(result)
+"""
+def get_char_sym(self, k, chi, a): 
+    unicorn = get_unicorn(a) 
+    for primes in range(len(get_unicorn(a)): 
+        for item in primes
+            if len(
+        q =  unicorn[primes][0]
+        G = GroupCharactersPSU3(
+    #print out characters for several symmetric powers for many PSU(3,q) 
+    # to go through and run all of the different groups, we just need to look thorugh e
+    for i in range(2, k+1): 
+        sym_power(self, chi, k) 
+
+"""
+def get_groups(a, k, chi): 
+    G = GroupCharactersPSU3(_sage_const_3 , a)
+    pps = G.get_unicorn(a)
+    for group in range(len(pps)): 
+
+
+print(get_unicorn(_sage_const_10 ))
 

@@ -4,6 +4,7 @@ import time
 load("group_characters.sage")
 class GroupCharactersPSU3(GroupCharacters):
     q = 1
+    p = 0
     d = 0
     r = 0
     s = 0
@@ -28,7 +29,8 @@ class GroupCharactersPSU3(GroupCharacters):
         self.q = prime**exp
         self.characteristic = prime
         q = self.q
-        p = prime
+        self.p = prime
+        p = self.p
         self.d = gcd(3,q+1)
         d = self.d
         r = q+1
@@ -302,6 +304,301 @@ class GroupCharactersPSU3(GroupCharacters):
             w = min(w, w*(-q) % tp, w*q*q % tp)
             return f"C_8^{w}"
     
+    def C_1_squared(self):
+        C1Counter = 1
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+    
+    def C_1_cubed(self):
+        C1Counter = 1
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_1_forth(self):
+        C1Counter = 1
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+    
+    def C_2_squared(self):
+        C1Counter = 0
+        C2Counter = 1
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        p = self.p
+        if p == 2:
+            C1Counter += 1
+            C2Counter -= 1
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_2_cubed(self):
+        C1Counter = 0
+        C2Counter = 1
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        p = self.p
+        if p == 3:
+            C1Counter += 1
+            C2Counter -= 1
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_2_forth(self):
+        C1Counter = 0
+        C2Counter = 1
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        p = self.p
+        if p == 2:
+            C1Counter += 1
+            C2Counter -= 1
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_3_squared(self):
+        d = self.d
+        p = self.p
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = d
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        if p == 2:
+            C2Counter += d
+            C3Counter -= d
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    
+    def C_3_cubed(self):
+        d = self.d
+        p = self.p
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = d
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        if p == 3:
+            C1Counter += d
+            C3Counter -= d
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    
+    def C_3_forth(self):
+        d = self.d
+        p = self.p
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = d
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        if p == 2:
+            C1Counter += d
+            C3Counter -= d
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_4_squared(self):
+        q = self.q
+        d = self.d
+        C1Counter = 0
+        C4Counter = (q+1)//d-1
+        C2Counter = 0
+        C3Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        if q % 2 == 1:
+            C1Counter += 1
+            C4Counter -= 1
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_4_cubed(self):
+        q = self.q
+        d = self.d
+        C1Counter = 0
+        C4Counter = (q+1)//d-1
+        C2Counter = 0
+        C3Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        if (q+1) % 9 == 0:
+            C1Counter += 2
+            C4Counter -= 2
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_4_forth(self):
+        q = self.q
+        d = self.d
+        C1Counter = 0
+        C4Counter = (q+1)//d-1
+        C2Counter = 0
+        C3Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        if (q+1) % 4 == 0: 
+            C1Counter += 3
+            C4Counter -= 3
+        elif (q+1) % 2 == 0:
+            C1Counter += 1
+            C4Counter -= 1
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_5_squared(self):
+        q = self.q
+        d = self.d
+        p = self.p
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = (q+1)//d-1
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        if q % 2 == 1:
+            C2Counter +=1
+            C5Counter -= 1
+        if p == 2:
+            C4Counter += (q+1)//d-1
+            C5Counter -= (q+1)//d-1
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_5_cubed(self):
+        q = self.q
+        d = self.d
+        p = self.p
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = (q+1)//d-1
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        if (q+1) % 9 == 0:
+            C2Counter += 2
+            C5Counter -= 2
+        if p == 3:
+            C4Counter += (q+1)//d-1
+            C5Counter-= (q+1)//d-1 
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_5_forth(self):
+        q = self.q
+        d = self.d
+        p = self.p
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = (q+1)//d-1
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        if (q+1) % 2 == 0:
+            C2Counter += 1
+            C5Counter -= 1
+        if p == 2:
+            C4Counter += (q+1)//d-1
+            C5Counter-= (q+1)//d-1 
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_6_p_squared(self):
+        d = self.d
+        C6pCounter = 1-(3-d)//2
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_6_p_cubed(self):
+        d = self.d
+        C6pCounter = 0
+        C1Counter = 1-(3-d)//2
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_6_p_forth(self):
+        d = self.d
+        C6pCounter = 1-(3-d)//2
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = 0
+
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+
     def C_6_klm_sym_squared(self):
         C4Counter = 0
         C1Counter = 0
@@ -407,6 +704,110 @@ class GroupCharactersPSU3(GroupCharacters):
                 k += 1
 
         return C4Counter
+    
+    def C_7_squared(self):
+        p = self.p
+        q = self.q
+        d = self.d
+        totalnum = (q*q-q+1-d)//(2*self.d) - (3-d)//2
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = totalnum
+        C8Counter = 0
+        if q % 2 != 0:
+            C4Counter += (q+1)//(2*self.d)
+            C7Counter = C7Counter - (q+1)//(2*self.d)
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_7_cubed(self):
+        p = self.p
+        q = self.q
+        d = self.d
+        totalnum = (q*q-q+1-d)//(2*self.d) - (3-d)//2
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = totalnum
+        C8Counter = 0
+        if q % 3 == 1:
+            C1Counter += 1
+            C7Counter -= 1
+            C4Counter += q
+            C7Counter -= q
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_7_forth(self):
+        p = self.p
+        q = self.q
+        d = self.d
+        totalnum = (q*q-q+1-d)//(2*self.d) - (3-d)//2
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = totalnum
+        C8Counter = 0
+        if q % 2 != 0:
+            C1Counter += 1
+            C7Counter -= 1
+        if q % 4 == 1:
+            C4Counter += (q+1)//(2*self.d)
+            C7Counter -= (q+1)//(2*self.d)
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+    
+    def C_8_squared(self):
+        q = self.q
+        d = self.d
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = ((q*q-q+1)//d-1)//3
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+    
+    def C_8_cubed(self):
+        q = self.q
+        d = self.d
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = ((q*q-q+1)//d-1)//3
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+    
+    def C_8_forth(self):
+        q = self.q
+        d = self.d
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = ((q*q-q+1)//d-1)//3
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
     
     def C_6_klm_sym_fourth(self):
         C4Counter = 0 
@@ -570,7 +971,15 @@ print(i)
 print(G.C_6_klm_sym_squared())
 print(G.C_6_klm_sym_squared_explicit())
 
-i = 0
+i1 = 0
+i2 = 0
+i3 = 0
+i4 = 0
+i5 = 0
+i6p = 0
+i6klm = 0
+i7 = 0
+i8 = 0
 for g in G.classes:
     if g[2] == "6" and g[3] != "'":
         if G.power_of(g, 3)[2] != "6":
