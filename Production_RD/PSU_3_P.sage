@@ -340,26 +340,44 @@ class GroupCharactersPSU3(GroupCharacters):
                         k += 1
         # d = 3 case
         else: 
-            # Case 3a
-            k = math.ceil(r/12)
-            while k < r/6:
-                k += 1
-                C4Counter += 1
-            # Case 2a 
-            if self.r % 4 == 0:
-                k = 1
+            if self.r % 2 == 1:
+                pass
+            else:
+                # Case 3a
+                k = math.ceil(r/12)
                 while k < r/6:
-                    if k % 2 == 0:
-                        C4Counter += 1
                     k += 1
-            else: 
-                k = 1
-                while k < r/6:
-                    if k % 2 == 1:
-                        C4Counter += 1
-                    k += 1
+                    C4Counter += 1
+                # Case 2a 
+                if self.r % 4 == 0:
+                    k = 1
+                    while k < r/6:
+                        if k % 2 == 0:
+                            C4Counter += 1
+                        k += 1
+                else: 
+                    k = 1
+                    while k < r/6:
+                        if k % 2 == 1:
+                            C4Counter += 1
+                        k += 1
 
         return C4Counter
+    def C_6_klm_sym_squared_explicit(self):
+        a = self.r % 12
+        r = self.r
+        if a in [1,3,5,7,9,11]:
+            return (0,0)
+        if a in [2, 10]:
+            total = 0 - math.ceil(r/4) + math.floor(r/6) + r/2  + math.ceil(math.floor(r/6)/2)
+            return total
+        if a in [4, 8]:
+            total = -1 * math.floor(r/4) + 1 + math.floor(r/6) + r/2 + math.floor((math.ceil(r/6) - 1)/2) - 1
+            return total
+        if a == 6:
+            return r/6 - 1
+        if a == 0:
+            return r/6 - 1 
 
     def C_6_klm_sym_cubed(self):
         C4Counter = 0 
@@ -389,7 +407,121 @@ class GroupCharactersPSU3(GroupCharacters):
                 k += 1
 
         return C4Counter
-            
+    
+    def C_6_klm_sym_fourth(self):
+        C4Counter = 0 
+        C1Counter = 0
+        r = self.r
+        C4Counter += self.C_6_klm_sym_squared()
+        if r % 4 != 0:
+            return C4Counter, C1Counter
+        elif r % 3 != 0:
+            # We start by dealing with cases concerning a difference of r/4 
+            # Case 1a 
+            k = 1 
+            while k < r/6: 
+                C4Counter += 1 
+                k += 1
+            # Case 1b
+            k = math.ceil(3*r/8)
+            while k < r/2:
+                C4Counter += 1
+                k += 1 
+            # Case 2a 
+            k = math.ceil(r/6)
+            while k < r/4:
+                k += 1
+                C4Counter += 1
+            # Case 2b 
+            k = int(r/2) + 1 
+            while k < 7 * r/12:
+                k += 1 
+                C4Counter += 1 
+            # Case 3a
+            k = 1 
+            while k < r/4:
+                if r % 8 == 0 and k%2 == 0: 
+                    C4Counter += 1
+                elif r%8 == 4 and k%2 == 1:
+                    C4Counter += 1
+                k += 1
+            # Case 3b
+            k = math.ceil(r/4)
+            while k < 7/12 * r:
+                if r % 8 == 0 and k % 2 == 0:
+                    C4Counter += 1 
+                if r % 8 == 4 and k % 2 == 1:
+                    C4Counter += 1
+                k += 1 
+            # Now we move onto cases concerning a difference of 3r/4
+            # Case 1b
+            k = math.ceil(r/8)
+            while k < r/6:
+                k += 1 
+                C4Counter += 1
+            # Case 2a
+            k = 1
+            while k < r/12:
+                k += 1 
+                C4Counter += 1
+            # Case 2b
+            k = math.ceil(r/6)
+            while k <= r/4: # note the '<=' weird huh?
+                k += 1
+                C4Counter += 1
+            # Case 3a
+            k = 1 
+            while k <= r/12:
+                if r%8 == 0 and k % 2 == 0:
+                    C4Counter += 1
+                elif r%8 == 4 and k % 2 == 1:
+                    C4Counter += 1
+                k += 1 
+            # When 4 | r we get exactly 1 C1
+            C4Counter -= 3 
+            C1Counter += 1
+        else:
+            # We start by dealing with cases concerning a difference of r/4 
+            # Case 1a 
+            k = 1 
+            while k <= r/12: 
+                C4Counter += 1 
+                k += 1
+            # Case 2a 
+            k = math.ceil(5*r/24) # this is weird no?
+            while k < r/4:
+                k += 1
+                C4Counter += 1
+            # Case 3a
+            k = math.ceil(r/12)
+            while k < r/4:
+                if r % 8 == 0 and k%2 == 0: 
+                    C4Counter += 1
+                elif r%8 == 4 and k%2 == 1:
+                    C4Counter += 1
+                k += 1
+            # Now we move onto cases concerning a difference of 3r/4
+            # Case 2a
+            k = 1
+            while k < r/12:
+                k += 1 
+                C4Counter += 1
+            # Case 3a
+            k = 1 
+            while k <= r/12:
+                if r%8 == 0 and k % 2 == 0:
+                    C4Counter += 1
+                elif r%8 == 4 and k % 2 == 1:
+                    C4Counter += 1
+                k += 1 
+            # When 4 | r we get exactly 1 C1
+            C4Counter -= 3 
+            C1Counter += 1
+            # We over counted the C1 case because there was a differnece of r/2 between k and m and so it was flagged by the squared function
+            C4Counter -= 1
+        return C4Counter, C1Counter
+        return C4Counter, C1Counter
+        
 
 
 
@@ -427,7 +559,7 @@ start = time.time()
 end = time.time()
 print(f"Elapsed time: {end - start:.4f} seconds")   
 i = 0
-G = GroupCharactersPSU3(2, 5)
+G = GroupCharactersPSU3(31, 1)
 for g in G.classes:
     if g[2] == "6":
         if G.power_of(g, 2)[2] != "6":
@@ -436,7 +568,7 @@ for g in G.classes:
             i += 1
 print(i)
 print(G.C_6_klm_sym_squared())
-
+print(G.C_6_klm_sym_squared_explicit())
 
 i = 0
 for g in G.classes:
@@ -445,7 +577,17 @@ for g in G.classes:
             print(g)
             print(f"g cubed is {G.power_of(g, 3)}")
             i += 1
-print(f"emperical problem cases (cube): {i}")
+print(f"empirical problem cases (cube): {i}")
 print(f"predicted problem cases (cube): {G.C_6_klm_sym_cubed()}")
 
+
+i = 0
+for g in G.classes:
+    if g[2] == "6" and g[3] != "'":
+        if G.power_of(g, 4)[2] != "6":
+            print(g)
+            print(f"g to the fourth is {G.power_of(g, 4)}")
+            i += 1
+print(f"empirical problem cases (4th): {i}")
+print(f"predicted problem cases (4th): {G.C_6_klm_sym_fourth()}")
 # so, this doesn't quite work. I don't know what's going on here but it looks like we're undercounting by 1 or 2 sometimes but asymptotically we're overcounting? 
