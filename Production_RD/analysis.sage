@@ -1,5 +1,10 @@
 import json
-
+load("helper_functions.sage")
+load("PSU_3_P.sage")
+load("group_characters.sage")
+"""
+Function identifies from which character index the best bound 
+"""
 def get_data(file_name): 
     data = []
     # Turn the json file into a list of dictionaries
@@ -44,7 +49,7 @@ def get_points(data):
         if invariant == 4: 
             num_deg4 += 1
     return points 
-"""       
+"""
 def plot(points): #want x to be prime_power and y to be degree 
     prime_powers = [] #need to identify btw distinct primes and their powers 
     colors = {}
@@ -76,8 +81,8 @@ def get_char_sym(a):
         G = GroupCharacters(3,q)
         print(f'Symmetric powers for PSU(3, {q} G.sym_power(chi,k) \n')  
 print(get_char_sym(7)) 
-"""
-"""
+
+
 def get_color_tex(file_name, latex_file):  
     data = []
     # Turn the json file into a list of dictionaries
@@ -110,18 +115,42 @@ def get_color_tex(file_name, latex_file):
                 f.write(f"\\hline\n \rowcolor{c6} {q} & {dim_v} & {bound} & {molien} & {invariants} & {miu} & {rd_miu} \\\\\n")
                 retrun True 
             if dim_v >= miu and limitation == "versality-degree"  == True: 
-                
-"""
-            
+ """               
+       
 # c1 = stopped by deg >= mu(G) % does this ever happen?
 # c6 = stopped by RD(deg)  # c5 = both of the above
 # c4 = smallest permutation rep beats the bound from the Game
 
-            # f.write(f"\\hline\n{q} & {dim_v} & {bound} & {molien} & {invariants} & {miu} & {rd_miu} \\\\\n")
+        # f.write(f"\\hline\n{q} & {dim_v} & {bound} & {molien} & {invariants} & {miu} & {rd_miu} \\\\\n")
+"""
+:param chi: G.character[i] integer 
+:param k: int 
+:return: coefficients of the molien series up to kth deg
+"""
+def molien_marsupial(G, chi, k): 
+    print("------the game-------") 
+    print(G.the_game(chi,k))
+    print("------get_coef-------") 
+    print(G.get_coef(chi,k))
+    print("------molien coeff-------") 
+    print(G.molien_coeff(chi,k))
+    coefficients = G.molien_coeff(chi,k)
+    for i in range(len(coefficients)): 
+        if i == 1: 
+            coef = str(coefficients[i])
 
-def molien_marsupial(chi, k): 
-    G = 
-    G.get_molien
+"""
+    series = " "
+    term = 0 
+    for term in len(coef): 
+        if term == 0: 
+            series = f"{term}"
+        if power <= len(coef) + 1: 
+            series = f"{term}t^power  
+"""
+
+
+    
 
 def get_tex(file_name, latex_file): 
     data = []
@@ -149,10 +178,16 @@ def get_tex(file_name, latex_file):
             f.write(f"\\hline\n{q} & {dim_v} & {bound} & {molien} & {invariants} & {miu} & {rd_miu} \\\\\n")
 
 def main(): 
-    file_name = "psu_3_q.json"
-    latex_file = "latex_3.txt"
-    get_tex(file_name, latex_file) 
-    print(get_tex(file_name, latex_file))
+    #file_name = "psu_3_q.json"
+    #latex_file = "latex_3.txt"
+    #get_tex(file_name, latex_file) 
+    #G = GroupCharacters("SU(3, 11)")
+    #G = GroupCharacters(f"PSU(3,{9})")
+    G = GroupCharactersPSU3(11,1)
+    chi = G.characters[1]
+    print(chi) 
+    k = 6
+    molien_marsupial(G, chi, k) 
 
 
 
