@@ -378,7 +378,7 @@ class GroupCharactersPSU3(GroupCharacters):
                 if k % 2 == 0:
                     C4Counter += 1
                 k += 1
-            # Case 2a, 3a difference = 2r/3
+            # Case 2a, 3a difference = 2r/3 
             k = 1
             while k < r/9:
                 C4Counter += 1
