@@ -308,6 +308,121 @@ class GroupCharactersPSU3(GroupCharacters):
             w = min(w, w*(-q) % tp, w*q*q % tp)
             return f"C_8^{w}"
     
+    def C_1_squared(self):
+        C1Counter = _sage_const_1 
+        return C1Counter
+    
+    def C_1_cubed(self):
+        C1Counter = _sage_const_1 
+        return C1Counter
+
+    def C_1_forth(self):
+        C1Counter = _sage_const_1 
+        return C1Counter
+    
+    def C_2_squared(self):
+        C1Counter = _sage_const_0 
+        C2Counter = _sage_const_0 
+        p = self.p
+        if p == _sage_const_2 :
+            C1Counter += _sage_const_1 
+        C2Counter += _sage_const_1 
+        return (C1Counter,C4Counter)
+
+    def C_2_cubbed(self):
+        C1Counter = _sage_const_0 
+        C2Counter = _sage_const_0 
+        p = self.p
+        if p == _sage_const_3 :
+            C1Counter += _sage_const_1 
+        C2Counter += _sage_const_1 
+        return (C1Counter,C4Counter)
+
+    def C_2_forth(self):
+        C1Counter = _sage_const_0 
+        C2Counter = _sage_const_0 
+        p = self.p
+        if p = _sage_const_2 :
+            C1Counter += _sage_const_1 
+        C2Counter += _sage_const_1 
+        return (C1Counter,C4Counter)
+
+    def C_4_squared(self):
+        q = self.q
+        d = self.d
+        C1Counter = _sage_const_1 
+        C4Counter = (q+_sage_const_1 )//d-_sage_const_2 
+        return (C1Counter, C4Counter)
+
+    def C_4_cubbed(self):
+        q = self.q
+        d = self.d
+        C1Counter = _sage_const_2 
+        C4Counter = (q+_sage_const_1 )//d-_sage_const_3 
+        return (C1Counter, C4Counter)
+
+    def C_4_forth(self):
+        q = self.q
+        d = self.d
+        C1Counter = _sage_const_3 
+        C4Counter = (q+_sage_const_1 )//d-_sage_const_4 
+        return (C1Counter, C4Counter)
+
+    def C_5_squared(self):
+        q = self.q
+        d = self.d
+        p = self.p
+        C1Counter = _sage_const_0 
+        C2Counter = _sage_const_0 
+        C5Counter = (q+_sage_const_1 )//d-_sage_const_2 
+        if p = _sage_const_2 :
+            C1Counter += _sage_const_1 
+        C2Counter+=_sage_const_1 
+        return (C1Counter, C2Counter, C5Counter)
+
+    def C_5_cubbed(self):
+        q = self.q
+        d = self.d
+        p = self.p
+        C1Counter = _sage_const_0 
+        C2Counter = _sage_const_0 
+        C5Counter = (q+_sage_const_1 )//d-_sage_const_3 
+        if p = _sage_const_3 :
+            C1Counter += _sage_const_2 
+        C2Counter+=_sage_const_2 
+        return (C1Counter, C2Counter, C5Counter)
+
+    def C_5_squared(self):
+        q = self.q
+        d = self.d
+        p = self.p
+        C1Counter = _sage_const_0 
+        C2Counter = _sage_const_0 
+        C5Counter = (q+_sage_const_1 )//d-_sage_const_4 
+        if p = _sage_const_2 :
+            C1Counter += _sage_const_3 
+        C2Counter+=_sage_const_3 
+        return (C1Counter, C2Counter, C5Counter)
+
+    def C_6_p_squared(self):
+        d = self.d
+        C6pCounter = _sage_const_1 -(_sage_const_3 -d)//_sage_const_2 
+        C1Counter = _sage_const_0 
+        return(C1Counter, C6pCounter)
+    
+    def C_6_p_cubbed(self):
+        d = self.d
+        C6pCounter = _sage_const_0 
+        C1Counter = _sage_const_1 -(_sage_const_3 -d)//_sage_const_2 
+        return(C1Counter, C6pCounter)
+
+    def C_6_p_forth(self):
+        d = self.d
+        C6pCounter = _sage_const_1 -(_sage_const_3 -d)//_sage_const_2 
+        C1Counter = _sage_const_0 
+        return(C1Counter, C6pCounter)
+
+
     def C_6_klm_sym_squared(self):
         C4Counter = _sage_const_0 
         C1Counter = _sage_const_0 
@@ -395,6 +510,64 @@ class GroupCharactersPSU3(GroupCharacters):
                 k += _sage_const_1 
 
         return C4Counter
+        
+        def C_7_squared(self):
+            p = self.p
+            q = self.q
+            d = self.d
+            totalnum = (q*q-_sage_const_1 +_sage_const_1 -d)//(_sage_const_2 *self.d) - (_sage_const_3 -d)%_sage_const_2 
+            C1Counter = _sage_const_0 
+            C4Counter = _sage_const_0 
+            C7Counter = totalnum
+            if q % _sage_const_2  != _sage_const_0 :
+                C1Counter += _sage_const_1 
+                C4Counter += (q+_sage_const_1 )//(_sage_const_2 *self.d)
+                C7Counter = C7Counter - _sage_const_1  - (q+_sage_const_1 )//(_sage_const_2 *self.d)
+            return (C1Counter, C4Counter, C7Counter)
+
+        def C_7_cubbed(self):
+            p = self.p
+            q = self.q
+            d = self.d
+            totalnum = (q*q-_sage_const_1 +_sage_const_1 -d)//(_sage_const_2 *self.d) - (_sage_const_3 -d)%_sage_const_2 
+            C1Counter = _sage_const_0 
+            C4Counter = _sage_const_0 
+            C7Counter = totalnum
+            if q % _sage_const_3  != _sage_const_0 :
+                C1Counter += _sage_const_1 
+                C7Counter -= _sage_const_1 
+            if q % _sage_const_3  = _sage_const_1 :
+                C4Counter += (q+_sage_const_1 )//(_sage_const_2 *self.d)
+                C7Counter -= (q+_sage_const_1 )//(_sage_const_2 *self.d)
+            return (C1Counter, C4Counter, C7Counter)
+
+        def C_7_forth(self):
+            p = self.p
+            q = self.q
+            d = self.d
+            totalnum = (q*q-_sage_const_1 +_sage_const_1 -d)//(_sage_const_2 *self.d) - (_sage_const_3 -d)%_sage_const_2 
+            C1Counter = _sage_const_0 
+            C4Counter = _sage_const_0 
+            C7Counter = totalnum
+            if q % _sage_const_2  != _sage_const_0 :
+                C1Counter += _sage_const_1 
+                C7Counter -= _sage_const_1 
+            if q % _sage_const_4  = _sage_const_1 :
+                C4Counter += (q+_sage_const_1 )//(_sage_const_2 *self.d)
+                C7Counter -= (q+_sage_const_1 )//(_sage_const_2 *self.d)
+            return (C1Counter, C4Counter, C7Counter)
+
+        def C_8_squared(self):
+            C8Counter = (q*q-q+_sage_const_1 )//d
+            return (C8Counter)
+        
+        def C_8_cubbed(self):
+            C8Counter = (q*q-q+_sage_const_1 )//d
+            return (C8Counter)
+        
+        def C_8_forth(self):
+            C8Counter = (q*q-q+_sage_const_1 )//d
+            return (C8Counter)
             
 
 
@@ -455,7 +628,4 @@ print(f"emperical problem cases (cube): {i}")
 print(f"predicted problem cases (cube): {G.C_6_klm_sym_cubed()}")
 
 # so, this doesn't quite work. I don't know what's going on here but it looks like we're undercounting by 1 or 2 sometimes but asymptotically we're overcounting? 
-
-G = GroupCharactersPSU3(_sage_const_3 ,_sage_const_5 )
-print(power_of(C_3**{_sage_const_2 },_sage_const_4 ))
 

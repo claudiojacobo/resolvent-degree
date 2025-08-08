@@ -13,6 +13,7 @@ import time
 from datetime import datetime
 
 
+
 def save_output(data, file):
     with open(file, "a") as f:
         f.write(json.dumps(data) + "\n")
@@ -30,9 +31,6 @@ for q in [2,3,4,5,7,8,9,11,13,16,17,19,23]:
     print(q)
     print(result,end="\n\n")
 '''
-G = GroupCharacters("SL(2, 11)")
-print(G.the_game(G.characters[1],7))
-# we want to compare the miminum perm rep of PSU(2, q), instead of SL(2, q)
 '''
 file = "ElderlyOwl-data-dump.json"
 for a,b in get_unicorn(150):
@@ -62,7 +60,7 @@ with open("Acorn-data-dump.json", "r") as f:
             save_output(entry, file)
 '''
 
-'''
+
 file = "Carmen-data-dump.json"
 for a,b in get_unicorn(126):
     c, d = b.split(',')
@@ -77,17 +75,58 @@ for a,b in get_unicorn(126):
         save_output(result, file)
 
 
-G = GroupCharactersPSU3(3, 6)
-result = G.the_game(G.characters[0], 7)
-print(result)
-save_output(result)
+file = "Condensed-Carmen.json"
+with open("Carmen-data-dump.json", "r") as f:
+    for line in f:
+        entry = json.loads(line)
+        if entry.get("character_index") == "0":
+            save_output(entry, file)
+
+'''
+file = "Condensed-Owl.json"
+with open("ElderlyOwl-data-dump.json", "r") as f:
+    for line in f:
+        entry = json.loads(line)
+        if entry.get("character_index") == "0":
+            save_output(entry, file)
+'''
+group = []
+with open("Condensed-Owl.json", "r") as f:
+    for line in f:
+        entry = json.loads(line)
+        group.append(entry.get("limitation"))
+
+all_lim = ["\clubsuit", "\star", "\diamondsuit"]
+def all_lim_convert(lst):
+    return[x if x in lst else " " for x in all_lim]
+
+for g in group:
+    #new_g = [item.replace("generic-freeness", "\clubsuit").replace("versality-degree", "\star").replace("permutation-rep", "\diamondsuit") for item in g]
+    EO = ["$\\clubsuit$" if any("generic-freeness" in item for item in g) else "-"]
+    #print(" ".join(EO))
+
+# g[0],g[1],g[2],g[3],g[4],g[5]
+
+'''
+deg2 = []
+deg3 = []
+deg4 = []
+with open("Condensed-Owl.json", "r") as f:
+    for line in f: 
+        entry = json.loads(line)
+        deg2.append(entry["total polynomials"][2])
+        deg3.append(entry["total polynomials"][3])
+        deg4.append(entry["total polynomials"][4])
+
+output = "\t".join(deg2)
+print("deg2", output)
 '''
 
 
+
 # 31, 37, 41, 43, 47
-"""
-G = GroupCharactersPSU3(5, 2)
-result = G.the_game(G.characters[0], 10)
-print(result)
-"""
+
+# G = GroupCharactersPSU3(5, 2)
+# result = G.the_game(G.characters[0], 10)
 # save_output(result)
+
