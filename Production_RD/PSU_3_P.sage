@@ -670,7 +670,7 @@ class GroupCharactersPSU3(GroupCharacters):
             total = 0 - math.ceil(r/4) + math.floor(r/6) + r/2  + math.ceil(math.floor(r/6)/2)
             return total
         if a in [4, 8]:
-            total = -1 * math.floor(r/4) + 1 + math.floor(r/6) + r/2 + math.floor((math.ceil(r/6) - 1)/2) - 1
+            total = -1 * math.floor(r/4) + math.floor(r/6) + r/2 + math.floor((math.ceil(r/6) - 1)/2)
             return total
         if a == 6:
             return r/6 - 1
@@ -961,7 +961,7 @@ start = time.time()
 end = time.time()
 print(f"Elapsed time: {end - start:.4f} seconds")   
 i = 0
-G = GroupCharactersPSU3(19, 1)
+G = GroupCharactersPSU3(5, 2)
 for g in G.classes:
     if g[2] == "6":
         if G.power_of(g, 2)[2] != "6":
