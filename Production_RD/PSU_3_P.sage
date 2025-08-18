@@ -703,8 +703,35 @@ class GroupCharactersPSU3(GroupCharacters):
                 elif r % 6 == 3 and k % 2 == 1:
                     C4Counter += 1
                 k += 1
-
         return C4Counter
+    def C_6_klm_sym_cubed_explicit(self):
+        C4Counter = 0
+        r = self.r
+        a = r % 12
+        if a%3 != 0:
+            pass
+        if a%6 == 0:
+            # Case 2a
+            C4Counter +=  (ceil(2*r/9) - 1) - ceil(r/6) + 1
+            # Case 3a
+            C4Counter += floor((ceil(2*r/9) - 1)/2)
+            # Case 2a, 3a diff of 2r/3
+            C4Counter += ceil(r/9) - 1 
+
+            
+            C4Counter += floor((ceil(r/9) - 1)/2)
+
+        if a%6 == 3:
+            # Case 2a
+            C4Counter += (ceil(2*r/9) - 1) - ceil(r/6) + 1
+            # Case 3a
+            C4Counter += floor((ceil(2*r/9) - 1)/2)
+            # Case 2a, 3a diff of 2r/3
+            C4Counter += ceil(r/9) - 1   
+            C4Counter += ceil((ceil(r/9) - 1)/2)
+        return C4Counter
+
+        
     
     def C_7_squared(self):
         p = self.p
@@ -957,7 +984,7 @@ start = time.time()
 
 # currently fails for q = 125, 4, 8, 3, 7, 27 -- struggling with third powers, small primes, and a couple other things?
 # Works for: q = 2, 5, 25, 16, 32, 49, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47
-
+"""
 end = time.time()
 print(f"Elapsed time: {end - start:.4f} seconds")   
 i = 0
@@ -981,6 +1008,9 @@ i6p = 0
 i6klm = 0
 i7 = 0
 i8 = 0
+
+i = 0
+G = GroupCharactersPSU3(53, 1)
 for g in G.classes:
     if g[2] == "6" and g[3] != "'":
         if G.power_of(g, 3)[2] != "6":
@@ -989,7 +1019,18 @@ for g in G.classes:
             i += 1
 print(f"empirical problem cases (cube): {i}")
 print(f"predicted problem cases (cube): {G.C_6_klm_sym_cubed()}")
-
+print(G.C_6_klm_sym_cubed_explicit())
+"""
+i = 0
+G = GroupCharactersPSU3(53, 1)
+for g in G.classes:
+    if g[2] == "8":
+        print(g)
+        print(f"g cubed is {G.power_of(g, 3)}")
+        i += 1
+print(f"empirical problem cases (cube): {i}")
+print(f"predicted problem cases (cube): {G.C_8_cubed()}")
+"""
 
 i = 0
 for g in G.classes:
@@ -1000,4 +1041,5 @@ for g in G.classes:
             i += 1
 print(f"empirical problem cases (4th): {i}")
 print(f"predicted problem cases (4th): {G.C_6_klm_sym_fourth()}")
+"""
 # so, this doesn't quite work. I don't know what's going on here but it looks like we're undercounting by 1 or 2 sometimes but asymptotically we're overcounting? 
