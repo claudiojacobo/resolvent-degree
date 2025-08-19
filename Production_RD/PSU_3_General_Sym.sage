@@ -346,7 +346,7 @@ def C_4_cubed(modulus):
     C6klmCounter = 0
     C7Counter = 0
     C8Counter = 0
-    if modulus + 1 % 9 == 0: # going to need the mod we're dealing with to be divisible by 9
+    if (modulus + 1) % 9 == 0: # going to need the mod we're dealing with to be divisible by 9
         C1Counter += 2
         C4Counter -= 2
     return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
@@ -707,7 +707,7 @@ def C_6_klm_sym_fourth(modulus):
 
 def C_6_klm_sym_cubed_explicit(modulus):
         C4Counter = 0
-        a = modulus + 1 % 12
+        a = (modulus + 1) % 12
         if a%3 != 0:
             pass
         if a%6 == 0:
@@ -728,6 +728,68 @@ def C_6_klm_sym_cubed_explicit(modulus):
             C4Counter += ceil(r/9) - 1   
             C4Counter += ceil((ceil(r/9) - 1)/2)
         return (0, 0, 0, C4Counter, 0, 0, tpp - rpp - C4Counter, 0, 0)
+
+def C_6_klm_sym_fourth_explicit(modulus):
+    C4Counter = 0
+    C1Counter = 0
+    a = modulus % 24 
+    C4Counter += C_6_klm_sym_squared_explicit(modulus)[3]
+    if a % 4 != 0:
+        pass
+    elif a % 3 != 0:
+        # Case 1a
+        C4Counter += ceil(r/6) - 1
+        # Case 1b
+        C4Counter += ceil(r/2) - 1 - ceil(3*r/8) + 1
+        # Case 2a
+        C4Counter += ceil(r/4) - 1 - ceil(r/6) + 1
+        # Case 2b
+        C4Counter += ceil(7*r/12) - 1 - (floor(r/2) + 1) + 1 # changed int(r/2) to floor(r/2)
+        # Case 3a 
+        if a % 8 == 0:
+            C4Counter += floor((ceil(r/4) - 1)/2)
+        if a % 8 == 4:
+            C4Counter += ceil((ceil(r/4) - 1)/2)
+        # Case 3b
+        if a % 8 == 0:
+            C4Counter += floor((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
+        if a % 8 == 4:
+            C4Counter += ceil((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
+        # diff of 3r/4
+        # Case 1b
+        C4Counter += ceil(r/6) - 1 - ceil(r/8) + 1 
+        # Case 2a
+        C4Counter += ceil(r/12) - 1
+        # Case 2b
+        C4Counter += ceil(r/4) - ceil(r/6) + 1 
+        # Case 3a
+        if a % 8 == 0:
+            C4Counter += floor(floor(r/12)/2)
+        elif a % 8 == 4:
+            C4Counter += ceil(floor(r/12)/2)
+        C4Counter -= 3
+        C1Counter += 1
+    elif a % 3 == 0:
+        # Case 1a 
+        C4Counter += ceil(r/12)
+        # Case 2a
+        C4Counter += ceil(r/4) - 1 - ceil(5*r/24) + 1
+        # Case 3a
+        if a % 8 == 0:
+            C4Counter += floor((ceil(r/4) - 1 - ceil(r/12) + 1)/2)
+        elif a % 8 == 4:
+            C4Counter += ceil((ceil(r/4) - 1 - ceil(r/12) + 1)/2)
+        # diff of 3r/4
+        # Case 2a
+        C4Counter += ceil(r/12) - 1
+        # Case 3a 
+        if a % 8 == 0:
+            C4Counter += floor(floor(r/12)/2)
+        elif a % 8 == 4:
+            C4Counter += ceil(floor(r/12)/2)
+        C4Counter -= 4
+        C1Counter += 1
+    return (C1Counter, 0, 0, C4Counter, 0, 0, tpp - rpp - C4Counter, 0, 0)
 def get_power_map_counts(power, modulus):
     output = {}
     families = ['1', '2', '3^l', '4^k', '5^k', "6'", "6^klm", "7^k", "8^k"]
@@ -762,7 +824,7 @@ def get_power_map_counts(power, modulus):
         output["7^k"] = dict(zip(families, C_7_fourth(modulus)))
         output["8^k"] = dict(zip(families, C_8_fourth(modulus)))
     return output
-
+"""
 for modulus in range(0, 12):
     break
     q = var('q')
@@ -827,13 +889,22 @@ for modulus in range(0,36):
     print("==========================================")
     print(f"for modulus: {modulus}")
     print(total.full_simplify()) 
-    print(total.subs(q=(modulus + 36)))
+    if modulus != 0 and modulus != 1:
+        print(total.subs(q=(modulus)))
     equations[modulus] = str(total.full_simplify())
     equations_list.append(str(total.full_simplify()))
+    if modulus % 9 == 8:
+        cube_maps_eval = {}
+        for key in cube_maps.keys():
+            cube_maps_eval[key] = {}
+            for key2 in cube_maps:
+                cube_maps_eval[key][key2] = cube_maps[key][key2].subs(q=modulus) 
+        print(cube_maps_eval)
     print("==========================================")
 print(equations)
 print(equations_list)
-for modulus in range(0, 12): # what's this supposed to be?
+"""
+for modulus in range(0, 72):
     q = var('q')
     d = gcd(3, modulus + 1)
     r = q+1
@@ -859,13 +930,15 @@ for modulus in range(0, 12): # what's this supposed to be?
         total += class_sizes[family]*num_classes[family]*(character_val[family] ** 4)
         for fam2 in families: # iterate through the square maps 
             total += class_sizes[family]*character_val[fam2]* square_maps[family][fam2] * (character_val[family] ** 2) * 6
-            total += class_sizes[family]*character_val[fam2]* (square_maps[family][fam2] ** 2) * 3 
+            total += class_sizes[family]*(character_val[fam2]** 2) * square_maps[family][fam2] * 3 
             total += class_sizes[family]*character_val[fam2]* cube_maps[family][fam2] * character_val[family] * 8
             total += class_sizes[family]*character_val[fam2]*fourth_maps[family][fam2] * 6
     total = (total/24)/(q^3 * rp * r * s * t)
     print("==========================================")
     print(f"for modulus: {modulus}")
     print(total.full_simplify()) 
-    print(square_maps)
+    print(total.subs(q=(modulus + 72)))
+    # equations[modulus] = str(total.full_simplify())
+    # equations_list.append(str(total.full_simplify()))
     print("==========================================")
-
+#currently works for everything that's 2 mod 4

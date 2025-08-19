@@ -846,26 +846,31 @@ class GroupCharactersPSU3(GroupCharacters):
             return C4Counter, C1Counter
         elif r % 3 != 0:
             # We start by dealing with cases concerning a difference of r/4 
-            # Case 1a 
+            # Case 1a
+            print(C4Counter) 
             k = 1 
             while k < r/6: 
                 C4Counter += 1 
                 k += 1
+            print(C4Counter)
             # Case 1b
             k = math.ceil(3*r/8)
             while k < r/2:
                 C4Counter += 1
                 k += 1 
+            print(C4Counter)
             # Case 2a 
             k = math.ceil(r/6)
             while k < r/4:
                 k += 1
                 C4Counter += 1
+            print(C4Counter)
             # Case 2b 
             k = int(r/2) + 1 
             while k < 7 * r/12:
                 k += 1 
                 C4Counter += 1 
+            print(C4Counter)
             # Case 3a
             k = 1 
             while k < r/4:
@@ -874,6 +879,7 @@ class GroupCharactersPSU3(GroupCharacters):
                 elif r%8 == 4 and k%2 == 1:
                     C4Counter += 1
                 k += 1
+            print(C4Counter)
             # Case 3b
             k = math.ceil(r/4)
             while k < 7/12 * r:
@@ -882,22 +888,26 @@ class GroupCharactersPSU3(GroupCharacters):
                 if r % 8 == 4 and k % 2 == 1:
                     C4Counter += 1
                 k += 1 
+            print(C4Counter)
             # Now we move onto cases concerning a difference of 3r/4
             # Case 1b
             k = math.ceil(r/8)
             while k < r/6:
                 k += 1 
                 C4Counter += 1
+            print(C4Counter)
             # Case 2a
             k = 1
             while k < r/12:
                 k += 1 
                 C4Counter += 1
+            print(C4Counter)
             # Case 2b
             k = math.ceil(r/6)
             while k <= r/4: # note the '<=' weird huh?
                 k += 1
                 C4Counter += 1
+            print(C4Counter)
             # Case 3a
             k = 1 
             while k <= r/12:
@@ -906,21 +916,26 @@ class GroupCharactersPSU3(GroupCharacters):
                 elif r%8 == 4 and k % 2 == 1:
                     C4Counter += 1
                 k += 1 
+            print(C4Counter)
             # When 4 | r we get exactly 1 C1
             C4Counter -= 3 
             C1Counter += 1
+            print("======================")
         else:
             # We start by dealing with cases concerning a difference of r/4 
+            print(C4Counter)
             # Case 1a 
             k = 1 
             while k <= r/12: 
                 C4Counter += 1 
                 k += 1
+            print(C4Counter)
             # Case 2a 
             k = math.ceil(5*r/24) # this is weird no?
             while k < r/4:
                 k += 1
                 C4Counter += 1
+            print(C4Counter)
             # Case 3a
             k = math.ceil(r/12)
             while k < r/4:
@@ -929,12 +944,14 @@ class GroupCharactersPSU3(GroupCharacters):
                 elif r%8 == 4 and k%2 == 1:
                     C4Counter += 1
                 k += 1
+            print(C4Counter)
             # Now we move onto cases concerning a difference of 3r/4
             # Case 2a
             k = 1
             while k < r/12:
                 k += 1 
                 C4Counter += 1
+            print(C4Counter)
             # Case 3a
             k = 1 
             while k <= r/12:
@@ -943,13 +960,99 @@ class GroupCharactersPSU3(GroupCharacters):
                 elif r%8 == 4 and k % 2 == 1:
                     C4Counter += 1
                 k += 1 
+            print(C4Counter)
             # When 4 | r we get exactly 1 C1
             C4Counter -= 3 
             C1Counter += 1
             # We over counted the C1 case because there was a differnece of r/2 between k and m and so it was flagged by the squared function
             C4Counter -= 1
+            print("============")
         return C4Counter, C1Counter
+    def C_6_klm_sym_fourth_explicit(self):
+        C4Counter = 0
+        C1Counter = 0
+        r = self.r
+        a = r%24 
+        C4Counter += self.C_6_klm_sym_squared_explicit()
+        if a % 4 != 0:
+            pass
+        elif a % 3 != 0:
+            print(C4Counter)
+            # Case 1a
+            C4Counter += ceil(r/6) - 1
+            print(C4Counter)
+            # Case 1b
+            C4Counter += ceil(r/2) - 1 - ceil(3*r/8) + 1
+            print(C4Counter)
+            # Case 2a
+            C4Counter += ceil(r/4) - 1 - ceil(r/6) + 1
+            print(C4Counter)
+            # Case 2b
+            C4Counter += ceil(7*r/12) - 1 - (int(r/2) + 1) + 1
+            print(C4Counter)
+            # Case 3a 
+            if a % 8 == 0:
+                C4Counter += floor((ceil(r/4) - 1)/2)
+            if a % 8 == 4:
+                C4Counter += ceil((ceil(r/4) - 1)/2)
+            print(C4Counter)
+            # Case 3b
+            if a % 8 == 0:
+                C4Counter += floor((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
+            if a % 8 == 4:
+                C4Counter += ceil((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
+            print(C4Counter)
+            # diff of 3r/4
+            # Case 1b
+            C4Counter += ceil(r/6) - 1 - ceil(r/8) + 1 
+            print(C4Counter)
+            # Case 2a
+            C4Counter += ceil(r/12) - 1
+            print(C4Counter)
+            # Case 2b
+            C4Counter += ceil(r/4) - ceil(r/6) + 1 
+            print(C4Counter)
+            # Case 3a
+            if a % 8 == 0:
+                C4Counter += floor(floor(r/12)/2)
+            elif a % 8 == 4:
+                C4Counter += ceil(floor(r/12)/2)
+            print(C4Counter)
+            C4Counter -= 3
+            C1Counter += 1
+            print("===========================")
+        elif a % 3 == 0:
+            print(C4Counter)
+            # Case 1a 
+            C4Counter += ceil(r/12)
+            print(C4Counter)
+            # Case 2a
+            C4Counter += ceil(r/4) - 1 - ceil(5*r/24) + 1
+            print(C4Counter)
+            # Case 3a
+            if a % 8 == 0:
+                C4Counter += floor((ceil(r/4) - 1 - ceil(r/12) + 1)/2)
+            elif r % 8 == 4:
+                C4Counter += ceil((ceil(r/4) - 1 - ceil(r/12) + 1)/2)
+            print(C4Counter)
+            # diff of 3r/4
+            # Case 2a
+            C4Counter += ceil(r/12) - 1
+            print(C4Counter)
+            # Case 3a 
+            if a % 8 == 0:
+                C4Counter += floor(floor(r/12)/2)
+            elif a % 8 == 4:
+                C4Counter += ceil(floor(r/12)/2)
+            print(C4Counter)
+
+            C4Counter -= 4
+            C1Counter += 1
+            print("===========")
+
         return C4Counter, C1Counter
+
+
         
 
 
@@ -1008,28 +1111,32 @@ i6p = 0
 i6klm = 0
 i7 = 0
 i8 = 0
-
-i = 0
-G = GroupCharactersPSU3(53, 1)
-for g in G.classes:
-    if g[2] == "6" and g[3] != "'":
-        if G.power_of(g, 3)[2] != "6":
-            print(g)
-            print(f"g cubed is {G.power_of(g, 3)}")
-            i += 1
-print(f"empirical problem cases (cube): {i}")
-print(f"predicted problem cases (cube): {G.C_6_klm_sym_cubed()}")
-print(G.C_6_klm_sym_cubed_explicit())
 """
 i = 0
-G = GroupCharactersPSU3(53, 1)
+G = GroupCharactersPSU3(47, 1)
+
 for g in G.classes:
-    if g[2] == "8":
-        print(g)
-        print(f"g cubed is {G.power_of(g, 3)}")
-        i += 1
-print(f"empirical problem cases (cube): {i}")
-print(f"predicted problem cases (cube): {G.C_8_cubed()}")
+    if g[2] == "6" and g[3] != "'":
+        if G.power_of(g, 4)[2] != "6":
+            print(g)
+            print(f"g fourth is {G.power_of(g, 4)}")
+            i += 1
+print(f"empirical problem cases (fourth): {i}")
+print(f"predicted problem cases (fourth): {G.C_6_klm_sym_fourth()}")
+print(G.C_6_klm_sym_fourth_explicit())
+"""
+i = 0
+G = GroupCharactersPSU3(17, 1)
+power_map_counts = {'1': {}, '2': {}, '3': {}, '4': {}, '5': {}, '6': {}, '7': {}, '8': {}}
+for g in G.classes:
+    if G.power_of(g, 3)[2] not in power_map_counts[g[2]].keys():
+        power_map_counts[g[2]][G.power_of(g, 3)[2]] = 1
+    else:
+        power_map_counts[g[2]][G.power_of(g, 3)[2]] += 1
+print(power_map_counts)
+# print(f"empirical problem cases (cube): {i}")
+# print(f"predicted problem cases (cube): {G.C_8_cubed()}")
+"""
 """
 
 i = 0
