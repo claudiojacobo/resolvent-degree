@@ -944,9 +944,15 @@ for modulus in range(0, 72):
     print(f"for modulus: {modulus}")
     print(total.full_simplify()) 
     print(total.subs(q=(modulus + 72)))
+    print(fourth_maps)
+    k = var('k')
+    assume(k, 'integer')
+    assume(k >= 0)
+    print(total.subs(q=(modulus + 72*k)).full_simplify())
     # equations[modulus] = str(total.full_simplify())
     # equations_list.append(str(total.full_simplify()))
     print("==========================================")
+    """
     if modulus == 19:
         fourth_maps_eval = {}
         for key in fourth_maps.keys():
@@ -954,4 +960,5 @@ for modulus in range(0, 72):
             for key2 in cube_maps:
                 fourth_maps_eval[key][key2] = fourth_maps[key][key2].subs(q=modulus) 
         print(fourth_maps_eval)
+    """
 #currently works for everything that's 2 mod 4
