@@ -553,9 +553,12 @@ class GroupCharactersPSU3(GroupCharacters):
         if (q+1) % 2 == 0:
             C2Counter += 1
             C5Counter -= 1
+        if (q+1) % 4 == 0:
+            C2Counter += 2
+            C5Counter -= 2
         if p == 2:
             C4Counter += (q+1)//d-1
-            C5Counter-= (q+1)//d-1 
+            C5Counter-= (q+1)//d-1
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
     def C_6_p_squared(self):
@@ -787,12 +790,15 @@ class GroupCharactersPSU3(GroupCharacters):
         C6klmCounter = 0
         C7Counter = totalnum
         C8Counter = 0
-        if q % 2 != 0:
-            C1Counter += 1
-            C7Counter -= 1
-        if q % 4 == 1:
+        if q % 2 == 1:
             C4Counter += (q+1)//(2*self.d)
             C7Counter -= (q+1)//(2*self.d)
+        if q % 4 == 1: 
+            C4Counter += 2*(q+1)//(2*self.d)
+            C7Counter -= 2*(q+1)//(2*self.d)
+        if (q+1) % 2 == 0 and (q+1)%4 != 0:
+            C1Counter += 1
+            C4Counter -= 1
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
     
     def C_8_squared(self):
@@ -998,7 +1004,7 @@ class GroupCharactersPSU3(GroupCharacters):
             print(C4Counter)
             # Case 3b
             if a % 8 == 0:
-                C4Counter += floor((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
+                C4Counter += ceil((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
             if a % 8 == 4:
                 C4Counter += ceil((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
             print(C4Counter)
@@ -1111,7 +1117,8 @@ i6p = 0
 i6klm = 0
 i7 = 0
 i8 = 0
-"""
+
+
 i = 0
 G = GroupCharactersPSU3(47, 1)
 
@@ -1125,20 +1132,21 @@ print(f"empirical problem cases (fourth): {i}")
 print(f"predicted problem cases (fourth): {G.C_6_klm_sym_fourth()}")
 print(G.C_6_klm_sym_fourth_explicit())
 """
+
+"""
 i = 0
-G = GroupCharactersPSU3(17, 1)
+G = GroupCharactersPSU3(11, 1)
 power_map_counts = {'1': {}, '2': {}, '3': {}, '4': {}, '5': {}, '6': {}, '7': {}, '8': {}}
 for g in G.classes:
-    if G.power_of(g, 3)[2] not in power_map_counts[g[2]].keys():
-        power_map_counts[g[2]][G.power_of(g, 3)[2]] = 1
+    if G.power_of(g, 4)[2] not in power_map_counts[g[2]].keys():
+        power_map_counts[g[2]][G.power_of(g, 4)[2]] = 1
     else:
-        power_map_counts[g[2]][G.power_of(g, 3)[2]] += 1
+        power_map_counts[g[2]][G.power_of(g, 4)[2]] += 1
 print(power_map_counts)
 # print(f"empirical problem cases (cube): {i}")
 # print(f"predicted problem cases (cube): {G.C_8_cubed()}")
 """
-"""
-
+G = GroupCharactersPSU3(19, 1)
 i = 0
 for g in G.classes:
     if g[2] == "6" and g[3] != "'":
@@ -1148,5 +1156,8 @@ for g in G.classes:
             i += 1
 print(f"empirical problem cases (4th): {i}")
 print(f"predicted problem cases (4th): {G.C_6_klm_sym_fourth()}")
+print(f"predicted problem cases explicit (4th): {G.C_6_klm_sym_fourth_explicit()}")
+
 """
 # so, this doesn't quite work. I don't know what's going on here but it looks like we're undercounting by 1 or 2 sometimes but asymptotically we're overcounting? 
+"""

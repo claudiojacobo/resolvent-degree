@@ -361,7 +361,7 @@ def C_4_fourth(modulus):
     C6klmCounter = 0
     C7Counter = 0
     C8Counter = 0
-    if (modulus +1 ) % 4 == 0: 
+    if (modulus + 1) % 4 == 0: 
         C1Counter += 3
         C4Counter -= 3
     elif (modulus + 1) % 2 == 0:
@@ -418,6 +418,9 @@ def C_5_fourth(modulus):
     if (modulus+1) % 2 == 0:
         C2Counter += 1
         C5Counter -= 1
+    if (modulus+1) % 4 == 0:
+        C2Counter += 2
+        C5Counter -= 2
     if modulus % 2 == 0:
         C4Counter += (q+1)/d-1
         C5Counter-= (q+1)/d-1 
@@ -547,12 +550,15 @@ def C_7_fourth(modulus):
     C6klmCounter = 0
     C7Counter = totalnum
     C8Counter = 0
-    if modulus % 2 != 0:
-        C1Counter += 1
-        C7Counter -= 1
-    if modulus % 4 == 1:
+    if modulus % 2 == 1:
         C4Counter += (q+1)/(2*d)
         C7Counter -= (q+1)/(2*d)
+    if (modulus+1)%2 == 0 and (modulus+1)%4 != 0:
+        C1Counter += 1
+        C4Counter -= 1
+    if modulus % 4 == 1:
+        C4Counter += 2*(q+1)/(2*d)
+        C7Counter -= 2*(q+1)/(2*d)
     return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
 def C_8_squared(modulus):
@@ -732,7 +738,7 @@ def C_6_klm_sym_cubed_explicit(modulus):
 def C_6_klm_sym_fourth_explicit(modulus):
     C4Counter = 0
     C1Counter = 0
-    a = modulus % 24 
+    a = (modulus + 1) % 24 
     C4Counter += C_6_klm_sym_squared_explicit(modulus)[3]
     if a % 4 != 0:
         pass
@@ -752,7 +758,7 @@ def C_6_klm_sym_fourth_explicit(modulus):
             C4Counter += ceil((ceil(r/4) - 1)/2)
         # Case 3b
         if a % 8 == 0:
-            C4Counter += floor((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
+            C4Counter += ceil((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
         if a % 8 == 4:
             C4Counter += ceil((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
         # diff of 3r/4
@@ -789,7 +795,7 @@ def C_6_klm_sym_fourth_explicit(modulus):
             C4Counter += ceil(floor(r/12)/2)
         C4Counter -= 4
         C1Counter += 1
-    return (C1Counter, 0, 0, C4Counter, 0, 0, tpp - rpp - C4Counter, 0, 0)
+    return (C1Counter, 0, 0, C4Counter, 0, 0, tpp - rpp - C4Counter - C1Counter, 0, 0)
 def get_power_map_counts(power, modulus):
     output = {}
     families = ['1', '2', '3^l', '4^k', '5^k', "6'", "6^klm", "7^k", "8^k"]
@@ -941,4 +947,11 @@ for modulus in range(0, 72):
     # equations[modulus] = str(total.full_simplify())
     # equations_list.append(str(total.full_simplify()))
     print("==========================================")
+    if modulus == 19:
+        fourth_maps_eval = {}
+        for key in fourth_maps.keys():
+            fourth_maps_eval[key] = {}
+            for key2 in cube_maps:
+                fourth_maps_eval[key][key2] = fourth_maps[key][key2].subs(q=modulus) 
+        print(fourth_maps_eval)
 #currently works for everything that's 2 mod 4
