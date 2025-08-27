@@ -948,7 +948,7 @@ for modulus in range(0, 72):
     k = var('k')
     assume(k, 'integer')
     assume(k >= 0)
-    print(total.subs(q=(modulus + 72*k)).full_simplify())
+    print(total.subs(q=(modulus + 72*k)).full_simplify().subs(k=(q-modulus)/72).full_simplify())
     # equations[modulus] = str(total.full_simplify())
     # equations_list.append(str(total.full_simplify()))
     print("==========================================")

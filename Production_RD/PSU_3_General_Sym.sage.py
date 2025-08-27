@@ -953,7 +953,7 @@ for modulus in range(_sage_const_0 , _sage_const_72 ):
     k = var('k')
     assume(k, 'integer')
     assume(k >= _sage_const_0 )
-    print(total.subs(q=(modulus + _sage_const_72 *k)).full_simplify())
+    print(total.subs(q=(modulus + _sage_const_72 *k)).full_simplify().subs(k=(q-modulus)/_sage_const_72 ).full_simplify())
     # equations[modulus] = str(total.full_simplify())
     # equations_list.append(str(total.full_simplify()))
     print("==========================================")
