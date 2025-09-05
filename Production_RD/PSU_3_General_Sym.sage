@@ -1,3 +1,6 @@
+from sympy import sympify
+
+from sympy import sympify
 """
 q = var('q')
 d = gcd(3, q) # have to redefine that cases etc etc. 
@@ -189,7 +192,70 @@ print("q = 5 mod 12 case:")
 print(total.full_simplify())
 print(total.subs(q=17))
 """
+def create_latex_table(list_of_dicts):
+    """
+    Generates a LaTeX table from a list of nested dictionaries, with outer keys
+    as rows and inner keys as columns.
 
+    Args:
+        list_of_dicts (list): A list of dictionaries, where each dictionary
+                              corresponds to a complete table.
+
+    Returns:
+        str: A string containing the LaTeX code for the generated table.
+    """
+    if not list_of_dicts:
+        return "No data provided to create a table."
+
+    # Use the keys of the first inner dictionary for the column headers
+    # and the keys of the outer dictionary for the row headers.
+    outer_keys = list(list_of_dicts[0].keys())
+    inner_keys = list(list_of_dicts[0][outer_keys[0]].keys())
+
+    # Build the header row for the LaTeX table
+    header = ' & ' + ' & '.join([f'${key}$' for key in inner_keys]) + ' \\\\'
+    
+    # Build the table body
+    body = ''
+    # The outer keys now represent the rows of the table
+    for row_key in outer_keys:
+        row_dict = list_of_dicts[0][row_key]
+        row_content = f'${row_key}$'
+        
+        # Iterate through inner keys to get cell values for the row
+        for col_key in inner_keys:
+            cell_value = row_dict[col_key]
+            
+            # Check if the value is a number or an expression involving 'q'
+            try:
+                # Try to evaluate it as a symbolic expression for a cleaner output
+                sympy_expr = sympify(str(cell_value))
+                cell_value_str = f'${sympy_expr}$'
+            except:
+                # If it can't be parsed, treat it as a string
+                cell_value_str = f'${cell_value}$'
+
+            row_content += f' & {cell_value_str}'
+        
+        row_content += ' \\\\'
+        body += row_content + '\n'
+
+    # Construct the complete LaTeX document
+    latex_code = f"""
+\\begin{{table}}[h!]
+\\centering
+\\begin{{tabular}}{{{'c' * (len(inner_keys) + 1)}}}
+\\toprule
+{header}
+\\midrule
+{body}
+\\bottomrule
+\\end{{tabular}}
+\\caption{{Generated Table}}
+\\label{{tab:generated}}
+\\end{{table}}
+"""
+    return latex_code
 
 
 
@@ -830,9 +896,8 @@ def get_power_map_counts(power, modulus):
         output["7^k"] = dict(zip(families, C_7_fourth(modulus)))
         output["8^k"] = dict(zip(families, C_8_fourth(modulus)))
     return output
-"""
+dict_list = []
 for modulus in range(0, 12):
-    break
     q = var('q')
     d = gcd(3, modulus + 1)
     r = q+1
@@ -863,8 +928,52 @@ for modulus in range(0, 12):
     print(total.full_simplify()) 
     print(square_maps)
     print("==========================================")
-equations = {}
-equations_list = []
+
+    for key in square_maps.keys():
+            for key2 in square_maps:
+                k = var('k')
+                assume(k, 'integer')
+                assume(k >= 0)
+                if str(type(square_maps[key][key2].subs(q=(modulus + 36*k)))) == "<class 'sage.symbolic.expression.Expression'>":
+                    square_maps[key][key2] = square_maps[key][key2].subs(q=(modulus + 36*k)).full_simplify().subs(k=(q-modulus)/36).full_simplify()
+                # print(total.subs(q=(modulus + 72*k)).full_simplify().subs(k=(q-modulus)/72).full_simplify())
+    dict_list.append(square_maps)
+                # fourth_maps_eval[key][key2] = fourth_maps[key][key2].subs(q=modulus) 
+
+unique_elements = []
+for d in dict_list:
+    if d not in unique_elements:
+        unique_elements.append(d)
+print(len(dict_list))
+print(len(unique_elements))
+
+dict_assignment = []
+for dict1 in unique_elements:
+    dict_assignment.append([])
+    for i, dict2 in enumerate(dict_list):
+        if dict2 == dict1:
+            dict_assignment[-1].append(i)
+print(dict_assignment)
+print(unique_elements)
+
+# print(equations)
+# print(equations_list)
+
+
+# Prepare the data for SymPy
+for table_data in unique_elements:
+    for row_dict in table_data.values():
+        for key, value in row_dict.items():
+            if value == 'q':
+                row_dict[key] = 'q'
+            elif isinstance(value, str):
+                row_dict[key] = value.replace('^', '**')
+
+    latex_table = create_latex_table([table_data])
+    print(latex_table)
+
+
+dict_list = []
 for modulus in range(0,36):
     q = var('q')
     d = gcd(3, modulus + 1)
@@ -895,6 +1004,7 @@ for modulus in range(0,36):
     print("==========================================")
     print(f"for modulus: {modulus}")
     print(total.full_simplify()) 
+    """
     if modulus != 0 and modulus != 1:
         print(total.subs(q=(modulus)))
     equations[modulus] = str(total.full_simplify())
@@ -906,10 +1016,52 @@ for modulus in range(0,36):
             for key2 in cube_maps:
                 cube_maps_eval[key][key2] = cube_maps[key][key2].subs(q=modulus) 
         print(cube_maps_eval)
+    """
+    for key in cube_maps.keys():
+        for key2 in cube_maps:
+            k = var('k')
+            assume(k, 'integer')
+            assume(k >= 0)
+            if str(type(cube_maps[key][key2].subs(q=(modulus + 36*k)))) == "<class 'sage.symbolic.expression.Expression'>":
+                cube_maps[key][key2] = cube_maps[key][key2].subs(q=(modulus + 36*k)).full_simplify().subs(k=(q-modulus)/36).full_simplify()
+            # print(total.subs(q=(modulus + 72*k)).full_simplify().subs(k=(q-modulus)/72).full_simplify())
+    dict_list.append(cube_maps)
+            # fourth_maps_eval[key][key2] = fourth_maps[key][key2].subs(q=modulus) 
+    print(cube_maps)
     print("==========================================")
-print(equations)
-print(equations_list)
-"""
+
+unique_elements = []
+for d in dict_list:
+    if d not in unique_elements:
+        unique_elements.append(d)
+print(len(dict_list))
+print(len(unique_elements))
+
+dict_assignment = []
+for dict1 in unique_elements:
+    dict_assignment.append([])
+    for i, dict2 in enumerate(dict_list):
+        if dict2 == dict1:
+            dict_assignment[-1].append(i)
+print(dict_assignment)
+print(unique_elements)
+
+# print(equations)
+# print(equations_list)
+
+
+# Prepare the data for SymPy
+for table_data in unique_elements:
+    for row_dict in table_data.values():
+        for key, value in row_dict.items():
+            if value == 'q':
+                row_dict[key] = 'q'
+            elif isinstance(value, str):
+                row_dict[key] = value.replace('^', '**')
+
+    latex_table = create_latex_table([table_data])
+    print(latex_table)
+dict_list = []
 for modulus in range(0, 72):
     q = var('q')
     d = gcd(3, modulus + 1)
@@ -952,7 +1104,46 @@ for modulus in range(0, 72):
     # equations[modulus] = str(total.full_simplify())
     # equations_list.append(str(total.full_simplify()))
     print("==========================================")
-    """
+    for key in fourth_maps.keys():
+        for key2 in fourth_maps:
+            k = var('k')
+            assume(k, 'integer')
+            assume(k >= 0)
+            if str(type(fourth_maps[key][key2].subs(q=(modulus + 72*k)))) == "<class 'sage.symbolic.expression.Expression'>":
+                fourth_maps[key][key2] = fourth_maps[key][key2].subs(q=(modulus + 72*k)).full_simplify().subs(k=(q-modulus)/72).full_simplify()
+            # print(total.subs(q=(modulus + 72*k)).full_simplify().subs(k=(q-modulus)/72).full_simplify())
+    dict_list.append(fourth_maps)
+            # fourth_maps_eval[key][key2] = fourth_maps[key][key2].subs(q=modulus) 
+    # print(fourth_maps)
+    print("==========================================")
+
+unique_elements = []
+for d in dict_list:
+    if d not in unique_elements:
+        unique_elements.append(d)
+print(len(dict_list))
+print(len(unique_elements))
+
+dict_assignment = []
+for dict1 in unique_elements:
+    dict_assignment.append([])
+    for i, dict2 in enumerate(dict_list):
+        if dict2 == dict1:
+            dict_assignment[-1].append(i)
+print(dict_assignment)
+print(unique_elements)
+for table_data in unique_elements:
+    for row_dict in table_data.values():
+        for key, value in row_dict.items():
+            if value == 'q':
+                row_dict[key] = 'q'
+            elif isinstance(value, str):
+                row_dict[key] = value.replace('^', '**')
+
+    latex_table = create_latex_table([table_data])
+    print(latex_table)
+
+"""
     if modulus == 19:
         fourth_maps_eval = {}
         for key in fourth_maps.keys():
@@ -960,5 +1151,4 @@ for modulus in range(0, 72):
             for key2 in cube_maps:
                 fourth_maps_eval[key][key2] = fourth_maps[key][key2].subs(q=modulus) 
         print(fourth_maps_eval)
-    """
-#currently works for everything that's 2 mod 4
+"""
