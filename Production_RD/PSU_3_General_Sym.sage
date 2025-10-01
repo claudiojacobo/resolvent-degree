@@ -275,6 +275,7 @@ def C_6_p_fourth(modulus):
     C8Counter = 0
 
     return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
 def C_6_klm_sym_squared_explicit(modulus):
     if (modulus+1) % 12 in [1,3,5,7,9,11]:
         C4Counter = 0 
@@ -290,33 +291,91 @@ def C_6_klm_sym_squared_explicit(modulus):
         C4Counter = r/6 - 1 
     return (0, 0, 0, C4Counter, 0, 0, tpp - rpp - C4Counter, 0, 0)
 
-def C_6_klm_sym_cubed():
-    C4Counter = 0 
-    if r % 3 != 0:
-        pass
-    else: 
-        # Case 2a
-        k = ceil(r/6)
-        while k < 2*r/9:
-            C4Counter += 1
-            k += 1 
-        # Case 3a 
-        k = 1
-        while k < 2*r/9:
-            if k % 2 == 0:
-                C4Counter += 1
-            k += 1
-        # Case 2a, 3a difference = 2r/3 
-        k = 1
-        while k < r/9:
-            C4Counter += 1
-            if r % 6 == 0 and k % 2 == 0:
-                C4Counter += 1
-            elif r % 6 == 3 and k % 2 == 1:
-                C4Counter += 1
-            k += 1
+def C_6_klm_sym_cubed_explicit(modulus):
+        C4Counter = 0
+        a = (modulus + 1) % 12
+        if a%3 != 0:
+            pass
+        if a%6 == 0:
+            # Case 2a
+            C4Counter +=  (ceil(2*r/9) - 1) - ceil(r/6) + 1
+            # Case 3a
+            C4Counter += floor((ceil(2*r/9) - 1)/2)
+            # Case 2a, 3a diff of 2r/3
+            C4Counter += ceil(r/9) - 1 
+            C4Counter += floor((ceil(r/9) - 1)/2)
 
-    return C4Counter
+        if a%6 == 3:
+            # Case 2a
+            C4Counter += (ceil(2*r/9) - 1) - ceil(r/6) + 1
+            # Case 3a
+            C4Counter += floor((ceil(2*r/9) - 1)/2)
+            # Case 2a, 3a diff of 2r/3
+            C4Counter += ceil(r/9) - 1   
+            C4Counter += ceil((ceil(r/9) - 1)/2)
+        return (0, 0, 0, C4Counter, 0, 0, tpp - rpp - C4Counter, 0, 0)
+
+def C_6_klm_sym_fourth_explicit(modulus):
+    C4Counter = 0
+    C1Counter = 0
+    a = (modulus + 1) % 24 
+    C4Counter += C_6_klm_sym_squared_explicit(modulus)[3]
+    if a % 4 != 0:
+        pass
+    elif a % 3 != 0:
+        # Case 1a
+        C4Counter += ceil(r/6) - 1
+        # Case 1b
+        C4Counter += ceil(r/2) - 1 - ceil(3*r/8) + 1
+        # Case 2a
+        C4Counter += ceil(r/4) - 1 - ceil(r/6) + 1
+        # Case 2b
+        C4Counter += ceil(7*r/12) - 1 - (floor(r/2) + 1) + 1 # changed int(r/2) to floor(r/2)
+        # Case 3a 
+        if a % 8 == 0:
+            C4Counter += floor((ceil(r/4) - 1)/2)
+        if a % 8 == 4:
+            C4Counter += ceil((ceil(r/4) - 1)/2)
+        # Case 3b
+        if a % 8 == 0:
+            C4Counter += ceil((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
+        if a % 8 == 4:
+            C4Counter += ceil((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
+        # diff of 3r/4
+        # Case 1b
+        C4Counter += ceil(r/6) - 1 - ceil(r/8) + 1 
+        # Case 2a
+        C4Counter += ceil(r/12) - 1
+        # Case 2b
+        C4Counter += ceil(r/4) - ceil(r/6) + 1 
+        # Case 3a
+        if a % 8 == 0:
+            C4Counter += floor(floor(r/12)/2)
+        elif a % 8 == 4:
+            C4Counter += ceil(floor(r/12)/2)
+        C4Counter -= 3
+        C1Counter += 1
+    elif a % 3 == 0:
+        # Case 1a 
+        C4Counter += ceil(r/12)
+        # Case 2a
+        C4Counter += ceil(r/4) - 1 - ceil(5*r/24) + 1
+        # Case 3a
+        if a % 8 == 0:
+            C4Counter += floor((ceil(r/4) - 1 - ceil(r/12) + 1)/2)
+        elif a % 8 == 4:
+            C4Counter += ceil((ceil(r/4) - 1 - ceil(r/12) + 1)/2)
+        # diff of 3r/4
+        # Case 2a
+        C4Counter += ceil(r/12) - 1
+        # Case 3a 
+        if a % 8 == 0:
+            C4Counter += floor(floor(r/12)/2)
+        elif a % 8 == 4:
+            C4Counter += ceil(floor(r/12)/2)
+        C4Counter -= 4
+        C1Counter += 1
+    return (C1Counter, 0, 0, C4Counter, 0, 0, tpp - rpp - C4Counter - C1Counter, 0, 0)
 
 def C_7_squared(modulus):
     totalnum = (3*tpp - rpp - dp)# totalnum = (q*q-q+1-d)/(2*d) - (3-d)/2
@@ -409,206 +468,6 @@ def C_8_fourth(modulus):
     C7Counter = 0
     C8Counter = ((q*q-q+1)/d-1)/3
     return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
-
-def C_6_klm_sym_fourth(modulus):
-    C4Counter = 0 
-    C1Counter = 0
-    r = r
-    C4Counter += C_6_klm_sym_squared()
-    if r % 4 != 0:
-        return C4Counter, C1Counter
-    elif r % 3 != 0:
-        # We start by dealing with cases concerning a difference of r/4 
-        # Case 1a 
-        k = 1 
-        while k < r/6: 
-            C4Counter += 1 
-            k += 1
-        # Case 1b
-        k = ceil(3*r/8)
-        while k < r/2:
-            C4Counter += 1
-            k += 1 
-        # Case 2a 
-        k = ceil(r/6)
-        while k < r/4:
-            k += 1
-            C4Counter += 1
-        # Case 2b 
-        k = int(r/2) + 1 
-        while k < 7 * r/12:
-            k += 1 
-            C4Counter += 1 
-        # Case 3a
-        k = 1 
-        while k < r/4:
-            if r % 8 == 0 and k%2 == 0: 
-                C4Counter += 1
-            elif r%8 == 4 and k%2 == 1:
-                C4Counter += 1
-            k += 1
-        # Case 3b
-        k = ceil(r/4)
-        while k < 7/12 * r:
-            if r % 8 == 0 and k % 2 == 0:
-                C4Counter += 1 
-            if r % 8 == 4 and k % 2 == 1:
-                C4Counter += 1
-            k += 1 
-        # Now we move onto cases concerning a difference of 3r/4
-        # Case 1b
-        k = ceil(r/8)
-        while k < r/6:
-            k += 1 
-            C4Counter += 1
-        # Case 2a
-        k = 1
-        while k < r/12:
-            k += 1 
-            C4Counter += 1
-        # Case 2b
-        k = ceil(r/6)
-        while k <= r/4: # note the '<=' weird huh?
-            k += 1
-            C4Counter += 1
-        # Case 3a
-        k = 1 
-        while k <= r/12:
-            if r%8 == 0 and k % 2 == 0:
-                C4Counter += 1
-            elif r%8 == 4 and k % 2 == 1:
-                C4Counter += 1
-            k += 1 
-        # When 4 | r we get exactly 1 C1
-        C4Counter -= 3 
-        C1Counter += 1
-    else:
-        # We start by dealing with cases concerning a difference of r/4 
-        # Case 1a 
-        k = 1 
-        while k <= r/12: 
-            C4Counter += 1 
-            k += 1
-        # Case 2a 
-        k = ceil(5*r/24) # this is weird no?
-        while k < r/4:
-            k += 1
-            C4Counter += 1
-        # Case 3a
-        k = ceil(r/12)
-        while k < r/4:
-            if r % 8 == 0 and k%2 == 0: 
-                C4Counter += 1
-            elif r%8 == 4 and k%2 == 1:
-                C4Counter += 1
-            k += 1
-        # Now we move onto cases concerning a difference of 3r/4
-        # Case 2a
-        k = 1
-        while k < r/12:
-            k += 1 
-            C4Counter += 1
-        # Case 3a
-        k = 1 
-        while k <= r/12:
-            if r%8 == 0 and k % 2 == 0:
-                C4Counter += 1
-            elif r%8 == 4 and k % 2 == 1:
-                C4Counter += 1
-            k += 1 
-        # When 4 | r we get exactly 1 C1
-        C4Counter -= 3 
-        C1Counter += 1
-        # We over counted the C1 case because there was a differnece of r/2 between k and m and so it was flagged by the squared function
-        C4Counter -= 1
-    return C4Counter, C1Counter
-    return C4Counter, C1Counter
-
-def C_6_klm_sym_cubed_explicit(modulus):
-        C4Counter = 0
-        a = (modulus + 1) % 12
-        if a%3 != 0:
-            pass
-        if a%6 == 0:
-            # Case 2a
-            C4Counter +=  (ceil(2*r/9) - 1) - ceil(r/6) + 1
-            # Case 3a
-            C4Counter += floor((ceil(2*r/9) - 1)/2)
-            # Case 2a, 3a diff of 2r/3
-            C4Counter += ceil(r/9) - 1 
-            C4Counter += floor((ceil(r/9) - 1)/2)
-
-        if a%6 == 3:
-            # Case 2a
-            C4Counter += (ceil(2*r/9) - 1) - ceil(r/6) + 1
-            # Case 3a
-            C4Counter += floor((ceil(2*r/9) - 1)/2)
-            # Case 2a, 3a diff of 2r/3
-            C4Counter += ceil(r/9) - 1   
-            C4Counter += ceil((ceil(r/9) - 1)/2)
-        return (0, 0, 0, C4Counter, 0, 0, tpp - rpp - C4Counter, 0, 0)
-
-def C_6_klm_sym_fourth_explicit(modulus):
-    C4Counter = 0
-    C1Counter = 0
-    a = (modulus + 1) % 24 
-    C4Counter += C_6_klm_sym_squared_explicit(modulus)[3]
-    if a % 4 != 0:
-        pass
-    elif a % 3 != 0:
-        # Case 1a
-        C4Counter += ceil(r/6) - 1
-        # Case 1b
-        C4Counter += ceil(r/2) - 1 - ceil(3*r/8) + 1
-        # Case 2a
-        C4Counter += ceil(r/4) - 1 - ceil(r/6) + 1
-        # Case 2b
-        C4Counter += ceil(7*r/12) - 1 - (floor(r/2) + 1) + 1 # changed int(r/2) to floor(r/2)
-        # Case 3a 
-        if a % 8 == 0:
-            C4Counter += floor((ceil(r/4) - 1)/2)
-        if a % 8 == 4:
-            C4Counter += ceil((ceil(r/4) - 1)/2)
-        # Case 3b
-        if a % 8 == 0:
-            C4Counter += ceil((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
-        if a % 8 == 4:
-            C4Counter += ceil((ceil(r*7/12) - 1 - ceil(r/4) + 1)/2)
-        # diff of 3r/4
-        # Case 1b
-        C4Counter += ceil(r/6) - 1 - ceil(r/8) + 1 
-        # Case 2a
-        C4Counter += ceil(r/12) - 1
-        # Case 2b
-        C4Counter += ceil(r/4) - ceil(r/6) + 1 
-        # Case 3a
-        if a % 8 == 0:
-            C4Counter += floor(floor(r/12)/2)
-        elif a % 8 == 4:
-            C4Counter += ceil(floor(r/12)/2)
-        C4Counter -= 3
-        C1Counter += 1
-    elif a % 3 == 0:
-        # Case 1a 
-        C4Counter += ceil(r/12)
-        # Case 2a
-        C4Counter += ceil(r/4) - 1 - ceil(5*r/24) + 1
-        # Case 3a
-        if a % 8 == 0:
-            C4Counter += floor((ceil(r/4) - 1 - ceil(r/12) + 1)/2)
-        elif a % 8 == 4:
-            C4Counter += ceil((ceil(r/4) - 1 - ceil(r/12) + 1)/2)
-        # diff of 3r/4
-        # Case 2a
-        C4Counter += ceil(r/12) - 1
-        # Case 3a 
-        if a % 8 == 0:
-            C4Counter += floor(floor(r/12)/2)
-        elif a % 8 == 4:
-            C4Counter += ceil(floor(r/12)/2)
-        C4Counter -= 4
-        C1Counter += 1
-    return (C1Counter, 0, 0, C4Counter, 0, 0, tpp - rpp - C4Counter - C1Counter, 0, 0)
 
 def create_latex_table(list_of_dicts):
     """
