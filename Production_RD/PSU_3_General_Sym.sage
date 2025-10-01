@@ -1,264 +1,11 @@
+"""
+A collection of combinatorial power maps that allow for the general (i.e., in terms of q) calculation of the dimension of the 2nd, 3rd, and 
+4th Symmetric powers of the smallest non-trivial irreducible representation of PSU(3,q).
+"""
 from sympy import sympify
 
-from sympy import sympify
-"""
-q = var('q')
-d = gcd(3, q) # have to redefine that cases etc etc. 
-d = 1
-r = q+1
-s = q-1 
-t = q^2 - q + 1
-rp = r/d
-sp = s/d
-tp = t/d
-dp = (3-d)/2
-rpp = 0 
-tpp = (tp - 1)/6 
-families = ['1', '2', '3^l', '4^k', '5^k', "6'", "6^klm", "7^k", "8^k"]
-num_classes = {'1': 1, '2': 1, '3^l': d, '4^k': rp - 1, '5^k': rp - 1, "6'": 1 - dp, "6^klm": tpp - rpp, "7^k": tpp - rpp - dp, "8^k": 2*tpp}
-centralizers = {'1': q^3 * rp * r * s * t, '2': q^3 * rp, '3^l': q^2, '4^k': q*rp*r*s, '5^k': q*rp, "6'": r^2, "6^klm": rp*r, "7^k": rp*s, "8^k": tp}
-class_sizes = {key: (q^3 * rp * r * s * t) / val for key, val in centralizers.items()}
-character_val = {'1': q*s, '2': -1 * q, '3^l': 0, '4^k': -1 * s, '5^k': 1, "6'": 2, "6^klm": 2, "7^k": 0, "8^k": -1}
-# q = 1, 9 mod 12 
-square_maps1 = {'1': {'1': 1, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0},
-            '2': {'1': 0, '2': 1, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            '3^l': {'1': 0, '2': 0, '3^l': d, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0},
-            '4^k': {'1': 1, '2': 0, '3^l': 0, '4^k': rp - 2, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0} , 
-            '5^k': {'1': 0, '2': 1, '3^l': 0, '4^k': 0, '5^k': rp - 2, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            "6'": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 1 - dp, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            "6^klm": {'1': 0, '2': 0, '3^l': 0, '4^k': -1 * ceil(r/4) + floor(r/6) + r/2 + ceil(floor(r/6)/2), '5^k': 0, "6'": 0, "6^klm": tpp - rpp - (-1 * ceil(r/4) + floor(r/6) + r/2 + ceil(floor(r/6)/2)), "7^k": 0, "8^k": 0},
-            "7^k": {'1': 0, '2': 0, '3^l': 0, '4^k': rp/2, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": tpp - rpp - dp - rp/2, "8^k": 0},  
-            "8^k": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 2 * tpp}}
-total = 0
-for family in families:
-    total += class_sizes[family]*num_classes[family]*(character_val[family] ** 2)
-    for fam2 in families: # iterate through the square maps 
-        total += class_sizes[family]*character_val[fam2]* square_maps1[family][fam2]
-total = (total/2)/(q^3 * rp * r * s * t)
-# print(total) 
-print("q = 1,9 mod 12 case:")
-print(total.full_simplify())
-print(total.subs(q=25))
 
-# q = 2, 8 mod 12 (p = 2, d = 3)
-d = 3 
-q = var('q')
-r = q+1
-s = q-1 
-t = q^2 - q + 1
-rp = r/d
-sp = s/d
-tp = t/d
-dp = (3-d)/2
-rpp = 0 
-tpp = (tp - 1)/6 
-families = ['1', '2', '3^l', '4^k', '5^k', "6'", "6^klm", "7^k", "8^k"]
-num_classes = {'1': 1, '2': 1, '3^l': d, '4^k': rp - 1, '5^k': rp - 1, "6'": 1 - dp, "6^klm": tpp - rpp, "7^k": tpp - rpp - dp, "8^k": 2*tpp}
-centralizers = {'1': q^3 * rp * r * s * t, '2': q^3 * rp, '3^l': q^2, '4^k': q*rp*r*s, '5^k': q*rp, "6'": r^2, "6^klm": rp*r, "7^k": rp*s, "8^k": tp}
-class_sizes = {key: (q^3 * rp * r * s * t) / val for key, val in centralizers.items()}
-character_val = {'1': q*s, '2': -1 * q, '3^l': 0, '4^k': -1 * s, '5^k': 1, "6'": 2, "6^klm": 2, "7^k": 0, "8^k": -1}
-square_maps2 = {'1': {'1': 1, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0},
-            '2': {'1': 1, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            '3^l': {'1': 0, '2': d, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0},
-            '4^k': {'1': 0, '2': 0, '3^l': 0, '4^k': rp - 1, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0} , 
-            '5^k': {'1': 0, '2': 1, '3^l': 0, '4^k': rp-1, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            "6'": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 1 - dp, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            "6^klm": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": tpp - rpp, "7^k": 0, "8^k": 0},
-            "7^k": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": tpp - rpp - dp, "8^k": 0}, 
-            "8^k": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 2 * tpp}}
-
-total = 0
-for family in families:
-    total += class_sizes[family]*num_classes[family]*(character_val[family] ** 2)
-    for fam2 in families: # iterate through the square maps 
-        total += class_sizes[family]*character_val[fam2]* square_maps2[family][fam2]
-total = (total/2)/(q^3 * rp * r * s * t)
-# print(total) 
-print("q = 2,8 mod 12 case:")
-print(total.full_simplify())
-print(total.subs(q=32))
-
-# q = 4,10 mod 12 (p = 2, d = 1)
-d = 1
-q = var('q')
-r = q+1
-s = q-1 
-t = q^2 - q + 1
-rp = r/d
-sp = s/d
-tp = t/d
-dp = (3-d)/2
-rpp = 0 
-tpp = (tp - 1)/6 
-families = ['1', '2', '3^l', '4^k', '5^k', "6'", "6^klm", "7^k", "8^k"]
-num_classes = {'1': 1, '2': 1, '3^l': d, '4^k': rp - 1, '5^k': rp - 1, "6'": 1 - dp, "6^klm": tpp - rpp, "7^k": tpp - rpp - dp, "8^k": 2*tpp}
-centralizers = {'1': q^3 * rp * r * s * t, '2': q^3 * rp, '3^l': q^2, '4^k': q*rp*r*s, '5^k': q*rp, "6'": r^2, "6^klm": rp*r, "7^k": rp*s, "8^k": tp}
-class_sizes = {key: (q^3 * rp * r * s * t) / val for key, val in centralizers.items()}
-character_val = {'1': q*s, '2': -1 * q, '3^l': 0, '4^k': -1 * s, '5^k': 1, "6'": 2, "6^klm": 2, "7^k": 0, "8^k": -1}
-square_maps3 = {'1': {'1': 1, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0},
-            '2': {'1': 1, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            '3^l': {'1': 0, '2': d, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0},
-            '4^k': {'1': 0, '2': 0, '3^l': 0, '4^k': rp - 1, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0} , 
-            '5^k': {'1': 0, '2': 1, '3^l': 0, '4^k': rp-1, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            "6'": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 1 - dp, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            "6^klm": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": tpp - rpp, "7^k": 0, "8^k": 0},
-            "7^k": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": tpp - rpp - dp, "8^k": 0}, 
-            "8^k": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 2 * tpp}}
-
-total = 0
-for family in families:
-    total += class_sizes[family]*num_classes[family]*(character_val[family] ** 2)
-    for fam2 in families: # iterate through the square maps 
-        total += class_sizes[family]*character_val[fam2]* square_maps3[family][fam2]
-total = (total/2)/(q^3 * rp * r * s * t)
-# print(total) 
-print("q = 4,10 mod 12 case:")
-print(total.full_simplify())
-print(total.subs(q=16))
-
-# q = 3, 7 mod 12 (d = 1)
-q = var('q')
-d = gcd(3, q) # have to redefine that cases etc etc. 
-d = 1
-r = q+1
-s = q-1 
-t = q^2 - q + 1
-rp = r/d
-sp = s/d
-tp = t/d
-dp = (3-d)/2
-rpp = 0 
-tpp = (tp - 1)/6 
-families = ['1', '2', '3^l', '4^k', '5^k', "6'", "6^klm", "7^k", "8^k"]
-num_classes = {'1': 1, '2': 1, '3^l': d, '4^k': rp - 1, '5^k': rp - 1, "6'": 1 - dp, "6^klm": tpp - rpp, "7^k": tpp - rpp - dp, "8^k": 2*tpp}
-centralizers = {'1': q^3 * rp * r * s * t, '2': q^3 * rp, '3^l': q^2, '4^k': q*rp*r*s, '5^k': q*rp, "6'": r^2, "6^klm": rp*r, "7^k": rp*s, "8^k": tp}
-class_sizes = {key: (q^3 * rp * r * s * t) / val for key, val in centralizers.items()}
-character_val = {'1': q*s, '2': -1 * q, '3^l': 0, '4^k': -1 * s, '5^k': 1, "6'": 2, "6^klm": 2, "7^k": 0, "8^k": -1}
-square_maps4 = {'1': {'1': 1, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0},
-            '2': {'1': 0, '2': 1, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            '3^l': {'1': 0, '2': 0, '3^l': d, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0},
-            '4^k': {'1': 1, '2': 0, '3^l': 0, '4^k': rp - 2, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0} , 
-            '5^k': {'1': 0, '2': 1, '3^l': 0, '4^k': 0, '5^k': rp - 2, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            "6'": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 1 - dp, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            "6^klm": {'1': 0, '2': 0, '3^l': 0, '4^k': -1 * ceil(r/4) + floor(r/6) + r/2 + floor((ceil(r/6) - 1)/2), '5^k': 0, "6'": 0, "6^klm": tpp - rpp - (-1 * ceil(r/4) + floor(r/6) + r/2 + floor((ceil(r/6) - 1)/2)), "7^k": 0, "8^k": 0},
-            "7^k": {'1': 0, '2': 0, '3^l': 0, '4^k': rp/2, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": tpp - rpp - dp - rp/2, "8^k": 0}, 
-            "8^k": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 2 * tpp}}
-total = 0
-for family in families:
-    total += class_sizes[family]*num_classes[family]*(character_val[family] ** 2)
-    for fam2 in families: # iterate through the square maps 
-        total += class_sizes[family]*character_val[fam2]* square_maps4[family][fam2]
-total = (total/2)/(q^3 * rp * r * s * t)
-# print(total) 
-print("q = 3,7 mod 12 case:")
-print(total.full_simplify())
-print(total.subs(q=27))
-
-# q = 5 mod 12
-q = var('q')
-d = gcd(3, q) # have to redefine that cases etc etc. 
-d = 3
-r = q+1
-s = q-1 
-t = q^2 - q + 1
-rp = r/d
-sp = s/d
-tp = t/d
-dp = (3-d)/2
-rpp = 0 
-tpp = (tp - 1)/6 
-families = ['1', '2', '3^l', '4^k', '5^k', "6'", "6^klm", "7^k", "8^k"]
-num_classes = {'1': 1, '2': 1, '3^l': d, '4^k': rp - 1, '5^k': rp - 1, "6'": 1 - dp, "6^klm": tpp - rpp, "7^k": tpp - rpp - dp, "8^k": 2*tpp}
-centralizers = {'1': q^3 * rp * r * s * t, '2': q^3 * rp, '3^l': q^2, '4^k': q*rp*r*s, '5^k': q*rp, "6'": r^2, "6^klm": rp*r, "7^k": rp*s, "8^k": tp}
-class_sizes = {key: (q^3 * rp * r * s * t) / val for key, val in centralizers.items()}
-character_val = {'1': q*s, '2': -1 * q, '3^l': 0, '4^k': -1 * s, '5^k': 1, "6'": 2, "6^klm": 2, "7^k": 0, "8^k": -1}
-square_maps5 = {'1': {'1': 1, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0},
-            '2': {'1': 0, '2': 1, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            '3^l': {'1': 0, '2': 0, '3^l': d, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0},
-            '4^k': {'1': 1, '2': 0, '3^l': 0, '4^k': rp - 2, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0} , 
-            '5^k': {'1': 0, '2': 1, '3^l': 0, '4^k': 0, '5^k': rp - 2, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            "6'": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 1 - dp, "6^klm": 0, "7^k": 0, "8^k": 0}, 
-            "6^klm": {'1': 0, '2': 0, '3^l': 0, '4^k': r/6 - 1, '5^k': 0, "6'": 0, "6^klm": tpp - rpp - (r/6 - 1), "7^k": 0, "8^k": 0},
-            "7^k": {'1': 0, '2': 0, '3^l': 0, '4^k': rp/2, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": tpp - rpp - dp - rp/2, "8^k": 0}, 
-            "8^k": {'1': 0, '2': 0, '3^l': 0, '4^k': 0, '5^k': 0, "6'": 0, "6^klm": 0, "7^k": 0, "8^k": 2 * tpp}}
-total = 0
-for family in families:
-    total += class_sizes[family]*num_classes[family]*(character_val[family] ** 2)
-    for fam2 in families: # iterate through the square maps 
-        total += class_sizes[family]*character_val[fam2]* square_maps5[family][fam2]
-total = (total/2)/(q^3 * rp * r * s * t)
-# print(total) 
-print("q = 5 mod 12 case:")
-print(total.full_simplify())
-print(total.subs(q=17))
-"""
-def create_latex_table(list_of_dicts):
-    """
-    Generates a LaTeX table from a list of nested dictionaries, with outer keys
-    as rows and inner keys as columns.
-
-    Args:
-        list_of_dicts (list): A list of dictionaries, where each dictionary
-                              corresponds to a complete table.
-
-    Returns:
-        str: A string containing the LaTeX code for the generated table.
-    """
-    if not list_of_dicts:
-        return "No data provided to create a table."
-
-    # Use the keys of the first inner dictionary for the column headers
-    # and the keys of the outer dictionary for the row headers.
-    outer_keys = list(list_of_dicts[0].keys())
-    inner_keys = list(list_of_dicts[0][outer_keys[0]].keys())
-
-    # Build the header row for the LaTeX table
-    header = ' & ' + ' & '.join([f'${key}$' for key in inner_keys]) + ' \\\\'
-    
-    # Build the table body
-    body = ''
-    # The outer keys now represent the rows of the table
-    for row_key in outer_keys:
-        row_dict = list_of_dicts[0][row_key]
-        row_content = f'${row_key}$'
-        
-        # Iterate through inner keys to get cell values for the row
-        for col_key in inner_keys:
-            cell_value = row_dict[col_key]
-            
-            # Check if the value is a number or an expression involving 'q'
-            try:
-                # Try to evaluate it as a symbolic expression for a cleaner output
-                sympy_expr = sympify(str(cell_value))
-                cell_value_str = f'${sympy_expr}$'
-            except:
-                # If it can't be parsed, treat it as a string
-                cell_value_str = f'${cell_value}$'
-
-            row_content += f' & {cell_value_str}'
-        
-        row_content += ' \\\\'
-        body += row_content + '\n'
-
-    # Construct the complete LaTeX document
-    latex_code = f"""
-\\begin{{table}}[h!]
-\\centering
-\\begin{{tabular}}{{{'c' * (len(inner_keys) + 1)}}}
-\\toprule
-{header}
-\\midrule
-{body}
-\\bottomrule
-\\end{{tabular}}
-\\caption{{Generated Table}}
-\\label{{tab:generated}}
-\\end{{table}}
-"""
-    return latex_code
-
-
-
+# These functions need to be combined into a class with modulus as an attribute. 
 def C_1_squared(modulus):
         C1Counter = 1
         C2Counter = 0
@@ -862,6 +609,72 @@ def C_6_klm_sym_fourth_explicit(modulus):
         C4Counter -= 4
         C1Counter += 1
     return (C1Counter, 0, 0, C4Counter, 0, 0, tpp - rpp - C4Counter - C1Counter, 0, 0)
+
+def create_latex_table(list_of_dicts):
+    """
+    Generates a LaTeX table from a list of nested dictionaries, with outer keys
+    as rows and inner keys as columns.
+
+    Args:
+        list_of_dicts (list): A list of dictionaries, where each dictionary
+                              corresponds to a complete table.
+
+    Returns:
+        str: A string containing the LaTeX code for the generated table.
+    """
+    if not list_of_dicts:
+        return "No data provided to create a table."
+
+    # Use the keys of the first inner dictionary for the column headers
+    # and the keys of the outer dictionary for the row headers.
+    outer_keys = list(list_of_dicts[0].keys())
+    inner_keys = list(list_of_dicts[0][outer_keys[0]].keys())
+
+    # Build the header row for the LaTeX table
+    header = ' & ' + ' & '.join([f'${key}$' for key in inner_keys]) + ' \\\\'
+    
+    # Build the table body
+    body = ''
+    # The outer keys now represent the rows of the table
+    for row_key in outer_keys:
+        row_dict = list_of_dicts[0][row_key]
+        row_content = f'${row_key}$'
+        
+        # Iterate through inner keys to get cell values for the row
+        for col_key in inner_keys:
+            cell_value = row_dict[col_key]
+            
+            # Check if the value is a number or an expression involving 'q'
+            try:
+                # Try to evaluate it as a symbolic expression for a cleaner output
+                sympy_expr = sympify(str(cell_value))
+                cell_value_str = f'${sympy_expr}$'
+            except:
+                # If it can't be parsed, treat it as a string
+                cell_value_str = f'${cell_value}$'
+
+            row_content += f' & {cell_value_str}'
+        
+        row_content += ' \\\\'
+        body += row_content + '\n'
+
+    # Construct the complete LaTeX document
+    latex_code = f"""
+\\begin{{table}}[h!]
+\\centering
+\\begin{{tabular}}{{{'c' * (len(inner_keys) + 1)}}}
+\\toprule
+{header}
+\\midrule
+{body}
+\\bottomrule
+\\end{{tabular}}
+\\caption{{Generated Table}}
+\\label{{tab:generated}}
+\\end{{table}}
+"""
+    return latex_code
+
 def get_power_map_counts(power, modulus):
     output = {}
     families = ['1', '2', '3^l', '4^k', '5^k', "6'", "6^klm", "7^k", "8^k"]
@@ -1142,13 +955,3 @@ for table_data in unique_elements:
 
     latex_table = create_latex_table([table_data])
     print(latex_table)
-
-"""
-    if modulus == 19:
-        fourth_maps_eval = {}
-        for key in fourth_maps.keys():
-            fourth_maps_eval[key] = {}
-            for key2 in cube_maps:
-                fourth_maps_eval[key][key2] = fourth_maps[key][key2].subs(q=modulus) 
-        print(fourth_maps_eval)
-"""
