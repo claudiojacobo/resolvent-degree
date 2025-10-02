@@ -961,6 +961,7 @@ for dict1 in unique_elements:
             dict_assignment[-_sage_const_1 ].append(i)
 print(dict_assignment)
 print(unique_elements)
+raise SystemExit
 
 # print(equations)
 # print(equations_list)

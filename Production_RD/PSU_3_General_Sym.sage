@@ -955,6 +955,7 @@ for dict1 in unique_elements:
             dict_assignment[-1].append(i)
 print(dict_assignment)
 print(unique_elements)
+raise SystemExit
 
 # print(equations)
 # print(equations_list)
