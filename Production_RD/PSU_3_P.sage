@@ -3,15 +3,14 @@ import time
 
 load("group_characters.sage")
 class GroupCharactersPSU3(GroupCharacters):
-    q = 1
-    p = 0
+    q = 1 # q as seen in PSU(3, q)
+    p = 0 # the characteristic of the field
     d = 0
     r = 0
     s = 0
     t = 0
     tp = 0
     rp = 0 
-    characteristic = 1
     name = ""
     classes = []
     class_order = {}
@@ -22,55 +21,76 @@ class GroupCharactersPSU3(GroupCharacters):
     characters = []
     minimal_perm = 0
     name = ""
+    class_initialization_time = 0 
+    character_table_time = 0
+
 
     def __init__(self, prime, exp):
-        start_pm_time = time.time()
+        self.start_pm_time = time.time()
         ### useful constants
-        self.q = prime**exp
-        self.characteristic = prime
-        q = self.q
-        self.p = prime
-        p = self.p
-        self.d = gcd(3,q+1)
-        d = self.d
+        q = prime**exp
+        p = prime
+        d = gcd(3,q+1)
         r = q+1
         s = q-1
         t = q**2-q+1
         rp = r//d
         tp = t//d
+        
+        self.q = q
+        self.p = p 
+        self.dc = d
         self.tp = tp
         self.rp = rp
         self.s = s
         self.r = r
         self.t = t
+        self.d = d 
+
         self.group_order = q**3*r**2*s*tp
         self.exp = exp
 
         self.name = f"PSU({prime},{exp}) (prime, exp)"
+        self.class_initialization()
+        self.characters_initalization()
+
+
+    def class_initialization(self):
+        q = self.q
+        p = self.p
+        d = self.d
+        r = self.r 
+        s = self.s  
+        t = self.t 
+        rp = self.rp  
+        tp = self.tp  
 
         ### conjugacy classes, class orders, and centralizer orders
-        self.classes = [ "C_1", "C_2" ]
+        self.classes = [ "C_1", "C_2" ] # C1 & C2 initialization
         self.class_order["C_1"] = 1
         self.centralizer_order["C_1"] = q**3*rp*r*s*t
         self.class_order["C_2"] = p
         self.centralizer_order["C_2"] = q**3*rp
 
+        # C_3^l initialization
         for l in range(d):
             c = f"C_3^{l}"
             self.classes.append(c)
             ### These class_orders are conjectured but not certain 
-            if prime == 2:
+            if p == 2:
                 self.class_order[c] = 4
             else:
-                self.class_order[c] = prime
+                self.class_order[c] = p
             self.centralizer_order[c] = q**2
-
+        
+        # C_4^k initialization
         for k in range(1,rp):
             c = f"C_4^{k}"
             self.classes.append(c)
             self.class_order[c] = rp//gcd(rp,k)
             self.centralizer_order[c] = q*rp*r*s
 
+        # C_5^k initialization 
         for k in range(1,rp):
             c = f"C_5^{k}"
             self.classes.append(c)
@@ -82,11 +102,13 @@ class GroupCharactersPSU3(GroupCharacters):
                     self.class_order[c] = n
                     break
                 n += 1
+        # C_6' initialization
         if d == 3:
             self.classes.append("C_6'")
             self.class_order["C_6'"] = 3
             self.centralizer_order["C_6'"] = r**2
-
+        
+        # C_6^klm initialization
         for l in range(2,rp+1):
             for k in range(1,l):
                 m = (-k-l)%r
@@ -97,23 +119,9 @@ class GroupCharactersPSU3(GroupCharacters):
                     c = f"C_6^{{{k},{l},{m}}}"
                     self.classes.append(c)
                     self.centralizer_order[c] = rp*r
-                    """
-                    # there is definitely a better way to do this (Pablo's formula?)
-                    # (and we need to know it) but this works for now
-                    n = 1
-                    while True: # heheheh
-                        n += 1
-                        cn = self.power_of(c,n)
-                        if cn[2] == "4":
-                            self.class_order[c] = n*self.class_order[cn]
-                            break
-                        if cn[2] == "1":
-                            self.class_order[c] = n
-                            break
-                    """
-                    # This was taking a while so I've replaced it with a maybe incorrect formula
                     self.class_order[c] = int(r / gcd(k,l,m,r))
-                    
+        
+        # C_7^k initialization
         klist = []
         for k in range(1,rp*s):
             if k%s == 0:
@@ -127,7 +135,8 @@ class GroupCharactersPSU3(GroupCharacters):
             self.classes.append(c)
             self.class_order[c] = rp*s // gcd(k, rp*s)
             self.centralizer_order[c] = rp*s
-
+            
+        # C_8^k initialization
         klist = []
         for k in range(1,tp):
             k = min(k, (-k * q) % tp, ((q ** 2) * k) % tp )
@@ -140,11 +149,22 @@ class GroupCharactersPSU3(GroupCharacters):
             self.class_order[c] = tp
             self.centralizer_order[c] = tp
 
+        self.class_initialization_time = time.time() - self.start_pm_time
 
-        ### compute relevant primes
-        # there MUST be a better way to do this
-        self.primes = primes_up_to(max(self.class_order.values()))
 
+    def characters_initalization(self):
+        q = self.q
+        p = self.p
+        d = self.d
+        r = self.r 
+        s = self.s  
+        t = self.t 
+        rp = self.rp  
+        tp = self.tp  
+
+        ### compute relevant primes 
+        # not necessary with our current approach
+        # self.primes = primes_up_to(max(self.class_order.values()))
 
         ### compute power maps
         # this is NOT a good way to do it, but it'll do (for known powers) for now
@@ -153,7 +173,7 @@ class GroupCharactersPSU3(GroupCharacters):
             #for p in self.primes:
             for p in [2,3,5,7]: # we only need primes up to the # of molien coefficients we're asking for.
                 self.power_map[g][p] = self.power_of(g,p)
-        print(f"Power Map and Class Initialization took {time.time() - start_pm_time}")
+
         ### implement characters of degree qs and t
         # Generates character table data for Chi_qs and Chi_t^(u)
         start_char_time = time.time()
@@ -167,6 +187,8 @@ class GroupCharactersPSU3(GroupCharacters):
                 k = int(g[4:])
             elif i == 6 and g[-1] != "'":
                 k,l,m = map(int,g[5:-1].split(','))
+            
+            # Chi_qs
             if i == 1: 
                 self.characters[0][g] = q * s 
             elif i == 2: 
@@ -183,6 +205,8 @@ class GroupCharactersPSU3(GroupCharacters):
                 self.characters[0][g] = 0
             elif i == 8: 
                 self.characters[0][g] = -1
+
+            # Chi_t^u
             for u in range(1,rp):
                 if i == 1: 
                     self.characters[u][g] = t 
@@ -203,7 +227,7 @@ class GroupCharactersPSU3(GroupCharacters):
                     self.characters[u][g] = eps^(3 * u * k) 
                 elif i == 8: 
                     self.characters[u][g] = 0 
-        print(f"Character Table took {time.time() - start_char_time}")
+        self.character_table_time = time.time() - start_char_time
             # return self.characters #end of check for our 2 chars 
 
 
@@ -212,9 +236,10 @@ class GroupCharactersPSU3(GroupCharacters):
         else:
             self.minimal_perm = self.q ** 3 + 1  
 
+
     def power_of(self, g, n):
         """
-        computes the conjugacy class of g^n
+        Computes the conjugacy class of g^n
         """
         q = self.q
         d = self.d
@@ -222,14 +247,13 @@ class GroupCharactersPSU3(GroupCharacters):
         r = (q + 1) // d
         tp = self.tp
         rp = self.rp
-        p = self.characteristic
+        p = self.p
         i = int(g[2])
 
         # initialize
         k,l,m = 0,0,0 
 
         # string handling to recover indices from string
-        # we'll use this when computing characters, but annoying to package as a function
         if i in [3,4,5,7,8]:
             k = int(g[4:])
         elif i == 6 and g[-1] != "'":
@@ -238,12 +262,14 @@ class GroupCharactersPSU3(GroupCharacters):
         # power map logic
         if i == 1:
             return "C_1"
+
         elif i == 2:
             if n%p == 0:
                 return "C_1"
             return "C_2"
+
         elif i == 3:
-            if self.characteristic == 2:
+            if self.p == 2:
                 if n%4 == 0:
                     return "C_1"
                 elif n%2 == 0:
@@ -251,16 +277,18 @@ class GroupCharactersPSU3(GroupCharacters):
                 else:
                     return g 
             else:
-                if n%self.characteristic == 0:
+                if n%self.p == 0:
                     return "C_1"
                 else:
                     return g 
+                    
         elif i == 4:
             e = (n*k) % ((q+1)//d)
             if e == 0:
                 return "C_1"
             else:
                 return f"C_4^{e}"
+
         elif i == 5:
             if k*n % ((q+1)//d) == 0 and n%p == 0 :
                 return "C_1"
@@ -269,6 +297,7 @@ class GroupCharactersPSU3(GroupCharacters):
             elif n % p == 0:
                 return f"C_4^{n * k % rp}" # added 7/15--might not  work
             return f"C_5^{k*n % ((q+1)//d)}"
+
         elif i == 6:
             # Logic for C_6'
             if g[-1] == "'":
@@ -284,11 +313,10 @@ class GroupCharactersPSU3(GroupCharacters):
             while l > (q+1)//d:
                 diag  = [(x + (q+1)//d)%(q+1) for x in (k,l,m)]
                 k,l,m = sorted([ (q+1) if x == 0 else x for x in diag])
-                
-
             if k == l or l == m: # broke the rules!
                 return self.power_of(f"C_4^1", l) # what's up with this?
             return f"C_6^{{{k},{l},{m}}}"
+
         elif i == 7:
             if k*n % (s*rp) == 0:
                 return "C_1"
@@ -297,6 +325,7 @@ class GroupCharactersPSU3(GroupCharacters):
             y = k*n % (s*rp)
             y = min(y, (-q*y) % (s*rp))
             return f"C_7^{y}"
+
         elif i == 8:
             if k*n % tp == 0:
                 return "C_1"
@@ -305,6 +334,9 @@ class GroupCharactersPSU3(GroupCharacters):
             return f"C_8^{w}"
     
     def C_1_squared(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_1 gets mapped to when it's squared.  
+        """
         C1Counter = 1
         C2Counter = 0
         C3Counter = 0
@@ -317,6 +349,9 @@ class GroupCharactersPSU3(GroupCharacters):
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
     
     def C_1_cubed(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_1 gets mapped to when it's cubed.  
+        """
         C1Counter = 1
         C2Counter = 0
         C3Counter = 0
@@ -328,7 +363,10 @@ class GroupCharactersPSU3(GroupCharacters):
         C8Counter = 0
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
-    def C_1_forth(self):
+    def C_1_fourth(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_1 gets mapped to when it's raised to the fourth power.  
+        """
         C1Counter = 1
         C2Counter = 0
         C3Counter = 0
@@ -341,6 +379,9 @@ class GroupCharactersPSU3(GroupCharacters):
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
     
     def C_2_squared(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_2 gets mapped to when it's squared.  
+        """
         C1Counter = 0
         C2Counter = 1
         C3Counter = 0
@@ -357,6 +398,9 @@ class GroupCharactersPSU3(GroupCharacters):
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
     def C_2_cubed(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_2 gets mapped to when it's cubed.  
+        """
         C1Counter = 0
         C2Counter = 1
         C3Counter = 0
@@ -372,7 +416,10 @@ class GroupCharactersPSU3(GroupCharacters):
             C2Counter -= 1
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
-    def C_2_forth(self):
+    def C_2_fourth(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_2 gets mapped to when it's raised to the fourth power.  
+        """
         C1Counter = 0
         C2Counter = 1
         C3Counter = 0
@@ -389,6 +436,9 @@ class GroupCharactersPSU3(GroupCharacters):
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
     def C_3_squared(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_3 gets mapped to when it's squared.  
+        """
         d = self.d
         p = self.p
         C1Counter = 0
@@ -407,6 +457,9 @@ class GroupCharactersPSU3(GroupCharacters):
 
     
     def C_3_cubed(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_3 gets mapped to when it's cubed.  
+        """
         d = self.d
         p = self.p
         C1Counter = 0
@@ -424,7 +477,10 @@ class GroupCharactersPSU3(GroupCharacters):
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
     
-    def C_3_forth(self):
+    def C_3_fourth(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_3 gets mapped to when it's raised to the fourth power.  
+        """
         d = self.d
         p = self.p
         C1Counter = 0
@@ -442,6 +498,9 @@ class GroupCharactersPSU3(GroupCharacters):
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
     def C_4_squared(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_4 gets mapped to when it's squared.  
+        """
         q = self.q
         d = self.d
         C1Counter = 0
@@ -459,6 +518,9 @@ class GroupCharactersPSU3(GroupCharacters):
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
     def C_4_cubed(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_4 gets mapped to when it's cubed.  
+        """
         q = self.q
         d = self.d
         C1Counter = 0
@@ -475,7 +537,10 @@ class GroupCharactersPSU3(GroupCharacters):
             C4Counter -= 2
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
-    def C_4_forth(self):
+    def C_4_fourth(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_4 gets mapped to when it's raised to the fourth power.  
+        """
         q = self.q
         d = self.d
         C1Counter = 0
@@ -496,6 +561,9 @@ class GroupCharactersPSU3(GroupCharacters):
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
     def C_5_squared(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_5 gets mapped to when it's squared.  
+        """
         q = self.q
         d = self.d
         p = self.p
@@ -517,6 +585,9 @@ class GroupCharactersPSU3(GroupCharacters):
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
     def C_5_cubed(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_5 gets mapped to when it's cubed.  
+        """
         q = self.q
         d = self.d
         p = self.p
@@ -537,7 +608,10 @@ class GroupCharactersPSU3(GroupCharacters):
             C5Counter-= (q+1)//d-1 
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
-    def C_5_forth(self):
+    def C_5_fourth(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_5 gets mapped to when it's raised to the fourth power.  
+        """
         q = self.q
         d = self.d
         p = self.p
@@ -562,6 +636,9 @@ class GroupCharactersPSU3(GroupCharacters):
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
     def C_6_p_squared(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_6_p gets mapped to when it's squared.  
+        """
         d = self.d
         C6pCounter = 1-(3-d)//2
         C1Counter = 0
@@ -575,6 +652,9 @@ class GroupCharactersPSU3(GroupCharacters):
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
     def C_6_p_cubed(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_6_p gets mapped to when it's cubed.  
+        """
         d = self.d
         C6pCounter = 0
         C1Counter = 1-(3-d)//2
@@ -587,7 +667,10 @@ class GroupCharactersPSU3(GroupCharacters):
         C8Counter = 0
         return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
-    def C_6_p_forth(self):
+    def C_6_p_fourth(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_6_p gets mapped to when it's raised to the fourth power.  
+        """
         d = self.d
         C6pCounter = 1-(3-d)//2
         C1Counter = 0
@@ -603,6 +686,9 @@ class GroupCharactersPSU3(GroupCharacters):
 
 
     def C_6_klm_sym_squared(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_6_klm gets mapped to when it's squared.  
+        """
         C4Counter = 0
         C1Counter = 0
         r = self.r
@@ -662,9 +748,13 @@ class GroupCharactersPSU3(GroupCharacters):
                             C4Counter += 1
                         k += 1
 
-        return C4Counter
+        return C4Counter # edit this so it matches the other functions' formats 
 
     def C_6_klm_sym_squared_explicit(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_6_klm gets mapped to when it's squared. 
+        does not iterate through each conjugacy class
+        """
         a = self.r % 12
         r = self.r
         if a in [1,3,5,7,9,11]:
@@ -679,8 +769,12 @@ class GroupCharactersPSU3(GroupCharacters):
             return r/6 - 1
         if a == 0:
             return r/6 - 1 
+        # edit this so the return statement matches the other functions' formats 
 
     def C_6_klm_sym_cubed(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_6_klm gets mapped to when it's cubed.  
+        """
         C4Counter = 0 
         r = self.r 
         if r % 3 != 0:
@@ -706,8 +800,13 @@ class GroupCharactersPSU3(GroupCharacters):
                 elif r % 6 == 3 and k % 2 == 1:
                     C4Counter += 1
                 k += 1
-        return C4Counter
+        return C4Counter # edit this so it matches the other functions' formats 
+
     def C_6_klm_sym_cubed_explicit(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_6_klm gets mapped to when it's cubed. 
+        does not iterate through each conjugacy class 
+        """
         C4Counter = 0
         r = self.r
         a = r % 12
@@ -732,118 +831,12 @@ class GroupCharactersPSU3(GroupCharacters):
             # Case 2a, 3a diff of 2r/3
             C4Counter += ceil(r/9) - 1   
             C4Counter += ceil((ceil(r/9) - 1)/2)
-        return C4Counter
+        return C4Counter # edit this so it matches the other functions' formats 
 
-        
-    
-    def C_7_squared(self):
-        p = self.p
-        q = self.q
-        d = self.d
-        totalnum = (q*q-q+1-d)//(2*self.d) - (3-d)//2
-        C1Counter = 0
-        C2Counter = 0
-        C3Counter = 0
-        C4Counter = 0
-        C5Counter = 0
-        C6pCounter = 0
-        C6klmCounter = 0
-        C7Counter = totalnum
-        C8Counter = 0
-        if q % 2 != 0:
-            C4Counter += (q+1)//(2*self.d)
-            C7Counter = C7Counter - (q+1)//(2*self.d)
-        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
-
-    def C_7_cubed(self):
-        p = self.p
-        q = self.q
-        d = self.d
-        totalnum = (q*q-q+1-d)//(2*self.d) - (3-d)//2
-        C1Counter = 0
-        C2Counter = 0
-        C3Counter = 0
-        C4Counter = 0
-        C5Counter = 0
-        C6pCounter = 0
-        C6klmCounter = 0
-        C7Counter = totalnum
-        C8Counter = 0
-        if q % 3 == 1:
-            C1Counter += 1
-            C7Counter -= 1
-            C4Counter += q
-            C7Counter -= q
-        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
-
-    def C_7_forth(self):
-        p = self.p
-        q = self.q
-        d = self.d
-        totalnum = (q*q-q+1-d)//(2*self.d) - (3-d)//2
-        C1Counter = 0
-        C2Counter = 0
-        C3Counter = 0
-        C4Counter = 0
-        C5Counter = 0
-        C6pCounter = 0
-        C6klmCounter = 0
-        C7Counter = totalnum
-        C8Counter = 0
-        if q % 2 == 1:
-            C4Counter += (q+1)//(2*self.d)
-            C7Counter -= (q+1)//(2*self.d)
-        if q % 4 == 1: 
-            C4Counter += 2*(q+1)//(2*self.d)
-            C7Counter -= 2*(q+1)//(2*self.d)
-        if (q+1) % 2 == 0 and (q+1)%4 != 0:
-            C1Counter += 1
-            C4Counter -= 1
-        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
-    
-    def C_8_squared(self):
-        q = self.q
-        d = self.d
-        C1Counter = 0
-        C2Counter = 0
-        C3Counter = 0
-        C4Counter = 0
-        C5Counter = 0
-        C6pCounter = 0
-        C6klmCounter = 0
-        C7Counter = 0
-        C8Counter = ((q*q-q+1)//d-1)//3
-        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
-    
-    def C_8_cubed(self):
-        q = self.q
-        d = self.d
-        C1Counter = 0
-        C2Counter = 0
-        C3Counter = 0
-        C4Counter = 0
-        C5Counter = 0
-        C6pCounter = 0
-        C6klmCounter = 0
-        C7Counter = 0
-        C8Counter = ((q*q-q+1)//d-1)//3
-        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
-    
-    def C_8_forth(self):
-        q = self.q
-        d = self.d
-        C1Counter = 0
-        C2Counter = 0
-        C3Counter = 0
-        C4Counter = 0
-        C5Counter = 0
-        C6pCounter = 0
-        C6klmCounter = 0
-        C7Counter = 0
-        C8Counter = ((q*q-q+1)//d-1)//3
-        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
-    
     def C_6_klm_sym_fourth(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_6_klm gets mapped to when it's raised to the fourth power.  
+        """
         C4Counter = 0 
         C1Counter = 0
         r = self.r
@@ -973,8 +966,13 @@ class GroupCharactersPSU3(GroupCharacters):
             # We over counted the C1 case because there was a differnece of r/2 between k and m and so it was flagged by the squared function
             C4Counter -= 1
             print("============")
-        return C4Counter, C1Counter
+        return C4Counter, C1Counter # edit this so it matches the other functions' formats 
+
     def C_6_klm_sym_fourth_explicit(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_6_klm gets mapped to when it's raised to the fourth power.
+        does not iterate through each conjugacy class  
+        """
         C4Counter = 0
         C1Counter = 0
         r = self.r
@@ -1056,7 +1054,133 @@ class GroupCharactersPSU3(GroupCharacters):
             C1Counter += 1
             print("===========")
 
-        return C4Counter, C1Counter
+        return C4Counter, C1Counter # edit this so it matches the other functions' formats 
+        
+    
+    def C_7_squared(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_7 gets mapped to when it's squared.  
+        """
+        p = self.p
+        q = self.q
+        d = self.d
+        totalnum = (q*q-q+1-d)//(2*self.d) - (3-d)//2
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = totalnum
+        C8Counter = 0
+        if q % 2 != 0:
+            C4Counter += (q+1)//(2*self.d)
+            C7Counter = C7Counter - (q+1)//(2*self.d)
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_7_cubed(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_7 gets mapped to when it's cubed.  
+        """
+        p = self.p
+        q = self.q
+        d = self.d
+        totalnum = (q*q-q+1-d)//(2*self.d) - (3-d)//2
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = totalnum
+        C8Counter = 0
+        if q % 3 == 1:
+            C1Counter += 1
+            C7Counter -= 1
+            C4Counter += q
+            C7Counter -= q
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+
+    def C_7_fourth(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_7 gets mapped to when it's raised to the fourth power.  
+        """
+        p = self.p
+        q = self.q
+        d = self.d
+        totalnum = (q*q-q+1-d)//(2*self.d) - (3-d)//2
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = totalnum
+        C8Counter = 0
+        if q % 2 == 1:
+            C4Counter += (q+1)//(2*self.d)
+            C7Counter -= (q+1)//(2*self.d)
+        if q % 4 == 1: 
+            C4Counter += 2*(q+1)//(2*self.d)
+            C7Counter -= 2*(q+1)//(2*self.d)
+        if (q+1) % 2 == 0 and (q+1)%4 != 0:
+            C1Counter += 1
+            C4Counter -= 1
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+    
+    def C_8_squared(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_8 gets mapped to when it's squared.  
+        """
+        q = self.q
+        d = self.d
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = ((q*q-q+1)//d-1)//3
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+    
+    def C_8_cubed(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_8 gets mapped to when it's cubed.  
+        """
+        q = self.q
+        d = self.d
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = ((q*q-q+1)//d-1)//3
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+    
+    def C_8_fourth(self):
+        """
+        Returns a summary of the families that each conjugacy class in C_8 gets mapped to when it's raised to the fourth power.  
+        """
+        q = self.q
+        d = self.d
+        C1Counter = 0
+        C2Counter = 0
+        C3Counter = 0
+        C4Counter = 0
+        C5Counter = 0
+        C6pCounter = 0
+        C6klmCounter = 0
+        C7Counter = 0
+        C8Counter = ((q*q-q+1)//d-1)//3
+        return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
 
         
