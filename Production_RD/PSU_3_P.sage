@@ -1093,7 +1093,6 @@ start = time.time()
 
 # currently fails for q = 125, 4, 8, 3, 7, 27 -- struggling with third powers, small primes, and a couple other things?
 # Works for: q = 2, 5, 25, 16, 32, 49, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47
-"""
 end = time.time()
 print(f"Elapsed time: {end - start:.4f} seconds")   
 i = 0
@@ -1131,7 +1130,7 @@ for g in G.classes:
 print(f"empirical problem cases (fourth): {i}")
 print(f"predicted problem cases (fourth): {G.C_6_klm_sym_fourth()}")
 print(G.C_6_klm_sym_fourth_explicit())
-"""
+
 
 """
 i = 0
@@ -1146,7 +1145,8 @@ print(power_map_counts)
 # print(f"empirical problem cases (cube): {i}")
 # print(f"predicted problem cases (cube): {G.C_8_cubed()}")
 """
-G = GroupCharactersPSU3(19, 1)
+G = GroupCharactersPSU3(3, 1)
+"""
 i = 0
 for g in G.classes:
     if g[2] == "6" and g[3] != "'":
@@ -1157,7 +1157,9 @@ for g in G.classes:
 print(f"empirical problem cases (4th): {i}")
 print(f"predicted problem cases (4th): {G.C_6_klm_sym_fourth()}")
 print(f"predicted problem cases explicit (4th): {G.C_6_klm_sym_fourth_explicit()}")
+"""
+H = GroupCharacters("PSU(3, 3)")
+H.display()
+G.display()
 
-"""
-# so, this doesn't quite work. I don't know what's going on here but it looks like we're undercounting by 1 or 2 sometimes but asymptotically we're overcounting? 
-"""
+

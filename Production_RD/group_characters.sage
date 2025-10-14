@@ -195,13 +195,11 @@ class GroupCharacters:
         alg_indp_poly_copy = list(alg_indp_poly_copy)
         for i, val in enumerate(alg_indp_poly_copy):
             alg_indp_poly_copy[i] = str(val)
-
         i = 1
         # start at the first non zero entry in alg_indp_poly
         while i < len(alg_indp_poly) and alg_indp_poly[i] == 0:
             i += 1
         while i < len(alg_indp_poly):
-            print(self.minimal_perm)
             if degree_product * i >= self.minimal_perm: # failed b/c irreducibility
                 limited_by_action = True
                 ran_out_of_molien = False
@@ -225,7 +223,7 @@ class GroupCharacters:
                 i += 1
 
         if RD(self.minimal_perm) <= bound:
-            beat_by_perm = True
+            beat_by_perm = True 
             if RD(self.minimal_perm) < bound:
                 limited_by_action = False
                 limited_by_versality = False
