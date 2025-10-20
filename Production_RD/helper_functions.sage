@@ -1,5 +1,7 @@
 from sage.all import gap
 import math
+
+
 def primes_up_to(k):
     """
     returns an ascending list of all primes up through k
@@ -11,7 +13,6 @@ def primes_up_to(k):
         else:
             primes.append(i)
     return(primes)
-
 
 def partitions(n, k=1):
     """
@@ -67,8 +68,6 @@ def generator_combinations(generators, degree, limit=None):
 
     return combinations
 
-# [1,1,2,3,4,5,7,8]
-
 def generators_from_molien(molien_terms):
     # initialize generators with first non-zero element in molien terms
     generators = [1]
@@ -115,7 +114,6 @@ def get_PSU_order(n,q):
         k *= q ** (i + 1) - ((-1) ** (i + 1))
     return k * (q ** ((1/2) * n * (n+1))) * (1/(math.gcd(n+1, q+1)))
 
-    
 def get_unicorn(a):
     primes = primes_up_to(a)
     unicorn = {}
@@ -125,7 +123,6 @@ def get_unicorn(a):
             break
         t += 1
     bound = t
-
     for p in primes: 
         for b in range(1, bound):
             if p ** b < a:

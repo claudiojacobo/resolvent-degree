@@ -109,7 +109,7 @@ class GroupCharactersPSU3(GroupCharacters):
             self.centralizer_order["C_6'"] = r**2
         
         # C_6^klm initialization
-        for l in range(2,rp+1):
+        for l in range(2,rp+1): 
             for k in range(1,l):
                 m = (-k-l)%r
                 if m == 0:
