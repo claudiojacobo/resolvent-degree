@@ -2,8 +2,8 @@ from math import gcd
 import time
 
 load("group_characters.sage")
-class GroupCharactersPSU3(GroupCharacters):
-    q = 1 # q as seen in PSU(3, q)
+class GroupCharactersPSL3(GroupCharacters):
+    q = 1 # q as seen in PSL(3, q)
     p = 0 # the characteristic of the field
     d = 0
     r = 0
@@ -30,10 +30,10 @@ class GroupCharactersPSU3(GroupCharacters):
         ### useful constants
         q = prime**exp
         p = prime
-        d = gcd(3,q+1)
-        r = q+1
-        s = q-1
-        t = q**2-q+1
+        d = gcd(3,q-1)
+        r = q-1
+        s = q+1
+        t = q**2+q+1
         rp = r//d
         tp = t//d
         
@@ -50,7 +50,7 @@ class GroupCharactersPSU3(GroupCharacters):
         self.group_order = q**3*r*rp*s*t
         self.exp = exp
 
-        self.name = f"PSU({prime},{exp}) (prime, exp)"
+        self.name = f"PSL({prime},{exp}) (prime, exp)"
         self.class_initialization()
         self.characters_initalization()
 
@@ -98,7 +98,7 @@ class GroupCharactersPSU3(GroupCharacters):
             self.centralizer_order[c] = q*rp
             n = 1
             while True: # this sucks, we should find a better way to do this
-                if k*n % ((q+1)//d) == 0 and n%p == 0:
+                if k*n % ((r)//d) == 0 and n%p == 0:
                     self.class_order[c] = n
                     break
                 n += 1
@@ -192,11 +192,11 @@ class GroupCharactersPSU3(GroupCharacters):
             if i == 1: 
                 self.characters[0][g] = q * s 
             elif i == 2: 
-                self.characters[0][g] = -q
+                self.characters[0][g] = q
             elif i == 3: 
                 self.characters[0][g] = 0 
             elif i == 4: 
-                self.characters[0][g] = -s
+                self.characters[0][g] = s
             elif i == 5: 
                 self.characters[0][g] = 1 
             elif i == 6: 
@@ -211,11 +211,11 @@ class GroupCharactersPSU3(GroupCharacters):
                 if i == 1: 
                     self.characters[u][g] = t 
                 elif i == 2: 
-                    self.characters[u][g] = -s 
+                    self.characters[u][g] = s 
                 elif i == 3: 
                     self.characters[u][g] = 1
                 elif i == 4: 
-                    self.characters[u][g] = -s * eps^(3 * u * k) + eps^(-6 * u * k)  
+                    self.characters[u][g] = s * eps^(3 * u * k) + eps^(-6 * u * k)  
                 elif i == 5: 
                     self.characters[u][g] = eps^(3 * u * k) + eps^(-6 * u * k) 
                 elif i == 6 : 
@@ -224,13 +224,13 @@ class GroupCharactersPSU3(GroupCharacters):
                     else: 
                         self.characters[u][g] = eps^(3 * u * k) + eps^(3 * u * l) + eps^(3 * u * m) 
                 elif i == 7: 
-                    self.characters[u][g] = eps^(3 * u * k) 
+                    self.characters[u][g] = -1 * eps^(3 * u * k) 
                 elif i == 8: 
                     self.characters[u][g] = 0 
         self.character_table_time = time.time() - start_char_time
             # return self.characters #end of check for our 2 chars 
 
-
+        # determine minimal faithful perm representation
         if self.q == 5:
             self.minimal_perm = 50
         else:
@@ -243,8 +243,8 @@ class GroupCharactersPSU3(GroupCharacters):
         """
         q = self.q
         d = self.d
-        s = q - 1
-        r = (q + 1) // d
+        s = self.s
+        r = self.r
         tp = self.tp
         rp = self.rp
         p = self.p
@@ -283,20 +283,20 @@ class GroupCharactersPSU3(GroupCharacters):
                     return g 
                     
         elif i == 4:
-            e = (n*k) % ((q+1)//d)
+            e = (n*k) % ((r)//d)
             if e == 0:
                 return "C_1"
             else:
                 return f"C_4^{e}"
 
         elif i == 5:
-            if k*n % ((q+1)//d) == 0 and n%p == 0 :
+            if k*n % (rp) == 0 and n%p == 0 :
                 return "C_1"
-            elif k*n % ((q+1)//d) == 0:
+            elif k*n % (rp) == 0:
                 return "C_2"
             elif n % p == 0:
                 return f"C_4^{n * k % rp}" # added 7/15--might not  work
-            return f"C_5^{k*n % ((q+1)//d)}"
+            return f"C_5^{k*n % (rp)}"
 
         elif i == 6:
             # Logic for C_6'
@@ -305,14 +305,14 @@ class GroupCharactersPSU3(GroupCharacters):
                     return "C_1"
                 return "C_6'"
             # Logic for C_6^{k,l,m}
-            diag = [(n*x)%((q+1)) for x in (k,l,m)] # ((q+1)//d) ?
-            k,l,m = sorted([ (q+1) if x == 0 else x for x in diag])  # ((q+1)//d) ?
+            diag = [(n*x)%((r)) for x in (k,l,m)] # ((q+1)//d) ?
+            k,l,m = sorted([ (r) if x == 0 else x for x in diag])  # ((q+1)//d) ?
 
-            if (k,l,m) == ((q+1)//d, 2 * ((q+1)//d),  (q+1)): # checks for C_6'
+            if (k,l,m) == (rp, 2 * (rp),  (r)): # checks for C_6'
                 return "C_6'" 
-            while l > (q+1)//d:
-                diag  = [(x + (q+1)//d)%(q+1) for x in (k,l,m)]
-                k,l,m = sorted([ (q+1) if x == 0 else x for x in diag])
+            while l > rp:
+                diag  = [(x + rp)%(r) for x in (k,l,m)]
+                k,l,m = sorted([ (r) if x == 0 else x for x in diag])
             if k == l or l == m: # broke the rules!
                 return self.power_of(f"C_4^1", l) # what's up with this?
             return f"C_6^{{{k},{l},{m}}}"
@@ -330,7 +330,7 @@ class GroupCharactersPSU3(GroupCharacters):
             if k*n % tp == 0:
                 return "C_1"
             w = k*n % tp
-            w = min(w, w*(-q) % tp, w*q*q % tp)
+            w = min(w, w*(q) % tp, w*q*q % tp) #changed this, it might break itself
             return f"C_8^{w}"
     
     def C_1_squared(self):
@@ -1204,7 +1204,9 @@ start = time.time()
 
 
 
-
+G = GroupCharactersPSL3(7, 1)
+print(G.characters[0])
+print(G.the_game(G.characters[0], 4))
 
 # G = GroupCharactersPSU3(3,6)
 # print(G.class_order)

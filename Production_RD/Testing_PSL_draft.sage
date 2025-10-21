@@ -1,9 +1,259 @@
-from math import gcd
+import math
+from sage.all import libgap # is this necessary? 
 import time
+from math import gcd
+load("helper_functions.sage")
 
-load("group_characters.sage")
-class GroupCharactersPSU3(GroupCharacters):
-    q = 1 # q as seen in PSU(3, q)
+class GroupCharacters:
+    name = None # string
+    classes = None # list of strings
+    class_order = None # dictionary string->int
+    centralizer_order = None # dictionary string->int
+    group_order = None # int
+    primes = None # list of ints
+    power_map = None # dictionary string->dictionary (int->string)
+    characters = None # list of dictionaries string->algebraic number
+    minimal_perm = None # int
+    
+    def __init__(self, group_name):
+        # invoke GAP via libgap
+        self.name = group_name
+        group = eval(f"libgap.{group_name}")
+        ct = group.CharacterTable()
+        self.classes = libgap.ClassNames(ct).sage()
+        r = len(self.classes)
+
+        # parse orders of each conjugacy class representative
+        orders = ct.OrdersClassRepresentatives().sage()
+        self.class_order = { self.classes[i]:orders[i] for i in range(r) }
+
+        # parse centralizer orders
+        centralizers = ct.SizesCentralizers().sage()
+        self.centralizer_order = { self.classes[i]:centralizers[i] for i in range(r) }
+        self.group_order = centralizers[0]
+ 
+        # load necessary power maps
+        largest_order = max(orders)
+        self.primes = primes_up_to(largest_order)
+        self.power_map = { g:{} for g in self.classes }
+        for p in self.primes:
+            for i in range(len(self.classes)):
+                self.power_map[self.classes[i]][p] = self.classes[ct.PowerMap(p).sage()[i]-1]
+
+        # sort characters by degree
+        ct = sorted(ct.Irr().sage(), key=lambda x:x[0])
+        self.characters = [ { self.classes[i]:chi[i] for i in range(r) } for chi in ct]
+
+        # this is likely a bottleneck
+        self.minimal_perm = group.MinimalFaithfulPermutationDegree()
+
+    def display(self, decimal=False):
+        print(f"----------- Character data for {self.name} ------------")
+        
+        print("\nConjugacy classes:\n\n", end="\t")
+        for g in self.classes:
+            print(g,end = "\t")
+
+        print("\n\nCentralizers:\n\n", end="\t")
+        for g in self.classes:
+            print(self.centralizer_order[g],end = "\t")
+
+        print("\n\nPower maps:")
+        for p in self.primes:
+            print(f"\n{p}", end="\t")
+            for g in self.classes:
+                print(self.power_map[g][p],end = "\t")
+
+        print("\n\nCharacters:")
+        for i, chi in enumerate(self.characters):
+            print(f"\nχ{i}:", end="\t")
+            for g in self.classes:
+                if decimal:
+                    print(f"{complex(chi[g]):.3f}",end = "\t")
+                else:
+                    print(chi[g],end = "\t")
+        print("\n")
+
+    def inner_product(self, f1, f2):
+        """
+        compute the inner product of two class functions (encoded as dictionaries with keys = classes)
+        """
+        return sum([ f1[g].conjugate()*f2[g]/self.centralizer_order[g] for g in self.classes ])
+ 
+    def invariant_dimension(self, chi):
+        """
+        computes the dimension of G-invariants for the representation corresponding to chi
+        """
+        return sum([ chi[g]/self.centralizer_order[g] for g in self.classes ])
+
+    def eval_char(self, chi, conj, n):
+        """
+        Evaluates a specific character at a conjugacy class raised to the nth power.
+        :param chi: Relevant character dictionary
+        :param conj: conjugacy class of interest
+        :param n: Power we raise conj to
+        :return: 
+        """
+        m = n % self.class_order[conj]
+        prime_factorization = []
+        i = 0
+        if m == 0:
+            return chi[self.classes[0]]
+        while i < len(self.primes):
+            if m % self.primes[i] == 0:
+                m = m / self.primes[i]
+                prime_factorization.append(self.primes[i])
+            else:
+                i += 1
+        curr_class = conj
+        for num in prime_factorization:
+            curr_class = self.power_map[curr_class][num]
+
+        return chi[curr_class]
+
+    def sym_power(self, chi, k):
+        """
+        Computes the character of the kth symmetric power of an action. 
+        :k: an integer greater than 0 representing the dimension of the symmetric power
+        :return: a dictionary whose keys are conjugacy classes and whose values are (sage?) numbers
+        """
+        sym_power = {}
+        for g in self.classes:
+            sum = 0
+            for partition in partition_tuple(k):
+                product = 1
+                for i in range(1, k+1):
+                    product *= (((self.eval_char(chi, g, i)) ** partition[i]) *
+                                (1 / ((math.factorial(partition[i])) * (i ** partition[i]))))
+                sum += product
+            sym_power[g] = sum
+        return(sym_power)
+        
+    def get_coef(self, chi, k): 
+        '''
+        first makes a list of dictionaries from symmetric power function and calculates
+        the inner product..outputs a list of the coef where position of the list 
+        corresponds to kth power'''
+        sym_pows = []
+        for i in range(0,k): # check for off by 1 errors abd what sym^0 is
+            sym_pows.append(self.sym_power(chi,i))
+        molien_coefs = [1]
+        for i in range(1,k): 
+            molien_coefs.append(self.invariant_dimension(sym_pows[i])) 
+            #maybe we call ct, not sure about naming
+        return molien_coefs 
+
+    def power_class(self, g, k):
+        """
+        Recursively computes the conjugacy class of g^k using power map data
+        """
+        k = k % self.class_order[g]
+        if k == 0:
+            return self.classes[0] # Assumes 0th class is the identity
+        elif k == 1:
+            return g
+        for p in self.primes:
+            if k%p == 0:
+                return self.power_class(self.power_map[g][p],k//p)
+
+    def molien_coeff(self, chi, k): 
+        """
+        Returns the first k coefficients of the Molien series for chi
+        """
+        sym = [{ g:1 for g in self.classes }, chi]
+        for i in range(2,k):
+            sym.append({})
+            for g in self.classes:
+                sym[i][g] = sum([ sym[i-1-j][g] * chi[self.power_class(g,j+1)] for j in range(i)])/i
+        return [ self.invariant_dimension(char) for char in sym ]
+
+    def print_chars(self):
+        for character in self.characters:
+            print(character)
+            print("")
+
+    def print_char(self, k):
+        print(self.characters[k])
+    
+    def the_game(self, chi, n):
+        """
+        Calculates a bound on G using chi and theorems about nice G-varieties 
+        returns triple (bound, ran_out_of_molien, limited_by_subgroup) where the first entry is an integer
+        and the second and there are booleans indicating (2) wether or not we had enough molien series terms 
+        to finish our calculations and (3) wether we were limited by the size of our maximal subgroup or by
+        the product of the degrees of invariant polynomials.
+        """
+        bound = chi[self.classes[0]] - 1 # sets initial bound to dimension of the associated projective rep
+        degree_product = 1 
+        alg_indp_poly = generators_from_molien(self.molien_coeff(chi, n))
+        ran_out_of_molien = True
+        limited_by_action = False
+        limited_by_versality = False
+        beat_by_perm = False
+        invariants = []
+
+        alg_indp_poly_copy = tuple(alg_indp_poly)
+        alg_indp_poly_copy = list(alg_indp_poly_copy)
+        for i, val in enumerate(alg_indp_poly_copy):
+            alg_indp_poly_copy[i] = str(val)
+        i = 1
+        # start at the first non zero entry in alg_indp_poly
+        while i < len(alg_indp_poly) and alg_indp_poly[i] == 0:
+            i += 1
+        while i < len(alg_indp_poly):
+            if degree_product * i >= self.minimal_perm: # failed b/c irreducibility
+                limited_by_action = True
+                ran_out_of_molien = False
+                if RD(degree_product * i) > bound-1: # also failed b/c versality
+                    limited_by_versality = True
+                else: # truly failed b/c irreducibility
+                    invariants.append(int(i))
+                break 
+            
+            # Stop when product of degrees is larger than bound
+            if RD(degree_product * i) > bound-1:
+                ran_out_of_molien = False
+                limited_by_versality = True
+                break
+
+            bound -= 1
+            degree_product *= i
+            invariants.append(int(i))
+            alg_indp_poly[i] -= 1
+            while i < len(alg_indp_poly) and alg_indp_poly[i] == 0:
+                i += 1
+
+        if RD(self.minimal_perm) <= bound:
+            beat_by_perm = True 
+            if RD(self.minimal_perm) < bound:
+                limited_by_action = False
+                limited_by_versality = False
+                bound = RD(self.minimal_perm)
+
+
+        output = {
+            "group":self.name, 
+            "rep-degree":int(chi[self.classes[0]]), 
+            "bound":int(bound), 
+            "invariants":tuple(invariants),
+            "total polynomials":alg_indp_poly_copy,
+            "limitation":[], 
+            "notes":"",
+        }
+        if limited_by_action:
+            output["limitation"].append("generic-freeness")
+        if limited_by_versality:
+            output["limitation"].append("versality-degree")
+        if beat_by_perm:
+            output["limitation"].append("permutation-rep")
+        if ran_out_of_molien and RD(degree_product * (n-1)) < bound:
+            output["limitation"].append("insufficient-invariants")
+            print(f"{self.name} We ran out of Molien terms before the game ended!")
+
+        return output
+
+class GroupCharactersPSL3(GroupCharacters):
+    q = 1 # q as seen in PSL(3, q)
     p = 0 # the characteristic of the field
     d = 0
     r = 0
@@ -30,10 +280,10 @@ class GroupCharactersPSU3(GroupCharacters):
         ### useful constants
         q = prime**exp
         p = prime
-        d = gcd(3,q+1)
-        r = q+1
-        s = q-1
-        t = q**2-q+1
+        d = gcd(3,q-1)
+        r = q-1
+        s = q+1
+        t = q**2+q+1
         rp = r//d
         tp = t//d
         
@@ -50,7 +300,7 @@ class GroupCharactersPSU3(GroupCharacters):
         self.group_order = q**3*r*rp*s*t
         self.exp = exp
 
-        self.name = f"PSU({prime},{exp}) (prime, exp)"
+        self.name = f"PSL({prime},{exp}) (prime, exp)"
         self.class_initialization()
         self.characters_initalization()
 
@@ -98,7 +348,7 @@ class GroupCharactersPSU3(GroupCharacters):
             self.centralizer_order[c] = q*rp
             n = 1
             while True: # this sucks, we should find a better way to do this
-                if k*n % ((q+1)//d) == 0 and n%p == 0:
+                if k*n % ((r)//d) == 0 and n%p == 0:
                     self.class_order[c] = n
                     break
                 n += 1
@@ -126,7 +376,7 @@ class GroupCharactersPSU3(GroupCharacters):
         for k in range(1,rp*s):
             if k%s == 0:
                 continue
-            k = min(k, ((-q*k) % (rp * s)))
+            k = min(k, ((q*k) % (rp * s)))
             if k in klist:
                 continue
             else: 
@@ -139,7 +389,7 @@ class GroupCharactersPSU3(GroupCharacters):
         # C_8^k initialization
         klist = []
         for k in range(1,tp):
-            k = min(k, (-k * q) % tp, ((q ** 2) * k) % tp )
+            k = min(k, (k * q) % tp, ((q ** 2) * k) % tp )
             if k in klist:
                 continue 
             else: 
@@ -164,7 +414,7 @@ class GroupCharactersPSU3(GroupCharacters):
 
         ### compute relevant primes 
         # not necessary with our current approach
-        # self.primes = primes_up_to(max(self.class_order.values()))
+        self.primes = primes_up_to(max(self.class_order.values()))
 
         ### compute power maps
         # this is NOT a good way to do it, but it'll do (for known powers) for now
@@ -192,11 +442,11 @@ class GroupCharactersPSU3(GroupCharacters):
             if i == 1: 
                 self.characters[0][g] = q * s 
             elif i == 2: 
-                self.characters[0][g] = -q
+                self.characters[0][g] = q
             elif i == 3: 
                 self.characters[0][g] = 0 
             elif i == 4: 
-                self.characters[0][g] = -s
+                self.characters[0][g] = s
             elif i == 5: 
                 self.characters[0][g] = 1 
             elif i == 6: 
@@ -211,11 +461,11 @@ class GroupCharactersPSU3(GroupCharacters):
                 if i == 1: 
                     self.characters[u][g] = t 
                 elif i == 2: 
-                    self.characters[u][g] = -s 
+                    self.characters[u][g] = s 
                 elif i == 3: 
                     self.characters[u][g] = 1
                 elif i == 4: 
-                    self.characters[u][g] = -s * eps^(3 * u * k) + eps^(-6 * u * k)  
+                    self.characters[u][g] = s * eps^(3 * u * k) + eps^(-6 * u * k)  
                 elif i == 5: 
                     self.characters[u][g] = eps^(3 * u * k) + eps^(-6 * u * k) 
                 elif i == 6 : 
@@ -224,13 +474,13 @@ class GroupCharactersPSU3(GroupCharacters):
                     else: 
                         self.characters[u][g] = eps^(3 * u * k) + eps^(3 * u * l) + eps^(3 * u * m) 
                 elif i == 7: 
-                    self.characters[u][g] = eps^(3 * u * k) 
+                    self.characters[u][g] = -1 * eps^(3 * u * k) 
                 elif i == 8: 
                     self.characters[u][g] = 0 
         self.character_table_time = time.time() - start_char_time
             # return self.characters #end of check for our 2 chars 
 
-
+        # determine minimal faithful perm representation
         if self.q == 5:
             self.minimal_perm = 50
         else:
@@ -243,8 +493,8 @@ class GroupCharactersPSU3(GroupCharacters):
         """
         q = self.q
         d = self.d
-        s = q - 1
-        r = (q + 1) // d
+        s = self.s
+        r = self.r
         tp = self.tp
         rp = self.rp
         p = self.p
@@ -283,20 +533,20 @@ class GroupCharactersPSU3(GroupCharacters):
                     return g 
                     
         elif i == 4:
-            e = (n*k) % ((q+1)//d)
+            e = (n*k) % ((r)//d)
             if e == 0:
                 return "C_1"
             else:
                 return f"C_4^{e}"
 
         elif i == 5:
-            if k*n % ((q+1)//d) == 0 and n%p == 0 :
+            if k*n % (rp) == 0 and n%p == 0 :
                 return "C_1"
-            elif k*n % ((q+1)//d) == 0:
+            elif k*n % (rp) == 0:
                 return "C_2"
             elif n % p == 0:
                 return f"C_4^{n * k % rp}" # added 7/15--might not  work
-            return f"C_5^{k*n % ((q+1)//d)}"
+            return f"C_5^{k*n % (rp)}"
 
         elif i == 6:
             # Logic for C_6'
@@ -305,14 +555,14 @@ class GroupCharactersPSU3(GroupCharacters):
                     return "C_1"
                 return "C_6'"
             # Logic for C_6^{k,l,m}
-            diag = [(n*x)%((q+1)) for x in (k,l,m)] # ((q+1)//d) ?
-            k,l,m = sorted([ (q+1) if x == 0 else x for x in diag])  # ((q+1)//d) ?
+            diag = [(n*x)%((r)) for x in (k,l,m)] # ((q+1)//d) ?
+            k,l,m = sorted([ (r) if x == 0 else x for x in diag])  # ((q+1)//d) ?
 
-            if (k,l,m) == ((q+1)//d, 2 * ((q+1)//d),  (q+1)): # checks for C_6'
+            if (k,l,m) == (rp, 2 * (rp),  (r)): # checks for C_6'
                 return "C_6'" 
-            while l > (q+1)//d:
-                diag  = [(x + (q+1)//d)%(q+1) for x in (k,l,m)]
-                k,l,m = sorted([ (q+1) if x == 0 else x for x in diag])
+            while l > rp:
+                diag  = [(x + rp)%(r) for x in (k,l,m)]
+                k,l,m = sorted([ (r) if x == 0 else x for x in diag])
             if k == l or l == m: # broke the rules!
                 return self.power_of(f"C_4^1", l) # what's up with this?
             return f"C_6^{{{k},{l},{m}}}"
@@ -321,16 +571,16 @@ class GroupCharactersPSU3(GroupCharacters):
             if k*n % (s*rp) == 0:
                 return "C_1"
             elif k*n % s == 0:
-                return f"C_4^{sorted([s*k*n % (s*rp), k*n % (s*rp), (-q*k*n) % (s*rp)])[1] // s}"
+                return f"C_4^{sorted([s*k*n % (s*rp), k*n % (s*rp), (q*k*n) % (s*rp)])[1] // s}"
             y = k*n % (s*rp)
-            y = min(y, (-q*y) % (s*rp))
+            y = min(y, (q*y) % (s*rp))
             return f"C_7^{y}"
 
         elif i == 8:
             if k*n % tp == 0:
                 return "C_1"
             w = k*n % tp
-            w = min(w, w*(-q) % tp, w*q*q % tp)
+            w = min(w, w*(q) % tp, w*q*q % tp) #changed this, it might break itself
             return f"C_8^{w}"
     
     def C_1_squared(self):
@@ -1200,90 +1450,14 @@ def primes_up_to(k):
     return(primes)
 
 start = time.time()
-
-
-
-
-
-
-# G = GroupCharactersPSU3(3,6)
-# print(G.class_order)
-# G.display()
-# print(G.the_game(G.characters[0], 10))
-# H = GroupCharacters("PSU(3, 3)")
-# print(H.the_game(H.characters[1], 10))
-# print(H.the_game(H.characters[1], 10))
-# H.display()
-
-# currently fails for q = 125, 4, 8, 3, 7, 27 -- struggling with third powers, small primes, and a couple other things?
-# Works for: q = 2, 5, 25, 16, 32, 49, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47
-end = time.time()
-print(f"Elapsed time: {end - start:.4f} seconds")   
-i = 0
-G = GroupCharactersPSU3(5, 2)
-for g in G.classes:
-    if g[2] == "6":
-        if G.power_of(g, 2)[2] != "6":
-            print(g)
-            print(f"g squared is {G.power_of(g, 2)}")
-            i += 1
-print(i)
-print(G.C_6_klm_sym_squared())
-print(G.C_6_klm_sym_squared_explicit())
-
-i1 = 0
-i2 = 0
-i3 = 0
-i4 = 0
-i5 = 0
-i6p = 0
-i6klm = 0
-i7 = 0
-i8 = 0
-
-
-i = 0
-G = GroupCharactersPSU3(47, 1)
-
-for g in G.classes:
-    if g[2] == "6" and g[3] != "'":
-        if G.power_of(g, 4)[2] != "6":
-            print(g)
-            print(f"g fourth is {G.power_of(g, 4)}")
-            i += 1
-print(f"empirical problem cases (fourth): {i}")
-print(f"predicted problem cases (fourth): {G.C_6_klm_sym_fourth()}")
-print(G.C_6_klm_sym_fourth_explicit())
-
-
+for (a,b) in [(2, 2), (2, 3), (3, 2), (2, 4), (5, 2), (3, 3), (2, 5), (7, 2), (2, 6), (3, 4)]:
+    G = GroupCharactersPSL3(a, b)
+    print(G.the_game(G.characters[0], 5))
 """
-i = 0
-G = GroupCharactersPSU3(11, 1)
-power_map_counts = {'1': {}, '2': {}, '3': {}, '4': {}, '5': {}, '6': {}, '7': {}, '8': {}}
-for g in G.classes:
-    if G.power_of(g, 4)[2] not in power_map_counts[g[2]].keys():
-        power_map_counts[g[2]][G.power_of(g, 4)[2]] = 1
-    else:
-        power_map_counts[g[2]][G.power_of(g, 4)[2]] += 1
-print(power_map_counts)
-# print(f"empirical problem cases (cube): {i}")
-# print(f"predicted problem cases (cube): {G.C_8_cubed()}")
-"""
-G = GroupCharactersPSU3(3, 1)
-"""
-i = 0
-for g in G.classes:
-    if g[2] == "6" and g[3] != "'":
-        if G.power_of(g, 4)[2] != "6":
-            print(g)
-            print(f"g to the fourth is {G.power_of(g, 4)}")
-            i += 1
-print(f"empirical problem cases (4th): {i}")
-print(f"predicted problem cases (4th): {G.C_6_klm_sym_fourth()}")
-print(f"predicted problem cases explicit (4th): {G.C_6_klm_sym_fourth_explicit()}")
-"""
-H = GroupCharacters("PSU(3, 3)")
+H = GroupCharacters("PSL(3, 5)")
 H.display()
+G = GroupCharactersPSL3(5, 1)
 G.display()
-
-
+print(G.characters[0])
+print(G.the_game(G.characters[0], 4))
+"""
