@@ -217,6 +217,7 @@ class sym_object:
                 C4Counter += (self.r)/self.d-1
                 C5Counter -= (self.r)/self.d-1
             return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
+            
         if self.power == 3:
             C1Counter = 0
             C2Counter = 0
@@ -232,7 +233,7 @@ class sym_object:
                 C5Counter -= 2
             if self.modulus % 3 == 0:
                 C4Counter += (self.r)/self.d-1
-                C5Counter-= (self.r)/self.d-1 
+                C5Counter -= (self.r)/self.d-1 
             return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
         if self.power == 4:
@@ -329,6 +330,7 @@ class sym_object:
                 # Case 2a, 3a diff of 2r/3
                 C4Counter += ceil(self.r/9) - 1   
                 C4Counter += ceil((ceil(self.r/9) - 1)/2)
+                
             return (0, 0, 0, C4Counter, 0, 0, self.tpp - self.rpp - C4Counter, 0, 0)
 
         if self.power == 4:
@@ -423,11 +425,11 @@ class sym_object:
             C6klmCounter = 0
             C7Counter = totalnum
             C8Counter = 0
-            if self.modulus % 3 == 1:
+            if self.modulus % 3 == 2: # THIS MIGHT BE AN ISSUE??? Changed == 1 to == 2 here
                 C1Counter += 1
                 C7Counter -= 1
-                C4Counter += self.q
-                C7Counter -= self.q
+                C4Counter += (self.q - 2) # added a -2 here to ensure r total problem cases.
+                C7Counter -= (self.q - 2) # added a -2 here to ensure r total problem cases.
             return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
 
         if self.power == 4:
@@ -447,7 +449,7 @@ class sym_object:
             if (self.modulus-1)%2 == 0 and (self.modulus-1)%4 != 0:
                 C1Counter += 1
                 C4Counter -= 1
-            if self.modulus % 4 == 1:
+            if self.modulus % 4 == 3: # changed 1 to 3 because I believe it's about r being 2 mod 4? Idk though, probably revert this. 
                 C4Counter += 2*(self.r)/(2*self.d) # why do we have a 2 in the numerator and denominator?
                 C7Counter -= 2*(self.r)/(2*self.d)
             return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
@@ -511,12 +513,14 @@ class sym_object:
                 if str(type(maps[key][key2].subs(q=(self.modulus + mod_needed[self.power]*k)))) == "<class 'sage.symbolic.expression.Expression'>":
                     maps[key][key2] = maps[key][key2].subs(q=(self.modulus + mod_needed[self.power]*k)).full_simplify().subs(k=(q-self.modulus)/mod_needed[self.power]).full_simplify()
                 # print(total.subs(q=(modulus + 72*k)).full_simplify().subs(k=(q-modulus)/72).full_simplify())
+
         return maps
     def calc_sym_power(self):
-        
+        power_map = {}
         total = 0
         if self.power == 2:
             square_maps = self.get_power_map_counts()
+            power_map = square_maps
             for family in self.families:
                 total += self.class_sizes[family]*self.num_classes[family]*(self.character_val[family] ** 2)
                 for fam2 in self.families: # iterate through the maps 
@@ -526,6 +530,7 @@ class sym_object:
             self_sym_squared = sym_object(self.modulus % 12, 2)
             square_maps = self_sym_squared.get_power_map_counts()
             cube_maps = self.get_power_map_counts()
+            power_map = cube_maps
             for family in self.families:
                 total += self.class_sizes[family]*self.num_classes[family]*(self.character_val[family] ** 3)
                 for fam2 in self.families: # iterate through the square maps 
@@ -538,6 +543,7 @@ class sym_object:
             self_sym_cubed = sym_object(self.modulus % 36, 3)
             cube_maps = self_sym_cubed.get_power_map_counts()
             fourth_maps = self.get_power_map_counts()
+            power_map = fourth_maps
             for family in self.families:
                 total += self.class_sizes[family]*self.num_classes[family]*(self.character_val[family] ** 4)
                 for fam2 in self.families: # iterate through the square maps 
@@ -545,20 +551,82 @@ class sym_object:
                     total += self.class_sizes[family]*(self.character_val[fam2]** 2) * square_maps[family][fam2] * 3 
                     total += self.class_sizes[family]*self.character_val[fam2]* cube_maps[family][fam2] * self.character_val[family] * 8
                     total += self.class_sizes[family]*self.character_val[fam2]*fourth_maps[family][fam2] * 6
-            total = (total/24)/(self.q^3 * self.rp * self.r * self.s * self.t)
-        return total.full_simplify()
+            total = (total/24)/((self.q)^3 * self.rp * self.r * self.s * self.t)
+        return (total.full_simplify(), power_map)
 
+def group_dict_indices(dict_list):
+    """
+    Groups indices of unique dictionaries from a list.
+
+    Iterates through a list of dictionaries and returns a new list.
+    Each item in the returned list is a sub-list containing:
+    [unique_dictionary, [list_of_indices]]
+
+    This function correctly handles dictionaries with unhashable items (like lists)
+    by using direct comparison (==) instead of attempting to hash them.
+
+    Args:
+        dict_list (list): A list of dictionaries.
+
+    Returns:
+        list: A list of lists, where each inner list contains a
+              unique dictionary and a list of its indices.
+    """
+    # This list will hold our final [dict, [indices]] pairs
+    grouped_list = []
+
+    # We need a way to quickly find if we've already seen a dictionary.
+    # `grouped_list` itself will store the unique dictionaries found so far.
+    # We'll search it to see if a dictionary is already logged.
+
+    for index, current_dict in enumerate(dict_list):
+        found = False
+        
+        # Check if we have already seen this exact dictionary
+        for item in grouped_list:
+            unique_dict = item[0]
+            indices_list = item[1]
+            
+            if current_dict == unique_dict:
+                # We found it! Add the current index to its list
+                indices_list.append(index)
+                found = True
+                break  # Stop searching for this dictionary
+        
+        if not found:
+            # This is a new, unique dictionary.
+            # Add it to our grouped_list with its first index.
+            grouped_list.append([current_dict, [index]])
+
+    return grouped_list
+
+power_maps = []
 for i in range(12):
     group = sym_object(i, 2)
-    
-    print(f"2nd sym power for q = {i} mod 12: {group.calc_sym_power()}")
+    data = group.calc_sym_power()
+    power_maps.append(data[1])
+    print(f"2nd sym power for q = {i} mod 12: {data[0]}")
 
+print(f"for 2nd power the power maps are {group_dict_indices(power_maps)}")
+print(len(group_dict_indices(power_maps)))
+
+power_maps = []
 for i in range(36):
     group = sym_object(i, 3)
+    data = group.calc_sym_power()
+    power_maps.append(data[1])
+    print(f"3rd sym power for q = {i} mod 36: {data[0]}")
     
-    print(f"3rd sym power for q = {i} mod 36: {group.calc_sym_power()}")
+print(f"for 3rd power the power maps are {group_dict_indices(power_maps)}")
+print(len(group_dict_indices(power_maps)))
 
+power_maps = []
 for i in range(72):
     group = sym_object(i, 4)
-    
-    print(f"4th sym power for q = {i} mod 72: {group.calc_sym_power()}")
+    data = group.calc_sym_power()
+    power_maps.append(data[1])
+    print(f"4th sym power for q = {i} mod 72: {data[0]}")
+
+print(f"for 4th power the power maps are {group_dict_indices(power_maps)}")
+print(len(group_dict_indices(power_maps)))
+

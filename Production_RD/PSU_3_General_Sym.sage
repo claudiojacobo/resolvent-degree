@@ -476,7 +476,7 @@ class sym_object:
             C7Counter = 0
             C8Counter = ((self.q*self.q-self.q+1)/self.d-1)/3
             return (C1Counter, C2Counter, C3Counter, C4Counter, C5Counter, C6pCounter, C6klmCounter, C7Counter, C8Counter)
-
+            
         if self.power == 4:
             C1Counter = 0
             C2Counter = 0

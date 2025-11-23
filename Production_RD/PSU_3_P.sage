@@ -1217,6 +1217,15 @@ start = time.time()
 
 # currently fails for q = 125, 4, 8, 3, 7, 27 -- struggling with third powers, small primes, and a couple other things?
 # Works for: q = 2, 5, 25, 16, 32, 49, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47
+
+"""
+G = GroupCharactersPSU3(11, 1)
+for conj_class in G.classes:
+    if conj_class[2] == "6" and conj_class[3] != "'":
+        print(G.power_of(conj_class, 4))
+"""
+
+"""
 end = time.time()
 print(f"Elapsed time: {end - start:.4f} seconds")   
 i = 0
@@ -1241,20 +1250,24 @@ i6klm = 0
 i7 = 0
 i8 = 0
 
-
+"""
 i = 0
-G = GroupCharactersPSU3(47, 1)
+G = GroupCharactersPSU3(5, 2)
 
 for g in G.classes:
     if g[2] == "6" and g[3] != "'":
-        if G.power_of(g, 4)[2] != "6":
+        if len(G.power_of(g, 2)) >= 4 and G.power_of(g, 2)[3] == "'":
             print(g)
-            print(f"g fourth is {G.power_of(g, 4)}")
+            print(f"g second is {G.power_of(g, 4)}")
             i += 1
 print(f"empirical problem cases (fourth): {i}")
-print(f"predicted problem cases (fourth): {G.C_6_klm_sym_fourth()}")
-print(G.C_6_klm_sym_fourth_explicit())
+# print(f"predicted problem cases (fourth): {G.C_6_klm_sym_fourth()}")
+# print(G.C_6_klm_sym_fourth_explicit())
 
+# 5 combos when raising to 4th power and q = 11 mod 12 
+# 1 combo when raising to 4th power and q = 5 mod 12
+# 3 combos when raising to 3rd power and q = 8 mod 9
+# 1 combo when squaring and q = 5 mod 6     
 
 """
 i = 0
@@ -1269,7 +1282,6 @@ print(power_map_counts)
 # print(f"empirical problem cases (cube): {i}")
 # print(f"predicted problem cases (cube): {G.C_8_cubed()}")
 """
-G = GroupCharactersPSU3(3, 1)
 """
 i = 0
 for g in G.classes:
@@ -1282,8 +1294,5 @@ print(f"empirical problem cases (4th): {i}")
 print(f"predicted problem cases (4th): {G.C_6_klm_sym_fourth()}")
 print(f"predicted problem cases explicit (4th): {G.C_6_klm_sym_fourth_explicit()}")
 """
-H = GroupCharacters("PSU(3, 3)")
-H.display()
-G.display()
 
 
