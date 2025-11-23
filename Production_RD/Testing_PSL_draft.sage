@@ -1462,14 +1462,6 @@ for i in [2,3,4,5,7,8,9,11,13]:
     print(H.the_game(H.characters[1], 5))
 """
 
-G = GroupCharactersPSL3(17, 1)
-for conj_class in G.classes:
-    if conj_class[2] == "6" and G.power_of(conj_class, 4)[2] != "6":
-        print(conj_class + " 4ths to " + G.power_of(conj_class, 4))
-        # sprint(G.power_of(conj_class, 4))
-
-
-
 
 """
 H = GroupCharacters("PSL(3, 5)")

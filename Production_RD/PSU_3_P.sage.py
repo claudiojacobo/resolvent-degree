@@ -170,7 +170,7 @@ class GroupCharactersPSU3(GroupCharacters):
 
         ### compute relevant primes 
         # not necessary with our current approach
-        # self.primes = primes_up_to(max(self.class_order.values()))
+        self.primes = primes_up_to(max(self.class_order.values()))
 
         ### compute power maps
         # this is NOT a good way to do it, but it'll do (for known powers) for now
@@ -1207,7 +1207,9 @@ def primes_up_to(k):
 
 start = time.time()
 
-
+G = GroupCharactersPSU3(_sage_const_3 , _sage_const_1 )
+# print(G.characters)
+print(G.the_game(G.characters[_sage_const_1 ], _sage_const_4 ))
 
 
 
@@ -1257,23 +1259,23 @@ i7 = 0
 i8 = 0
 
 """
-i = _sage_const_0 
-G = GroupCharactersPSU3(_sage_const_5 , _sage_const_2 )
-
+"""
+i = 0
 for g in G.classes:
-    if g[_sage_const_2 ] == "6" and g[_sage_const_3 ] != "'":
-        if len(G.power_of(g, _sage_const_2 )) >= _sage_const_4  and G.power_of(g, _sage_const_2 )[_sage_const_3 ] == "'":
+    if g[2] == "6" and g[3] != "'":
+        if len(G.power_of(g, 2)) >= 4 and G.power_of(g, 2)[3] == "'":
             print(g)
-            print(f"g second is {G.power_of(g, _sage_const_4 )}")
-            i += _sage_const_1 
+            print(f"g second is {G.power_of(g, 4)}")
+            i += 1
 print(f"empirical problem cases (fourth): {i}")
+"""
 # print(f"predicted problem cases (fourth): {G.C_6_klm_sym_fourth()}")
 # print(G.C_6_klm_sym_fourth_explicit())
 
 # 5 combos when raising to 4th power and q = 11 mod 12 
 # 1 combo when raising to 4th power and q = 5 mod 12
 # 3 combos when raising to 3rd power and q = 8 mod 9
-# 1 combo when squaring and q = 5 mod 6 
+# 1 combo when squaring and q = 5 mod 6     
 
 """
 i = 0

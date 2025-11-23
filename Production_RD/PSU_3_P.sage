@@ -164,7 +164,7 @@ class GroupCharactersPSU3(GroupCharacters):
 
         ### compute relevant primes 
         # not necessary with our current approach
-        # self.primes = primes_up_to(max(self.class_order.values()))
+        self.primes = primes_up_to(max(self.class_order.values()))
 
         ### compute power maps
         # this is NOT a good way to do it, but it'll do (for known powers) for now
@@ -1204,8 +1204,6 @@ start = time.time()
 
 
 
-
-
 # G = GroupCharactersPSU3(3,6)
 # print(G.class_order)
 # G.display()
@@ -1251,9 +1249,8 @@ i7 = 0
 i8 = 0
 
 """
+"""
 i = 0
-G = GroupCharactersPSU3(5, 2)
-
 for g in G.classes:
     if g[2] == "6" and g[3] != "'":
         if len(G.power_of(g, 2)) >= 4 and G.power_of(g, 2)[3] == "'":
@@ -1261,6 +1258,7 @@ for g in G.classes:
             print(f"g second is {G.power_of(g, 4)}")
             i += 1
 print(f"empirical problem cases (fourth): {i}")
+"""
 # print(f"predicted problem cases (fourth): {G.C_6_klm_sym_fourth()}")
 # print(G.C_6_klm_sym_fourth_explicit())
 

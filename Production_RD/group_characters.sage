@@ -247,6 +247,6 @@ class GroupCharacters:
             output["limitation"].append("permutation-rep")
         if ran_out_of_molien and RD(degree_product * (n-1)) < bound:
             output["limitation"].append("insufficient-invariants")
-            print(f"{self.name} We ran out of Molien terms before the game ended!")
+            print(f"{self.name} We ran out of Molien terms before the game ended!") 
 
         return output
