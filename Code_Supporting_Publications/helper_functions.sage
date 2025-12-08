@@ -131,3 +131,51 @@ def prime_powers_up_to(a):
                 unicorn[num] = f"{p},{b}"
     unicorn= sorted(unicorn.items()) 
     return(unicorn)
+    
+def group_dict_indices(dict_list):
+    """
+    N.B. this helper function was written with the assistance of generative AI. 
+
+    Groups indices of unique dictionaries from a list.
+
+    Iterates through a list of dictionaries and returns a new list.
+    Each item in the returned list is a sub-list containing:
+    [unique_dictionary, [list_of_indices]]
+
+    This function correctly handles dictionaries with unhashable items (like lists)
+    by using direct comparison (==) instead of attempting to hash them.
+
+    Args:
+        dict_list (list): A list of dictionaries.
+
+    Returns:
+        list: A list of lists, where each inner list contains a
+              unique dictionary and a list of its indices.
+    """
+    # This list will hold our final [dict, [indices]] pairs
+    grouped_list = []
+
+    # We need a way to quickly find if we've already seen a dictionary.
+    # `grouped_list` itself will store the unique dictionaries found so far.
+    # We'll search it to see if a dictionary is already logged.
+
+    for index, current_dict in enumerate(dict_list):
+        found = False
+        
+        # Check if we have already seen this exact dictionary
+        for item in grouped_list:
+            unique_dict = item[0]
+            indices_list = item[1]
+            
+            if current_dict == unique_dict:
+                # We found it! Add the current index to its list
+                indices_list.append(index)
+                found = True
+                break  # Stop searching for this dictionary
+        
+        if not found:
+            # This is a new, unique dictionary.
+            # Add it to our grouped_list with its first index.
+            grouped_list.append([current_dict, [index]])
+
+    return grouped_list
