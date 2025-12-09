@@ -21,14 +21,14 @@ $\text{RD}(C_p) = 1$ for all prime $p \geq 2$. Indeed, $\text{RD}(G) = 1$ for an
 + Bounds for low $n$ (COMING SOON)
 + Asymptotic bounds (COMING SOON)
 ### Classical Chevalley groups
-+ [$A_n(q) = \text{PSL}(n+1,q)$ for $n \geq 1$](https://github.com/claudiojacobo/resolvent-degree/blob/main/Data/Classical%20Chevalley%20Groups/README.md)
-	+ $n=1$ (with $q > 4$ and $q \not = 9$)
-	+ $n=2$ (COMING SOON)
+[🔗](https://github.com/claudiojacobo/resolvent-degree/blob/main/Data/Classical%20Chevalley%20Groups/An.md) $A_n(q) = \text{PSL}(n+1,q)$ for $n \geq 1$ 
++ $n=1$ (with $q > 4$ and $q \not = 9$)
++ $n=2$ (COMING SOON)
 ### Classical Steinberg groups
-+ [$^2A_n(q^2) = \text{PSU}(n+1,q)$ for $n \geq 2$](https://github.com/claudiojacobo/resolvent-degree/blob/main/Data/Classical%20Steinberg%20Groups/README.md)
-	+ $n = 2$
+[🔗](https://github.com/claudiojacobo/resolvent-degree/blob/main/Data/Classical%20Steinberg%20Groups/2An.md) $^2A_n(q^2) = \text{PSU}(n+1,q)$ for $n \geq 2$
++ $n = 2$
 ### Other
-+ Sporadic groups (COMING SOON)
+[🔗](https://github.com/claudiojacobo/resolvent-degree/blob/main/Data/Other/Sporadic.md) Sporadic groups (COMING SOON)
 + Weyl groups of type $E_6$, $E_7$, and $E_8$ (COMING SOON)
 ## 🌱 Overview of RD
 Resolvent degree (RD) is a measure of complexity motivated by one of the most fundamental problems in math: 
