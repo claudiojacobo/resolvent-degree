@@ -1,0 +1,342 @@
+method: "special points [GGSW2024, Section 4]"
+reference: GGSW2024
+data_sources: GAP2022
+contributors:
+  - Gomez-Gonzales
+  - Sutherland
+  - Wolfson
+groups:
+  - group: "J2"
+    bound: 5
+    representation degree: 6
+    invariants used: {}
+    invariants computed:
+      12: 1
+      20: 1
+      24: 1
+      28: 1
+      30: 2
+    limitation:
+      - versality
+    notes: "No invariants used---follows from [Rei2024, Prop 14.1]"
+
+  - group: "Suz"
+    bound: 10
+    representation degree: 12
+    invariants used:
+      12: 1
+    invariants computed:
+      12: 1
+      18: 1
+      24: 2
+      30: 2
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "M22"
+    bound: 8
+    representation degree: 10
+    invariants used:
+      4: 1
+    invariants computed:
+      4: 1
+      6: 1
+      8: 1
+      10: 2
+    limitation:
+      - versality
+      - generic freeness
+    notes: ""
+
+  - group: "J3"
+    bound: 16
+    representation degree: 18
+    invariants used:
+      6: 1
+    invariants computed:
+      6: 1
+      9: 1
+      10: 3
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "HS"
+    bound: 18
+    representation degree: 22
+    invariants used:
+      2: 1
+      4: 1
+      5: 1
+    invariants computed:
+      2: 1
+      4: 1
+      5: 1
+      6: 3
+    limitation:
+      - versality
+      - generic freeness
+    notes: ""
+
+  - group: "McL"
+    bound: 19
+    representation degree: 22
+    invariants used:
+      2: 1
+      5: 1
+    invariants computed:
+      2: 1
+      5: 1
+      6: 1
+      7: 2
+      8: 3
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "Co3"
+    bound: 20
+    representation degree: 23
+    invariants used:
+      2: 1
+      6: 1
+    invariants computed:
+      2: 1
+      6: 1
+      8: 1
+      9: 1
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "Co2"
+    bound: 20
+    representation degree: 23
+    invariants used:
+      2: 1
+      8: 1
+    invariants computed:
+      2: 1
+      8: 1
+      10: 1
+      11: 1
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "Co1"
+    bound: 21
+    representation degree: 24
+    invariants used:
+      2: 1
+      12: 1
+    invariants computed:
+      2: 1
+      12: 1
+      16: 1
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "Ru"
+    bound: 26
+    representation degree: 28
+    invariants used:
+      4: 1
+    invariants computed:
+      4: 1
+      8: 1
+      12: 4
+      14: 2
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "He"
+    bound: 48
+    representation degree: 51
+    invariants used:
+      3: 1
+      4: 1
+    invariants computed:
+      3: 1
+      4: 1
+      5: 1
+      6: 3
+      7: 4
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "J1"
+    bound: 51
+    representation degree: 56
+    invariants used:
+      2: 1
+      3: 1
+      4: 2
+    invariants computed:
+      2: 1
+      3: 1
+      4: 7
+      5: 33
+    limitation:
+      - versality
+      - generic freeness
+    notes: ""
+
+  - group: "Fi22"
+    bound: 74
+    representation degree: 78
+    invariants used:
+      2: 1
+      6: 1
+      8: 1
+    invariants computed:
+      2: 1
+      6: 1
+      8: 3
+      9: 1
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "HN"
+    bound: 129
+    representation degree: 133
+    invariants used:
+      2: 1
+      6: 1
+      7: 1
+    invariants computed:
+      2: 1
+      6: 1
+      7: 1
+      8: 3
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "Th"
+    bound: 244
+    representation degree: 248
+    invariants used:
+      2: 1
+      8: 2
+    invariants computed:
+      2: 1
+      8: 3
+      10: 11
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "O'N"
+    bound: 338
+    representation degree: 342
+    invariants used:
+      6: 8
+    invariants computed:
+      6: 16
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "Fi23"
+    bound: 776
+    representation degree: 782
+    invariants used:
+      2: 1
+      3: 1
+      4: 1
+      5: 2
+    invariants computed:
+      2: 1
+      3: 1
+      4: 1
+      5: 2
+      6: 6
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "Fi24'"
+    bound: 779
+    representation degree: 783
+    invariants used:
+      3: 1
+      6: 2
+    invariants computed:
+      3: 1
+      6: 2
+      9: 8
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "J4"
+    bound: 1328
+    representation degree: 1333
+    invariants used:
+      4: 1
+      6: 2
+      7: 1
+    invariants computed:
+      4: 1
+      6: 2
+      7: 2
+      8: 30
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "Ly"
+    bound: 2475
+    representation degree: 2480
+    invariants used:
+      6: 4
+    invariants computed:
+      6: 23
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "B"
+    bound: 4365
+    representation degree: 4371
+    invariants used:
+      2: 1
+      4: 1
+      6: 1
+      8: 2
+    invariants computed:
+      2: 1
+      4: 1
+      6: 1
+      8: 3
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "M"
+    bound: 196874
+    representation degree: 196883
+    invariants used:
+      2: 1
+      3: 1
+      4: 1
+      5: 1
+      6: 3
+      7: 1
+    invariants computed:
+      2: 1
+      3: 1
+      4: 1
+      5: 1
+      6: 3
+      7: 3
+      8: 8
+    limitation:
+      - versality
+    notes: ""

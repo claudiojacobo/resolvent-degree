@@ -1,0 +1,24 @@
+method: "minimal perm rep [FW2019, Lemma 3.13]"
+reference: CGGGKL2025
+data_sources:
+  - GAP2024
+contributors:
+  - Baydoun
+  - Christofferson
+  - Gomez-Gonzales
+  - Kuriyama
+  - Li
+groups:
+  - group: "PSL(2,8)"
+    bound: 4
+    representation degree: 7
+    invariants used:
+      2: 1
+    invariants computed:
+      2: 1
+      6: 4
+      8: 6
+    limitation:
+      - generic freeness
+      - versality
+    notes: "RD <= 5 is beat by minimal permutation bound [FW19, Lemma 3.13]"

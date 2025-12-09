@@ -1,0 +1,129 @@
+method: "special points via type [GG2025, Theorem 5.2]"
+reference: GG2025
+data_sources: GAP2024
+contributors:
+  - Gomez-Gonzales
+groups:
+  - group: "McL"
+    bound: 18
+    representation degree: 22
+    invariants used:
+      2: 1
+      5: 1
+      6: 1
+    invariants computed:
+      2: 1
+      5: 1
+      6: 1
+      7: 2
+      8: 3
+    limitation:
+      - versality
+      - generic freeness
+    notes: ""
+
+  - group: "Ru"
+    bound: 25
+    representation degree: 28
+    invariants used:
+      4: 1
+      8: 1
+    invariants computed:
+      4: 1
+      8: 1
+      12: 4
+      14: 2
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "He"
+    bound: 47
+    representation degree: 51
+    invariants used:
+      3: 1
+      4: 1
+      5: 1
+    invariants computed:
+      3: 1
+      4: 1
+      5: 1
+      6: 3
+      7: 4
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "Fi23"
+    bound: 775
+    representation degree: 782
+    invariants used:
+      2: 1
+      3: 1
+      4: 1
+      5: 2
+      6: 1
+    invariants computed:
+      2: 1
+      3: 1
+      4: 1
+      5: 2
+      6: 6
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "Fi24'"
+    bound: 778
+    representation degree: 783
+    invariants used:
+      3: 1
+      6: 2
+      9: 1
+    invariants computed:
+      3: 1
+      6: 2
+      9: 8
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "B"
+    bound: 4364
+    representation degree: 4371
+    invariants used:
+      2: 1
+      4: 1
+      6: 1
+      8: 3
+    invariants computed:
+      2: 1
+      4: 1
+      6: 1
+      8: 3
+      10: 12
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "M"
+    bound: 196872
+    representation degree: 196883
+    invariants used:
+      2: 1
+      3: 1
+      4: 1
+      5: 1
+      6: 3
+      7: 3
+    invariants computed:
+      2: 1
+      3: 1
+      4: 1
+      5: 1
+      6: 3
+      7: 3
+      8: 8
+    limitation:
+      - versality
+    notes: ""

@@ -1,0 +1,552 @@
+method: "special points [CGGGKL2025, Theorem 2.2]"
+reference: CGGGKL2025
+data_sources:
+  - GAP2024
+contributors:
+  - Baydoun
+  - Christofferson
+  - Gomez-Gonzales
+  - Kuriyama
+  - Li
+groups:
+  - group: "PSL(2,5)"
+    bound: 1
+    representation degree: 2
+    invariants used: {}
+    invariants computed:
+      8: 0
+    limitation:
+      - generic freeness
+      - versality
+    notes: "No invariants used---follows from [Rei2024, Prop 14.1]"
+
+  - group: "PSL(2,7)"
+    bound: 1
+    representation degree: 3
+    invariants used:
+      4: 1
+    invariants computed:
+      4: 1
+      6: 1
+      8: 0
+    limitation:
+      - generic freeness
+      - versality
+    notes: "Bound first due to [Kle1878]"
+
+  - group: "PSL(2,11)"
+    bound: 3
+    representation degree: 5
+    invariants used:
+      3: 1
+    invariants computed:
+      3: 1
+      5: 1
+      6: 1
+      7: 1
+      8: 1
+    limitation:
+      - generic freeness
+      - versality
+    notes: "First computed in [Sut2023]"
+
+  - group: "PSL(2,13)"
+    bound: 4
+    representation degree: 6
+    invariants used:
+      4: 1
+    invariants computed:
+      4: 1
+      8: 1
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,16)"
+    bound: 12
+    representation degree: 15
+    invariants used:
+      2: 1
+      4: 1
+    invariants computed:
+      2: 1
+      4: 2
+      5: 1
+      6: 15
+      7: 20
+      8: 78
+    limitation:
+      - generic freeness
+      - versality
+    notes: "Tied with minimal permutation bound [FW2019, Lemma 3.13]"
+
+  - group: "PSL(2,17)"
+    bound: 6
+    representation degree: 8
+    invariants used:
+      8: 1
+    invariants computed:
+      8: 5
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,19)"
+    bound: 7
+    representation degree: 9
+    invariants used:
+      3: 1
+    invariants computed:
+      3: 1
+      4: 1
+      5: 1
+      6: 2
+      7: 3
+      8: 5
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,23)"
+    bound: 9
+    representation degree: 11
+    invariants used:
+      4: 1
+    invariants computed:
+      4: 1
+      6: 5
+      8: 12
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,25)"
+    bound: 10
+    representation degree: 12
+    invariants used:
+      4: 1
+    invariants computed:
+      4: 1
+      8: 15
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,27)"
+    bound: 10
+    representation degree: 13
+    invariants used:
+      3: 1
+      4: 1
+    invariants computed:
+      3: 1
+      4: 1
+      6: 7
+      7: 7
+      8: 13
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,29)"
+    bound: 12
+    representation degree: 14
+    invariants used:
+      4: 1
+    invariants computed:
+      4: 1
+      8: 23
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,31)"
+    bound: 12
+    representation degree: 15
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 2
+      6: 7
+      7: 4
+      8: 30
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,32)"
+    bound: 27
+    representation degree: 31
+    invariants used:
+      2: 1
+      4: 2
+    invariants computed:
+      2: 1
+      4: 5
+      5: 6
+      6: 81
+      7: 285
+      8: 1515
+    limitation:
+      - generic freeness
+      - versality
+    notes: "Tied with minimal permutation bound [FW2019, Lemma 3.13]"
+
+  - group: "PSL(2,37)"
+    bound: 15
+    representation degree: 18
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 2
+      6: 1
+      8: 54
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,41)"
+    bound: 18
+    representation degree: 20
+    invariants used:
+      4: 1
+    invariants computed:
+      4: 1
+      6: 1
+      8: 82
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,43)"
+    bound: 18
+    representation degree: 21
+    invariants used:
+      3: 1
+      4: 1
+    invariants computed:
+      3: 1
+      4: 2
+      5: 2
+      6: 13
+      7: 28
+      8: 95
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,47)"
+    bound: 20
+    representation degree: 23
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 2
+      6: 17
+      7: 21
+      8: 139
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,49)"
+    bound: 21
+    representation degree: 24
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 2
+      6: 2
+      8: 161
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,53)"
+    bound: 23
+    representation degree: 26
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 2
+      6: 3
+      8: 218
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,59)"
+    bound: 26
+    representation degree: 29
+    invariants used:
+      3: 1
+      4: 1
+    invariants computed:
+      3: 1
+      4: 2
+      5: 4
+      6: 26
+      7: 73
+      8: 338
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,61)"
+    bound: 27
+    representation degree: 30
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 3
+      6: 6
+      8: 387
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,64)"
+    bound: 59
+    representation degree: 63
+    invariants used:
+      2: 1
+      4: 2
+    invariants computed:
+      2: 1
+      4: 10
+      5: 29
+      6: 504
+      7: 3995
+      8: 36269
+    limitation:
+      - generic freeness
+      - versality
+    notes: "Tied with minimal permutation bound [FW2019, Lemma 3.13]"
+
+  - group: "PSL(2,67)"
+    bound: 30
+    representation degree: 33
+    invariants used:
+      3: 1
+      4: 1
+    invariants computed:
+      3: 1
+      4: 3
+      5: 4
+      6: 34
+      7: 115
+      8: 571
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,71)"
+    bound: 32
+    representation degree: 35
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 3
+      5: 2
+      6: 40
+      7: 108
+      8: 738
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,73)"
+    bound: 33
+    representation degree: 36
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 3
+      6: 10
+      8: 825
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,79)"
+    bound: 36
+    representation degree: 39
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 4
+      5: 2
+      6: 49
+      7: 164
+      8: 1162
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,81)"
+    bound: 37
+    representation degree: 40
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 3
+      6: 16
+      8: 1324
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,83)"
+    bound: 38
+    representation degree: 41
+    invariants used:
+      3: 1
+      4: 1
+    invariants computed:
+      3: 1
+      4: 3
+      5: 6
+      6: 57
+      7: 236
+      8: 1432
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,89)"
+    bound: 41
+    representation degree: 44
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 3
+      6: 19
+      8: 1947
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,97)"
+    bound: 45
+    representation degree: 48
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 4
+      6: 27
+      8: 2844
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,101)"
+    bound: 47
+    representation degree: 50
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 4
+      6: 31
+      8: 3403
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,103)"
+    bound: 48
+    representation degree: 51
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 5
+      5: 4
+      6: 93
+      7: 451
+      8: 3724
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,107)"
+    bound: 49
+    representation degree: 53
+    invariants used:
+      3: 1
+      4: 2
+    invariants computed:
+      3: 1
+      4: 4
+      5: 9
+      6: 104
+      7: 584
+      8: 4409
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSL(2,109)"
+    bound: 51
+    representation degree: 54
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 5
+      6: 41
+      8: 4792
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,113)"
+    bound: 53
+    representation degree: 56
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 4
+      6: 44
+      8: 5642
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,121)"
+    bound: 57
+    representation degree: 60
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 5
+      6: 57
+      8: 7696
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSL(2,125)"
+    bound: 58
+    representation degree: 62
+    invariants used:
+      4: 3
+    invariants computed:
+      4: 5
+      6: 63
+      8: 8917
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""

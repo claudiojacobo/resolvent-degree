@@ -1,0 +1,531 @@
+method: "special points [CGGGKL2025, Theorem 2.2]"
+reference: CGGGKL2025
+data_sources:
+  - GAP2024
+contributors:
+  - Christofferson
+  - Ganguly
+  - Gomez-Gonzales
+  - Kuriyama
+  - Li
+groups:
+  - group: "PSU(3,2)"
+    bound: 1
+    representation degree: 2
+    invariants used: {}
+    invariants computed:
+      4: 2
+      6: 1
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,3)"
+    bound: 4
+    representation degree: 6
+    invariants used:
+      6: 1
+    invariants computed:
+      6: 1
+      8: 1
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSU(3,4)"
+    bound: 10
+    representation degree: 12
+    invariants used:
+      4: 1
+    invariants computed:
+      4: 1
+      6: 2
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,5)"
+    bound: 17
+    representation degree: 20
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 2
+      6: 5
+    limitation:
+      - generic freeness
+      - versality
+    notes: ""
+
+  - group: "PSU(3,7)"
+    bound: 39
+    representation degree: 42
+    invariants used:
+      4: 1
+      6: 1
+    invariants computed:
+      4: 1
+      6: 7
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,8)"
+    bound: 53
+    representation degree: 56
+    invariants used:
+      4: 2
+    invariants computed:
+      4: 3
+      6: 27
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,9)"
+    bound: 69
+    representation degree: 72
+    invariants used:
+      4: 1
+      6: 1
+    invariants computed:
+      4: 1
+      6: 14
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,11)"
+    bound: 106
+    representation degree: 110
+    invariants used:
+      4: 3
+    invariants computed:
+      4: 3
+      6: 69
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,13)"
+    bound: 152
+    representation degree: 156
+    invariants used:
+      4: 2
+      6: 1
+    invariants computed:
+      4: 2
+      6: 47
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,16)"
+    bound: 236
+    representation degree: 240
+    invariants used:
+      4: 3
+    invariants computed:
+      4: 3
+      6: 100
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,17)"
+    bound: 267
+    representation degree: 272
+    invariants used:
+      4: 4
+    invariants computed:
+      4: 4
+      6: 333
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,19)"
+    bound: 338
+    representation degree: 342
+    invariants used:
+      4: 3
+    invariants computed:
+      4: 3
+      6: 184
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,23)"
+    bound: 501
+    representation degree: 506
+    invariants used:
+      4: 4
+    invariants computed:
+      4: 5
+      6: 1078
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,25)"
+    bound: 595
+    representation degree: 600
+    invariants used:
+      4: 4
+    invariants computed:
+      4: 4
+      6: 523
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,27)"
+    bound: 697
+    representation degree: 702
+    invariants used:
+      4: 4
+    invariants computed:
+      4: 4
+      6: 705
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,29)"
+    bound: 807
+    representation degree: 812
+    invariants used:
+      4: 4
+    invariants computed:
+      4: 6
+      5: 2
+      6: 2698
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,31)"
+    bound: 925
+    representation degree: 930
+    invariants used:
+      4: 4
+    invariants computed:
+      4: 5
+      6: 1215
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,32)"
+    bound: 987
+    representation degree: 992
+    invariants used:
+      4: 4
+    invariants computed:
+      4: 7
+      5: 2
+      6: 4013
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,37)"
+    bound: 1326
+    representation degree: 1332
+    invariants used:
+      4: 5
+    invariants computed:
+      4: 6
+      6: 2451
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,41)"
+    bound: 1634
+    representation degree: 1640
+    invariants used:
+      4: 5
+    invariants computed:
+      4: 8
+      5: 10
+      6: 10825
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,43)"
+    bound: 1800
+    representation degree: 1806
+    invariants used:
+      4: 5
+    invariants computed:
+      4: 7
+      6: 4468
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,47)"
+    bound: 2156
+    representation degree: 2162
+    invariants used:
+      4: 5
+    invariants computed:
+      4: 9
+      5: 16
+      6: 18786
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,49)"
+    bound: 2346
+    representation degree: 2352
+    invariants used:
+      4: 5
+    invariants computed:
+      4: 8
+      6: 7544
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,53)"
+    bound: 2750
+    representation degree: 2756
+    invariants used:
+      4: 5
+    invariants computed:
+      4: 10
+      5: 24
+      6: 30510
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,59)"
+    bound: 3416
+    representation degree: 3422
+    invariants used:
+      4: 5
+    invariants computed:
+      4: 11
+      5: 32
+      6: 47093
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,61)"
+    bound: 3654
+    representation degree: 3660
+    invariants used:
+      4: 5
+    invariants computed:
+      4: 10
+      6: 18207
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,64)"
+    bound: 4026
+    representation degree: 4032
+    invariants used:
+      4: 5
+    invariants computed:
+      4: 11
+      6: 22100
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,67)"
+    bound: 4415
+    representation degree: 4422
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 11
+      6: 26568
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,71)"
+    bound: 4963
+    representation degree: 4970
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 13
+      5: 54
+      6: 99540
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,73)"
+    bound: 5249
+    representation degree: 5256
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 12
+      6: 37536
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,79)"
+    bound: 6155
+    representation degree: 6162
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 13
+      6: 51607
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,81)"
+    bound: 6473
+    representation degree: 6480
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 13
+      6: 57074
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,83)"
+    bound: 6799
+    representation degree: 6806
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 15
+      5: 76
+      6: 187173
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,89)"
+    bound: 7825
+    representation degree: 7832
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 16
+      5: 92
+      6: 248137
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,97)"
+    bound: 9305
+    representation degree: 9312
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 16
+      6: 118032
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,101)"
+    bound: 10093
+    representation degree: 10100
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 18
+      5: 122
+      6: 413634
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,103)"
+    bound: 10499
+    representation degree: 10506
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 17
+      6: 150327
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,107)"
+    bound: 11335
+    representation degree: 11342
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 19
+      5: 142
+      6: 522135
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,109)"
+    bound: 11765
+    representation degree: 11772
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 18
+      6: 188847
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,113)"
+    bound: 12649
+    representation degree: 12656
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 20
+      5: 158
+      6: 650797
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,121)"
+    bound: 14513
+    representation degree: 14520
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 20
+      6: 287624
+    limitation:
+      - versality
+    notes: ""
+
+  - group: "PSU(3,125)"
+    bound: 15493
+    representation degree: 15500
+    invariants used:
+      4: 6
+    invariants computed:
+      4: 22
+      5: 202
+      6: 977857
+    limitation:
+      - versality
+    notes: ""

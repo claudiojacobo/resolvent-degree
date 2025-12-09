@@ -1,0 +1,25 @@
+method: "minimal perm rep [FW2019, Lemma 3.13]"
+reference: GGSW2024
+data_sources:
+  - ATLAS of finite simple groups
+  - Sut2021
+contributors:
+  - Gomez-Gonzales
+  - Sutherland
+  - Wolfson
+groups:
+  - group: "M11"
+    bound: 6
+    notes: "[GGSW2024] identifies subvariety of type (1,1,1) in P(V) = P^9, conjectured to be RD^{<=6}-versal, which would match bound via special points."
+
+  - group: "M12"
+    bound: 7
+    notes: "[GGSW2024] identifies subvariety of type (1,1,1) in P(V) = P^{10}, conjectured to be RD^{<=7}-versal, which would match bound via special points."
+
+  - group: "M23"
+    bound: 17
+    notes: "[GGSW2024] identifies subvariety of type (1,1,1,1) in P(V) = P^{21}, conjectured to be RD^{<=17}-versal, which would match bound via special points."
+
+  - group: "M24"
+    bound: 18
+    notes: "[GG2025] identifies subvariety of type (1,1,1,1) in P(V) = P^{22} which is RD^{<=18}-versal, so bound is matched by special points."

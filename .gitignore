@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Python
+__pycache__/
+env/
+venv/
+
+# Sage
+*.sage.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
