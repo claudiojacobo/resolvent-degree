@@ -1,6 +1,8 @@
 # Classical Steinberg groups
 ## $^2A_n(q^2) = \text{PSU}(n+1,q)$ for $n \geq 2$
 ### $n=2$
+For the current best asymptotic bounds, see [CGGGKL2025](https://arxiv.org/pdf/2509.19237).
+
 | Group | Bound | Method | Reference |
 |-------|-------|--------|-----------|
 | PSU(3,2) | 1 | CGGGKL2025, Theorem 2.2 | CGGGKL2025 |
