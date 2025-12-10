@@ -6,6 +6,7 @@ This repository is **living, collaborative record** of the best known upper bo
 + **Organize a codebase** to verify and reproduce bounds.
 + **Encourage community contributions** to refine or extend results.
 + **Serve as a reference** for ongoing research.
+
 ## 🤝 How to contribute
 **This repository is a work in progress.** If you have something to share, please consider contributing via pull request or by emailing [Claudio](https://claudiojacobo.com/). We are especially interested in:
 + **Updating the bounds table** with new or refined results.
@@ -13,23 +14,29 @@ This repository is **living, collaborative record** of the best known upper bo
 + **Enhancing results** (e.g., introduce more efficient methods, port to performant languages).
 + **Flagging errors** in bounds, citations, or code.
 + **Highlighting new or significant results** from the literature.
+
 ## 📊 Best upper bounds
 This GitHub is intended as a living version of Sutherland's excellent summary [Sut2023], which is out of date as of Spring 2025. While we mention several well-studied finite groups, we are primarily interested in finite *simple* groups. There is no loss of generality since, due to [FW2019], the resolvent degree of a finite group is bound by the resolvent degree of the simple factors in its Jordan–Hölder decomposition. In what follows, we mirror the notation from [Wikipedia](https://en.wikipedia.org/wiki/List_of_finite_simple_groups) in the classification of finite simple groups.
+
 ### Cyclic groups
 $\text{RD}(C_p) = 1$ for all prime $p \geq 2$. Indeed, $\text{RD}(G) = 1$ for any solvable $G$, since any characteristic $0$ field extension with Galois group $G$ is solvable in radicals.
+
 ### Alternating groups $A_n$
 + Bounds for low $n$ (COMING SOON)
 + Asymptotic bounds (COMING SOON)
+
 ### Classical Chevalley groups
-[🔗](https://github.com/claudiojacobo/resolvent-degree/blob/main/Data/Classical%20Chevalley%20Groups/An.md) $A_n(q) = \text{PSL}(n+1,q)$ for $n \geq 1$ 
+[🔗](https://github.com/claudiojacobo/resolvent-degree/blob/main/Data/Classical%20Chevalley%20Groups/An/README.md) $A_n(q) = \text{PSL}(n+1,q)$ for $n \geq 1$ 
 + $n=1$ (with $q > 4$ and $q \not = 9$)
 + $n=2$ (COMING SOON)
+
 ### Classical Steinberg groups
-[🔗](https://github.com/claudiojacobo/resolvent-degree/blob/main/Data/Classical%20Steinberg%20Groups/2An.md) $^2A_n(q^2) = \text{PSU}(n+1,q)$ for $n \geq 2$
+[🔗](https://github.com/claudiojacobo/resolvent-degree/blob/main/Data/Classical%20Steinberg%20Groups/2An/README.md) $^2A_n(q^2) = \text{PSU}(n+1,q)$ for $n \geq 2$
 + $n = 2$
+
 ### Other
-[🔗](https://github.com/claudiojacobo/resolvent-degree/blob/main/Data/Other/Sporadic.md) Sporadic groups (COMING SOON)
-+ Weyl groups of type $E_6$, $E_7$, and $E_8$ (COMING SOON)
+[🔗](https://github.com/claudiojacobo/resolvent-degree/blob/main/Data/Other/Sporadic/README.md) Sporadic groups
+
 ## 🌱 Overview of RD
 Resolvent degree (RD) is a measure of complexity motivated by one of the most fundamental problems in math: 
 
@@ -39,22 +46,28 @@ While there are many notions of complexity to associate with, say, solving a gen
 
 Galois theory offers a particular perspective on this problem in terms of solutions via a particular family of one-variable algebraic functions, i.e., radicals. The tradition which emerged with Klein and Hilbert at Göttingen (see [Kle1884], also [Hel2023] for a perspective on Klein's "hypergalois" program that draws from and situates modern research) challenges us to look beyond this (unfortunately named) solvable/unsolvable dichotomy, regarding ordinary radicals and the [Bring radical](https://en.wikipedia.org/wiki/Bring_radical) ([Bri1786])—both algebraic functions of one variable—as equally complex. Klein's leveraging of geometry, yielding (among other things) his solution of the quintic in terms of his icosahedral cover $\mathcal{I}: \mathbb{P}^1 \to \mathbb{P}^1$ (see [Kle1884, Nas2014]), is fundamental to current work in RD. The **resolvent degree of a finite** (indeed, algebraic) **group** $G$ is defined as the supremum of $\text{RD}(X \dashrightarrow X/G)$ over all primitive, generically free $G$-varieties $X$ (for the experts, we are interested in upper bounds and so take $k = \mathbb{C}$; cf. [Rei2024]). In particular, $\text{RD}(n) = \text{RD}(S_n)$. 
 
-The notion of $\text{RD}(G)$, then, builds on this Kleinian objective: to reduce an algebraic function to a simplest possible “normal form,” conceptualized as an action of its monodromy group on some space of minimal dimension. When $G = C_d$, for example, the $G$-variety $\mathbb{P}^1$ (arising from the branched cover $z \mapsto z^d$, i.e., the algebraic function $\sqrt[d]{-}$) has a universal property: by Kummer theory, any $G$-variety $X$ admits an equivariant dominant rational map $X \dashrightarrow \mathbb{P}^1$ so that the action on $X$ is pulled back from the action on $\mathbb{P}^1$. Crucial to the hypergalois theory of Klein's school is the additional notion of **accessory irrationality**, i.e., the use of auxiliary functions towards solving a given algebraic problem (see [FKW2023]). Indeed, while every $A_5$-variety $X$ does *not* pull back from the icosahedral action $A_5 \circlearrowright \mathbb{P}^1$, Klein's *normalformsatz* guarantees the existence of an $A_5$-variety $Y$ together with a branched covering $Y \dashrightarrow X$  of degree at most $2$ so that $Y$ *does* pull back from $\mathcal{I}$. We say that $C_d \circlearrowright \mathbb{P}^1$ cover is **versal**, while $A_5 \circlearrowright \mathbb{P}^1$ is **solvably versal** (see also [GGSW2024] for more on versality, and [FW2025] for a related invariant which restricts the degree of permitted irrationalities); in general, suitably versal $G$-varieties witness $\text{RD}(G)$.
+The notion of $\text{RD}(G)$, then, builds on this Kleinian objective: to reduce an algebraic function to a simplest possible “normal form,” conceptualized as an action of its monodromy group on some space of minimal dimension. When $G = C_d$, for example, the $C_d$-variety $\mathbb{P}^1$ (arising from the branched cover $z \mapsto z^d$, i.e., the algebraic function $\sqrt[d]{-}$) has a universal property: by Kummer theory, any $C_d$-variety $X$ admits an equivariant dominant rational map $X \dashrightarrow \mathbb{P}^1$ so that the action on $X$ is pulled back from the action on $\mathbb{P}^1$. Crucial to the hypergalois theory of Klein's school is the idea of **accessory irrationality**, i.e., the use of auxiliary functions towards solving a given algebraic problem (see [FKW2023]). Indeed, while every $A_5$-variety $X$ does *not* pull back from the icosahedral action $A_5 \circlearrowright \mathbb{P}^1$, Klein's *normalformsatz* guarantees the existence of an $A_5$-variety $Y$ together with an equivariant branched covering $Y \dashrightarrow X$  of degree at most $2$ so that $Y$ *does* pull back from $\mathcal{I}$. We say that $C_d \circlearrowright \mathbb{P}^1$ cover is **versal**, while $A_5 \circlearrowright \mathbb{P}^1$ is **solvably versal** (also see [GGSW2024] for more on versality, and [FW2025] for a related invariant which restricts the degree of permitted irrationalities); in general, suitably versal $G$-varieties witness $\text{RD}(G)$.
 
-To date, it is unknown whether $\text{RD}(n) > 1$ for any $n \in \mathbb{Z}^+$. Indeed, identifying *any* finite group $G$ for which $\text{RD}(G) > 1$ is of tremendous interest to the field—equivalent to the spirit of Hilbert's 13th problem. The extensive history behind resolvent degree, which spans many generations of mathematicians and is marked by fragmentation of communities and lengthy periods without progress, is an important motivation for this repository. In the words of Sylvester and Hammond, looking back on the limited progress over 200 years:
+To date, it is unknown whether $\text{RD}(n) > 1$ for any $n \in \mathbb{Z}^+$. Indeed, identifying *any* finite group $G$ for which $\text{RD}(G) > 1$ is of tremendous interest to the field—equivalent to the spirit of Hilbert's 13th problem. The extensive history behind resolvent degree—which spans many generations of mathematicians and is marked by fragmentation of communities, lengthy periods of inactivity, and bursts of progress which often contribute to neighboring fields—is an important motivation for this repository. In the words of Sylvester and Hammond, looking back on limited progress over 200 years:
 
 > "The theory has been a plant of slow growth.” [SH1887]
 
 For a much more thorough historical overview, see Appendix B of [Wol2021].
+
 ## 🧑‍💻 Contributors
-Direct contributors to this repo, listed in alphabetical order, include:
+Listed in alphabetical order:
++ Nawal Baydoun
 + [Pablo Nicolas Christofferson](https://github.com/Pablo-Christofferson)
++ [Jonathan Delgado](https://jdelgado.net)
 + Akash Ganguly
-+ [Claudio Gómez-Gonzáles](https://claudiojacobo.com/)
++ [Claudio Gómez-Gonzáles](https://claudiojacobo.com)
 + [Ella Kuriyama](https://github.com/ekuriy)
 + [Yihan Carmen Li](https://github.com/Carmen-owl)
++ [Alexander Sutherland](https://www.alexandersutherland.com)
++ [Jesse Wolfson](https://jpwolfson.com/)
 
-In addition, launching this repo was supported in part by NSF Grant DMS-2418943.
+Launching this repo was supported in part by NSF Grants DMS-1944862, DMS-2342135, DMS-2418943, and DMS-2506184.
+
 ## 📑 References
 + [AS1976] V. Arnold and G. Shimura, *Superpositions of algebraic functions*, AMS Proceedings of Symposia in Pure Mathematics 28, 45–46.
 + [Bra1975] R. Brauer, *On the resolvent problem*, Annali di Matematica Pura ed Applicata 102.1, 45–55
