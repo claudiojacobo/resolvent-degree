@@ -72,7 +72,7 @@ Launching this repo was supported in part by NSF Grants DMS-1944862, DMS-2342135
 + [AS1976] V. Arnold and G. Shimura, *Superpositions of algebraic functions*, AMS Proceedings of Symposia in Pure Mathematics 28, 45–46.
 + [Bra1975] R. Brauer, *On the resolvent problem*, Annali di Matematica Pura ed Applicata 102.1, 45–55
 + [Bri1786] E. Bring, *Meletemata quædam mathematica circa transformationem æquationem algebraicarum*, Lund
-+ [CGGGKL2025] P. Christofferson, A. Ganguly, C. Gómez-Gonzáles, E. Kuriyama, Y. Li, *On the Resolvent Degree of PSU(3,q)*, arXiv:2509.19237
++ [CGGGKL2025] P. Christofferson, A. Ganguly, C. Gómez-Gonzáles, E. Kuriyama, Y. Li, *On the Resolvent Degree of PSU(3,q) with an appendix co-authored by Nawal Baydoun*, arXiv:2509.19237
 + [FKW2023] B. Farb, M. Kisin, and J. Wolfson, *Modular functions and resolvent problems, with an appendix by Nate Harman*, Mathematische Annalen 386: 113–150.
 + [FW2019] B. Farb and J. Wolfson, *Resolvent degree, Hilbert’s 13th problem and geometry*, L’Enseignement Mathématique 65.3, 303–376.
 + [FW2025] B. Farb and J. Wolfson. *Essential dimension relative to branched covers of degree at most n*, arXiv:2510.22786
