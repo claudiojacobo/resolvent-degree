@@ -8,6 +8,7 @@ Note that $\text{PSL}(2,4) \cong A_5$ and $\text{PSL}(2,9) \cong A_6$ are omitte
 | PSL(2,5)   | 1     | CGGGKL2025, Theorem 2.2 | CGGGKL2025 |
 | PSL(2,7)   | 1     | CGGGKL2025, Theorem 2.2 | CGGGKL2025 |
 | PSL(2,8)   | 4     | FW2019, Lemma 3.13      | CGGGKL2025 |
+|            | 4     | CGGGKL2025, Theorem 2.2 | CGGGKL2025 |
 | PSL(2,11)  | 3     | CGGGKL2025, Theorem 2.2 | CGGGKL2025 |
 | PSL(2,13)  | 4     | CGGGKL2025, Theorem 2.2 | CGGGKL2025 |
 | PSL(2,16)  | 12    | CGGGKL2025, Theorem 2.2 | CGGGKL2025 |

@@ -34,6 +34,27 @@ groups:
       - versality
     notes: "Bound first due to [Kle1878]"
 
+  - group: "PSL(2,8)"
+    bound: 4
+    representation degree: 7
+    invariants used:
+      2: 1
+      4: 1
+    invariants computed:
+      2: 1
+      4: 1
+      6: 3
+      7: 2
+      8: 5
+    limitation:
+      - generic freeness
+      - versality
+    notes: >-
+      Tied with minimal permutation bound [FW2019, Lemma 3.13].
+      Note that this is not the first available non-trivial character from GAP.
+      Delgado points out that different choices of the smallest irreps for
+      q = 2^(2s+1) (s>0) give different distributions of invariants.
+
   - group: "PSL(2,11)"
     bound: 3
     representation degree: 5
