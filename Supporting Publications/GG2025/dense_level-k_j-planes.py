@@ -3,36 +3,35 @@ from math import comb, factorial, log2
 '''
 # best bounds from [HS2023] and [Sut2022]
 H_bound = {
-    1:2, 2:3, 3:4, 4:5, 5:9, 6:21, 7:109, 8:325,
-    13:5250198, 22:381918437071508900,
+    1:2, 2: 3, 3: 4, 4: 5, 5: 9, 6: 21, 7: 109, 8: 325,
+    13: 5250198, 22: 381918437071508900,
     34: 2475934708812781843231486891102123,
     44: 8559276927975810009082900078329761155025671771554
 }
 for r in range(9, 56):
     d = 4
-    if r in range(14,23): d = 5
-    elif r in range(23,34): d = 6
-    elif r in range(35,44): d = 7
-    elif r in range(45,56): d = 8
+    if 14 <= r <= 21: d = 5
+    elif 23 <= r <= 33: d = 6
+    elif 35 <= r <= 43: d = 7
+    elif 45 <= r: d = 8
     else: continue
     H_bound[r] = factorial(r-1)//factorial(d) + 1
-
 '''
 
 # best bounds following [GG2025]
 H_bound = {
-    1: 2, 2: 3, 3: 4, 4: 5, 5: 9, 6: 21, 7: 75,
+    1: 2, 2: 3, 3: 4, 4: 5, 5: 9, 6: 21, 7: 75, 11: 59050,
     20: 227214539745187, 34: 2475934708812781843231486891102123,
     44: 8559276927975810009082900078329761155025671771554
 }
 for r in range (8, 56) :
-    if 8 <= r <= 11: d = 4
-    elif 12 <= r <= 19: d = 5
+    d = 4
+    if 12 <= r <= 19: d = 5
     elif 21 <= r <= 33: d = 6
     elif 35 <= r <= 43: d = 7
     elif 45 <= r : d = 8
     else : continue
-    H_bound [ r ] = factorial (r -1) // factorial ( d ) +1
+    H_bound [r] = factorial (r -1) // factorial ( d ) +1
 
 r_max = max(H_bound.keys())
 def RD_bound(n):
