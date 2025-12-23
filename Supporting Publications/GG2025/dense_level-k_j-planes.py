@@ -14,7 +14,6 @@ for r in range(9, 56):
     elif 23 <= r <= 33: d = 6
     elif 35 <= r <= 43: d = 7
     elif 45 <= r: d = 8
-    else: continue
     H_bound[r] = factorial(r-1)//factorial(d) + 1
 '''
 
@@ -30,8 +29,7 @@ for r in range (8, 56) :
     elif 21 <= r <= 33: d = 6
     elif 35 <= r <= 43: d = 7
     elif 45 <= r : d = 8
-    else : continue
-    H_bound [r] = factorial (r -1) // factorial ( d ) +1
+    H_bound[r] = factorial(r-1)//factorial(d) + 1
 
 r_max = max(H_bound.keys())
 def RD_bound(n):
