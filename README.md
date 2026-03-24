@@ -87,7 +87,7 @@ Launching this repo was supported in part by NSF Grants DMS-1944862, DMS-2342135
 + [Nas2014] O. Nash, *On Klein’s icosahedral solution of the quintic*, Expositiones Mathematicae 32.2, 99–120
 + [Rei2024] R. Reichstein, *Hilbert’s 13th Problem for Algebraic Groups*, L’Enseignement Mathématique 71.1, 139–192
 + [Sut2021] A. Sutherland, *Upper bounds on resolvent degree and its growth rate*, arXiv:2107.08139
-+ [Sut2022] A. Sutherland, *Upper Bounds on the Resolvent Degree of General Polynomials and the Families of Alternating and Symmetric Groups*, Ph.D. thesis (University of California, Irvine)
++ [Sut2022] A. Sutherland, [*Upper Bounds on the Resolvent Degree of General Polynomials and the Families of Alternating and Symmetric Groups*](https://github.com/claudiojacobo/resolvent-degree/blob/aa09bce057ef7d3b029f2ba1fd3632ce52393905/Publications/Upper%20Bounds%20on%20the%20Resolvent%20Degree%20of%20General%20Polynomials%20and%20the%20Families%20of%20Alternating%20and%20Symmetric%20Groups%20--%20Alexander%20J.%20Sutherland.pdf), Ph.D. thesis (University of California, Irvine)
 + [Sut2023] A. Sutherland, *A Summary of Known Bounds on the Essential Dimension and Resolvent Degree of Finite Groups*, arXiv:2312.04430
 + [SH1887] J. Sylvester and J. Hammond, *On Hamilton’s Numbers*, Philosophical Transactions of the Royal Society of London A 178, 285–312
 + [Tsc1683] E. von Tschirnhaus, *Methodus auferendi omnes terminos intermedios ex data aequatione*, Acta Eruditorum, 204-207, 1683
